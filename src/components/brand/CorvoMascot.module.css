@@ -1,0 +1,81 @@
+/*
+  Portado de brand/animacoes/corvo-animacoes.css. Cada sprite tem os quadros lado a lado; a
+  máscara avança um quadro por vez (steps) e a cor vem de `currentColor`.
+  Tamanho = quadro (48×32) × 4. Para mudar a escala, multiplique width, height e mask-size.
+*/
+.mascot {
+  display: inline-block;
+  flex: none;
+  width: 192px;
+  height: 128px;
+  background: currentColor;
+  image-rendering: pixelated;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.carregando {
+  -webkit-mask-image: url('../../assets/brand/corvo-carregando-sprite.png');
+  mask-image: url('../../assets/brand/corvo-carregando-sprite.png');
+  -webkit-mask-size: 2304px 128px;
+  mask-size: 2304px 128px;
+  animation: carregando 1200ms steps(12) infinite;
+}
+
+.concluido {
+  -webkit-mask-image: url('../../assets/brand/corvo-concluido-sprite.png');
+  mask-image: url('../../assets/brand/corvo-concluido-sprite.png');
+  -webkit-mask-size: 2688px 128px;
+  mask-size: 2688px 128px;
+  animation: concluido 1260ms steps(14) infinite;
+}
+
+.recusado {
+  -webkit-mask-image: url('../../assets/brand/corvo-recusado-sprite.png');
+  mask-image: url('../../assets/brand/corvo-recusado-sprite.png');
+  -webkit-mask-size: 2304px 128px;
+  mask-size: 2304px 128px;
+  animation: recusado 1080ms steps(12) infinite;
+}
+
+.falha {
+  -webkit-mask-image: url('../../assets/brand/corvo-falha-sprite.png');
+  mask-image: url('../../assets/brand/corvo-falha-sprite.png');
+  -webkit-mask-size: 2304px 128px;
+  mask-size: 2304px 128px;
+  animation: falha 1080ms steps(12) infinite;
+}
+
+@keyframes carregando {
+  to {
+    -webkit-mask-position: -2304px 0;
+    mask-position: -2304px 0;
+  }
+}
+
+@keyframes concluido {
+  to {
+    -webkit-mask-position: -2688px 0;
+    mask-position: -2688px 0;
+  }
+}
+
+@keyframes recusado {
+  to {
+    -webkit-mask-position: -2304px 0;
+    mask-position: -2304px 0;
+  }
+}
+
+@keyframes falha {
+  to {
+    -webkit-mask-position: -2304px 0;
+    mask-position: -2304px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mascot {
+    animation-play-state: paused;
+  }
+}

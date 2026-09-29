@@ -1,0 +1,6 @@
+/* Ordem das camadas: quem vem depois vence. O CSS dos componentes fica fora de camadas e vence todas. */
+@layer reset, base;
+
+@import './tokens.css';
+@import './reset.css';
+@import './base.css';

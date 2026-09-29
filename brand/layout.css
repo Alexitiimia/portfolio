@@ -1,0 +1,47 @@
+/* layout.css — header + footer. Usa as variáveis de brand.css */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.statusbar{background:var(--ink);color:var(--bg);font:500 11px/1 var(--mono);letter-spacing:.04em}
+.statusbar .wrap{display:flex;gap:20px;align-items:center;justify-content:space-between;height:28px}
+.statusbar span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dot{display:inline-block;width:6px;height:6px;background:var(--bg);margin-right:8px;animation:blink 2s steps(2) infinite}
+@keyframes blink{50%{opacity:.25}}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+.site-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.site-header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none}
+.brand .tile{display:grid;place-items:center;width:48px;height:48px;background:var(--ink);color:var(--bg)}
+.brand .name{font:700 17px/1 var(--mono);letter-spacing:.18em}
+.brand .tag{display:block;margin-top:5px;font:500 10px/1 var(--mono);letter-spacing:.12em;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:4px;list-style:none;margin:0;padding:0}
+.nav a{display:flex;gap:8px;padding:10px 12px;color:var(--muted);text-decoration:none;font:500 13px/1 var(--mono);border-bottom:2px solid transparent}
+.nav a i{font-style:normal;color:var(--muted);opacity:.6}
+.nav a:hover,.nav a[aria-current=page]{color:var(--ink);border-bottom-color:var(--ink)}
+.nav a:focus-visible,.brand:focus-visible,.btn:focus-visible,.foot a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.btn{display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--ink);color:var(--ink);text-decoration:none;font:600 12px/1 var(--mono);letter-spacing:.04em}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.menu{display:none}
+@media (max-width:820px){
+ .nav,.site-header .btn{display:none}
+ .menu{display:block;position:relative}
+ .menu summary{list-style:none;cursor:pointer;padding:10px 12px;border:1px solid var(--line);font:600 12px/1 var(--mono);color:var(--ink)}
+ .menu summary::-webkit-details-marker{display:none}
+ .menu ul{position:absolute;right:0;top:calc(100% + 8px);min-width:220px;margin:0;padding:8px;list-style:none;background:var(--bg);border:1px solid var(--ink)}
+ .menu a{display:block;padding:12px;color:var(--ink);text-decoration:none;font:500 13px/1 var(--mono)}
+ .statusbar span:nth-child(n+2){display:none}
+}
+.foot{position:relative;overflow:hidden;background:var(--bg);color:var(--ink);border-top:1px solid var(--ink);font:400 14px/1.6 var(--sans)}
+.foot .ghost{position:absolute;right:16px;bottom:-40px;width:288px;height:288px;color:var(--line);opacity:.35;pointer-events:none}
+.foot .wrap{position:relative}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:40px;padding:56px 0 40px}
+.foot h3{margin:0 0 16px;font:600 11px/1 var(--mono);letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.foot ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.foot a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--line)}
+.foot a:hover{border-bottom-color:var(--ink)}
+.foot .about{max-width:34ch;color:var(--muted)}
+.foot .brand{margin-bottom:16px;border:0}
+.fp{font:500 11px/1.7 var(--mono);color:var(--muted);word-break:break-all}
+.foot-term{border-top:1px solid var(--line);padding:16px 0;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font:500 12px/1.4 var(--mono);color:var(--muted)}
+.foot-term b{color:var(--ink);font-weight:600}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--ink);vertical-align:-2px;animation:blink 1s steps(2) infinite}
+@media (max-width:820px){.foot-grid{grid-template-columns:1fr 1fr}.foot-grid>:first-child{grid-column:1/-1}}
+@media (prefers-reduced-motion:reduce){.dot,.cursor{animation:none}}

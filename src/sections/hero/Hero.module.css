@@ -1,0 +1,192 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  padding-top: clamp(3rem, 9vw, 6.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  overflow: clip;
+}
+
+/* Grade de pontos discreta, esmaecida em direção às bordas. Puro CSS, sem imagem. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(circle, var(--color-line-strong) 1px, transparent 1.5px);
+  background-size: 28px 28px;
+  opacity: 0.35;
+  -webkit-mask-image: radial-gradient(ellipse 80% 90% at 20% 10%, #000 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 90% at 20% 10%, #000 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.inner {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.copy {
+  min-width: 0;
+}
+
+.eyebrow {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+
+.command {
+  color: var(--color-fg-subtle);
+}
+
+.title {
+  font-size: var(--text-display);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+}
+
+/* Palavra em destaque: cores invertidas, como um trecho selecionado ou tarjado. */
+.mark {
+  padding-inline: 0.12em;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.lead {
+  max-width: 46ch;
+  margin-top: var(--space-5);
+  color: var(--color-fg-muted);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* Só telas largas: o corvo grande num painel quadrado. */
+.art {
+  display: none;
+}
+
+.facts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: var(--space-2);
+  border-top: 1px solid var(--color-line);
+}
+
+.fact {
+  padding: var(--space-4) var(--space-4) var(--space-5) 0;
+  border-bottom: 1px solid var(--color-line);
+}
+
+.fact:nth-child(even) {
+  padding-left: var(--space-4);
+  border-left: 1px solid var(--color-line);
+}
+
+.factLabel {
+  margin-bottom: var(--space-1);
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.factValue {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+@media (min-width: 56rem) {
+  .inner {
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-8);
+  }
+
+  .art {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-fg);
+  }
+
+  .raven {
+    width: 74%;
+    height: auto;
+  }
+
+  .facts {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: var(--space-5);
+  }
+
+  .fact {
+    border-bottom: 0;
+  }
+
+  .fact + .fact {
+    padding-left: var(--space-5);
+    border-left: 1px solid var(--color-line);
+  }
+}
+
+/* Entrada suave ao carregar. Desligada para quem pede menos movimento. */
+@media (prefers-reduced-motion: no-preference) {
+  .eyebrow,
+  .title,
+  .lead,
+  .actions,
+  .art,
+  .facts {
+    animation: rise var(--duration-slow) var(--ease-out) both;
+  }
+
+  .title {
+    animation-delay: 80ms;
+  }
+
+  .lead {
+    animation-delay: 160ms;
+  }
+
+  .actions {
+    animation-delay: 240ms;
+  }
+
+  .art {
+    animation-delay: 200ms;
+  }
+
+  .facts {
+    animation-delay: 320ms;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

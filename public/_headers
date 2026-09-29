@@ -1,0 +1,21 @@
+# Cabeçalhos de segurança e cache, aplicados pela Cloudflare (Workers Static Assets).
+# Doc: https://developers.cloudflare.com/workers/static-assets/headers/
+#
+# CSP: só recursos do próprio site. Se um dia adicionar serviço externo (analytics, fonte,
+# formulário, vídeo), libere o domínio dele na diretiva certa. Nada é liberado "por via das dúvidas".
+# O rodapé do site afirma "HTTPS + HSTS", "CSP estrita" e "Sem rastreadores": estes cabeçalhos
+# sustentam essas frases (src/test/deploy.test.ts confere). Mude uma coisa, mude a outra.
+#
+# frame-ancestors: somente este site e o bio.site podem exibir a página dentro de um frame.
+
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; manifest-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-ancestors 'self' https://bio.site; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin
+
+# Arquivos gerados pelo Vite têm hash no nome: podem ficar em cache "para sempre".
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

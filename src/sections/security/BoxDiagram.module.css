@@ -1,0 +1,49 @@
+.diagram {
+  width: 100%;
+  max-width: 9rem;
+  height: auto;
+  aspect-ratio: 1;
+}
+
+.frame {
+  stroke: var(--color-line-strong);
+  stroke-width: 1;
+}
+
+/* As cores das caixas são fixas nos dois temas: preta, cinza e branca de verdade. */
+.black .frame {
+  fill: var(--box-black);
+}
+
+.grey .frame {
+  fill: var(--box-grey);
+}
+
+.white .frame {
+  fill: var(--box-white);
+}
+
+.question {
+  fill: #4d4d4d;
+  font-family: var(--font-mono);
+  font-size: 72px;
+  font-weight: 300;
+}
+
+.lines rect,
+.lines path,
+.lines circle {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 1.5;
+}
+
+.lines .dashed {
+  opacity: 0.55;
+  stroke-dasharray: 4 4;
+}
+
+.lines .dot {
+  fill: #000000;
+  stroke: none;
+}

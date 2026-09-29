@@ -1,0 +1,34 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Dependências e build
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+coverage
+
+# Cloudflare / Wrangler
+.wrangler
+.dev.vars*
+
+# Variáveis de ambiente locais: nunca versionar segredos
+.env
+.env.*
+!.env.example
+
+# Editores e sistema
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

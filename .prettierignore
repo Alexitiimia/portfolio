@@ -1,0 +1,7 @@
+dist
+node_modules
+.wrangler
+coverage
+package-lock.json
+# Kit original da identidade (fonte da verdade, formato próprio): não reformatar.
+brand

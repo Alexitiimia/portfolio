@@ -1,0 +1,12 @@
+/* uso: <span class="corvo-carregando" role="img" aria-label="Carregando"></span> — a cor vem de `color` (currentColor). Mude o tamanho trocando o 4px por outro inteiro. */
+.corvo-carregando{display:inline-block;width:192px;height:128px;background:currentColor;-webkit-mask:url(corvo-carregando-sprite.png) 0 0/2304px 128px no-repeat;mask:url(corvo-carregando-sprite.png) 0 0/2304px 128px no-repeat;image-rendering:pixelated;animation:corvo-carregando 1200ms steps(12) infinite}
+@keyframes corvo-carregando{to{-webkit-mask-position:-2304px 0;mask-position:-2304px 0}}
+.corvo-404{display:inline-block;width:272px;height:160px;background:currentColor;-webkit-mask:url(corvo-404-sprite.png) 0 0/3264px 160px no-repeat;mask:url(corvo-404-sprite.png) 0 0/3264px 160px no-repeat;image-rendering:pixelated;animation:corvo-404 1800ms steps(12) infinite}
+@keyframes corvo-404{to{-webkit-mask-position:-3264px 0;mask-position:-3264px 0}}
+.corvo-concluido{display:inline-block;width:192px;height:128px;background:currentColor;-webkit-mask:url(corvo-concluido-sprite.png) 0 0/2688px 128px no-repeat;mask:url(corvo-concluido-sprite.png) 0 0/2688px 128px no-repeat;image-rendering:pixelated;animation:corvo-concluido 1260ms steps(14) infinite}
+@keyframes corvo-concluido{to{-webkit-mask-position:-2688px 0;mask-position:-2688px 0}}
+.corvo-recusado{display:inline-block;width:192px;height:128px;background:currentColor;-webkit-mask:url(corvo-recusado-sprite.png) 0 0/2304px 128px no-repeat;mask:url(corvo-recusado-sprite.png) 0 0/2304px 128px no-repeat;image-rendering:pixelated;animation:corvo-recusado 1080ms steps(12) infinite}
+@keyframes corvo-recusado{to{-webkit-mask-position:-2304px 0;mask-position:-2304px 0}}
+.corvo-falha{display:inline-block;width:192px;height:128px;background:currentColor;-webkit-mask:url(corvo-falha-sprite.png) 0 0/2304px 128px no-repeat;mask:url(corvo-falha-sprite.png) 0 0/2304px 128px no-repeat;image-rendering:pixelated;animation:corvo-falha 1080ms steps(12) infinite}
+@keyframes corvo-falha{to{-webkit-mask-position:-2304px 0;mask-position:-2304px 0}}
+@media (prefers-reduced-motion:reduce){[class^="corvo-"]{animation-play-state:paused}}

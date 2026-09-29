@@ -1,0 +1,32 @@
+{
+ "carregando": {
+  "frames": 12,
+  "frameWidth": 48,
+  "frameHeight": 32,
+  "frameMs": 100
+ },
+ "404": {
+  "frames": 12,
+  "frameWidth": 68,
+  "frameHeight": 40,
+  "frameMs": 150
+ },
+ "concluido": {
+  "frames": 14,
+  "frameWidth": 48,
+  "frameHeight": 32,
+  "frameMs": 90
+ },
+ "recusado": {
+  "frames": 12,
+  "frameWidth": 48,
+  "frameHeight": 32,
+  "frameMs": 90
+ },
+ "falha": {
+  "frames": 12,
+  "frameWidth": 48,
+  "frameHeight": 32,
+  "frameMs": 90
+ }
+}

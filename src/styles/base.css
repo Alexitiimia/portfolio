@@ -1,0 +1,53 @@
+/* Estilos globais de elementos HTML. O CSS dos componentes (módulos) sempre vence esta camada. */
+@layer base {
+  html {
+    /* Âncoras (#projetos...) param logo abaixo do cabeçalho fixo, sem linha dupla. */
+    scroll-padding-top: var(--header-h);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    text-underline-offset: 0.2em;
+  }
+
+  ::selection {
+    background: var(--color-fg);
+    color: var(--color-bg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-fg);
+    outline-offset: 3px;
+  }
+
+  /* O <main> só recebe foco pelo link "Ir para o conteúdo"; não precisa de contorno. */
+  main:focus {
+    outline: none;
+  }
+}

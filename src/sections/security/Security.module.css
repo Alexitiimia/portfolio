@@ -1,0 +1,79 @@
+.methods {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.method {
+  display: grid;
+  align-content: start;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.knowledge {
+  margin-bottom: var(--space-3);
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.name {
+  font-size: var(--text-2xl);
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.translation {
+  margin-top: var(--space-2);
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.description {
+  color: var(--color-fg-muted);
+}
+
+.capabilities {
+  display: grid;
+  column-gap: clamp(2rem, 6vw, 5rem);
+  margin-top: clamp(3rem, 7vw, 5rem);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.capability {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: var(--space-6);
+  border-top: 1px solid var(--color-line);
+}
+
+.capabilityTitle {
+  font-size: var(--text-xl);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.capabilityText {
+  margin-top: var(--space-2);
+  color: var(--color-fg-muted);
+}
+
+@media (min-width: 48rem) {
+  .capabilities {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 56rem) {
+  .methods {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
