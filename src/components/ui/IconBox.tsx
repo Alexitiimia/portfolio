@@ -8,7 +8,13 @@ import styles from './IconBox.module.css'
 export function IconBox({ icon: Icon }: { readonly icon: LucideIcon }) {
   return (
     <span className={styles.box}>
-      <Icon size={20} strokeWidth={1.5} strokeLinecap="square" strokeLinejoin="miter" aria-hidden="true" />
+      <Icon
+        size={20}
+        strokeWidth={1.5}
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+        aria-hidden="true"
+      />
     </span>
   )
 }

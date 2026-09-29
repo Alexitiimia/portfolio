@@ -59,7 +59,10 @@ function headerRules(): readonly HeaderRule[] {
     if (separator === -1) throw new Error(`Linha mal formada no _headers: "${line}"`)
     const current = rules.at(-1)
     if (current === undefined) throw new Error(`Cabeçalho antes de qualquer caminho: "${line}"`)
-    current.headers.set(line.slice(0, separator).trim().toLowerCase(), line.slice(separator + 1).trim())
+    current.headers.set(
+      line.slice(0, separator).trim().toLowerCase(),
+      line.slice(separator + 1).trim(),
+    )
   }
   return rules
 }
@@ -201,7 +204,11 @@ describe('index.html: metadados', () => {
 
   it('usa em theme-color as mesmas cores de fundo dos temas (tokens.css)', () => {
     const tokens = read('/src/styles/tokens.css')
-    const dark = matchOrThrow(tokens, /:root\s*\{[^}]*--color-bg:\s*(#[0-9a-f]{6})/i, 'o --color-bg escuro')
+    const dark = matchOrThrow(
+      tokens,
+      /:root\s*\{[^}]*--color-bg:\s*(#[0-9a-f]{6})/i,
+      'o --color-bg escuro',
+    )
     const light = matchOrThrow(
       tokens,
       /data-theme='light'\]\s*\{[^}]*--color-bg:\s*(#[0-9a-f]{6})/i,
@@ -215,7 +222,11 @@ describe('index.html: metadados', () => {
 
 describe('arquivos de suporte', () => {
   it('a página 404 usa o sprite do corvo que existe em public/', () => {
-    const sprite = matchOrThrow(read('/public/404.css'), /url\(\/([\w.-]+\.png)\)/, 'o sprite do corvo')
+    const sprite = matchOrThrow(
+      read('/public/404.css'),
+      /url\(\/([\w.-]+\.png)\)/,
+      'o sprite do corvo',
+    )
 
     expect(publicFiles.has(sprite)).toBe(true)
   })

@@ -34,7 +34,9 @@ function channel(value: number): number {
 
 function luminance(hex: string): number {
   const n = Number.parseInt(hex.slice(1), 16)
-  return 0.2126 * channel((n >> 16) & 255) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255)
+  return (
+    0.2126 * channel((n >> 16) & 255) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255)
+  )
 }
 
 function contrast(a: string, b: string): number {

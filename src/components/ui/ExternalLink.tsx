@@ -24,8 +24,8 @@ export function ExternalLink({ href, children, className, showArrow = false }: E
           ↗
         </span>
       ) : null}
-      {/* O espaço fica fora do span: dentro dele seria aparado e o nome saía "GitHub(abre...)". */}
-      <VisuallyHidden>{' '}(abre em nova aba)</VisuallyHidden>
+      {/* O espaço fica fora do span: dentro dele seria aparado e o nome saía "GitHub(abre...)". */}{' '}
+      <VisuallyHidden>(abre em nova aba)</VisuallyHidden>
     </a>
   )
 }

@@ -32,7 +32,11 @@ export function Header() {
       <Container className={styles.bar}>
         <Brand href="#inicio" onClick={closeMenu} />
 
-        <nav id={navId} aria-label="Principal" className={cx(styles.nav, menuOpen && styles.navOpen)}>
+        <nav
+          id={navId}
+          aria-label="Principal"
+          className={cx(styles.nav, menuOpen && styles.navOpen)}
+        >
           <ul role="list" className={styles.list}>
             {navItems.map((item) => (
               <li key={item.id}>
@@ -42,7 +46,9 @@ export function Header() {
                   aria-current={activeId === item.id ? 'location' : undefined}
                   onClick={closeMenu}
                 >
-                  {item.isCta ? null : <span className={styles.index}>{sectionNumber(item.id)}</span>}
+                  {item.isCta ? null : (
+                    <span className={styles.index}>{sectionNumber(item.id)}</span>
+                  )}
                   {item.label}
                   {item.isCta ? <span aria-hidden="true">→</span> : null}
                 </a>

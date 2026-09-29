@@ -37,7 +37,13 @@ export function BoxDiagram({ variant }: { readonly variant: MethodologyId }) {
         <g className={styles.lines}>
           <rect x="28" y="28" width="104" height="104" />
           <path d="M80 28V54M80 106V132M28 80H54M106 80H132" />
-          <rect className={cx(variant === 'grey' && styles.dashed)} x="54" y="54" width="52" height="52" />
+          <rect
+            className={cx(variant === 'grey' && styles.dashed)}
+            x="54"
+            y="54"
+            width="52"
+            height="52"
+          />
           {variant === 'white' ? <circle className={styles.dot} cx="80" cy="80" r="7" /> : null}
         </g>
       )}
