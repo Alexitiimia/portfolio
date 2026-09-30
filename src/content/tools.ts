@@ -40,8 +40,8 @@ export const toolGroups: readonly ToolGroup[] = [
         name: 'Python',
         icon: brands.python,
         href: 'https://www.python.org/',
-        note: 'Avançado',
       },
+      { id: 'php', name: 'PHP', icon: brands.php, href: 'https://www.php.net/' },
       {
         id: 'html',
         name: 'HTML',
@@ -73,6 +73,7 @@ export const toolGroups: readonly ToolGroup[] = [
       { id: 'vercel', name: 'Vercel', icon: brands.vercel, href: 'https://vercel.com/' },
       { id: 'github', name: 'GitHub', icon: brands.github, href: 'https://github.com/' },
       { id: 'lovable', name: 'Lovable', icon: brands.lovable, href: 'https://lovable.dev/' },
+      { id: 'base44', name: 'Base44', icon: brands.base44, href: 'https://base44.com/' },
     ],
   },
   {
@@ -134,6 +135,13 @@ export const toolGroups: readonly ToolGroup[] = [
         note: 'Noções de SQL Injection',
       },
       { id: 'postman', name: 'Postman', icon: brands.postman, href: 'https://www.postman.com/' },
+      { id: 'nmap', name: 'Nmap', icon: brands.nmap, href: 'https://nmap.org/' },
+      {
+        id: 'wireshark',
+        name: 'Wireshark',
+        icon: brands.wireshark,
+        href: 'https://www.wireshark.org/',
+      },
     ],
   },
   {

@@ -100,7 +100,6 @@ export const en: Translations = {
       marketing: 'Digital marketing',
     },
     notes: {
-      python: 'Advanced',
       ubuntu: 'Linux',
       debian: 'Linux',
       'kali-linux': 'Linux',

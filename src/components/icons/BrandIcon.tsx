@@ -64,7 +64,9 @@ export function BrandIcon({ icon, size = 24, className, colored = false }: Brand
           <path d={icon.path} fill={`url(#${gradientId})`} />
         </>
       ) : colored && icon.parts !== undefined ? (
-        icon.parts.map((part) => <path key={part.path} d={part.path} fill={`#${part.hex}`} />)
+        icon.parts.map((part) => (
+          <path key={part.path} d={part.path} fill={`#${part.hex}`} transform={part.transform} />
+        ))
       ) : (
         <path d={icon.path} />
       )}
