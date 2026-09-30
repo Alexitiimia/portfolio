@@ -83,7 +83,7 @@ describe('DomainChecker: nome livre', () => {
     })
     expect(screen.getByRole('link', { name: /montar orçamento/ })).toHaveAttribute(
       'href',
-      '/orcamento/',
+      '/pt/orcamento/',
     )
     expect(screen.getByRole('link', { name: /falar no WhatsApp/ })).toBeInTheDocument()
   })

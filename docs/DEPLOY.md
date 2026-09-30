@@ -86,14 +86,15 @@ git push -u origin main
 
 Ao colar o link no WhatsApp, Instagram (mensagens), Discord, X/Twitter, Telegram ou LinkedIn, o
 aplicativo lê as tags `og:*` e `twitter:*` do HTML e mostra um cartão com imagem, título e
-descrição. Elas estão em `index.html` e `orcamento/index.html` (cada página tem a sua imagem:
-`public/og-image.png` e `public/og-orcamento.png`, 1200 × 630, geradas a partir de `brand/og/`).
+descrição. O texto de cada idioma está em `src/i18n/meta.ts`; `index.html` e `orcamento/index.html`
+são modelos, e o build gera um HTML por idioma (`dist/pt/`, `dist/en/`, `dist/es/`). Cada página
+tem a sua imagem: `public/og-image.png` e `public/og-orcamento.png`, 1200 × 630, geradas a partir
+de `brand/og/`.
 
 - **As URLs são absolutas de propósito** (os aplicativos exigem). Hoje apontam para
-  `https://portfolio.axeldev.workers.dev`. Quando tiver domínio próprio, procure esse endereço nos
-  dois HTMLs e troque tudo (`canonical`, `og:url`, `og:image`, `twitter:image`).
-  `deploy.test.ts` falha se as páginas ficarem com endereços diferentes ou apontarem para uma
-  imagem que não existe.
+  `https://portfolio.axeldev.workers.dev`. Quando tiver domínio próprio, troque só `SITE_ORIGIN` em
+  `src/i18n/lang.ts` (ele vira `canonical`, `hreflang`, `og:url`, `og:image` e `twitter:image` de todas
+  as páginas). `deploy.test.ts` falha se alguma página apontar para uma imagem que não existe.
 - **Cache:** os aplicativos guardam a prévia antiga. Para atualizar depois de mudar a imagem ou o
   texto, mude o nome do arquivo da imagem (ou acrescente `?v=2` na URL do `og:image`). Para
   WhatsApp, Instagram e Facebook também existe o depurador de compartilhamento da Meta

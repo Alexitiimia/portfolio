@@ -29,7 +29,12 @@ import {
 } from 'simple-icons'
 
 /** O que o `BrandIcon` precisa: o nome e o desenho (path SVG em um viewBox 24×24). */
-export type BrandIconData = Pick<SimpleIcon, 'title' | 'path'>
+export interface BrandIconData extends Pick<SimpleIcon, 'title' | 'path' | 'hex'> {
+  /** Logo de várias cores (Microsoft): cada pedaço com o seu próprio desenho e cor. */
+  readonly parts?: readonly { readonly path: string; readonly hex: string }[]
+  /** Logo em degradê (Lovable, Instagram), da base à ponta, em cores hexadecimais sem "#". */
+  readonly gradient?: readonly string[]
+}
 
 /*
   O Lovable ainda não existe no pacote "simple-icons". O desenho abaixo é a versão monocromática
@@ -38,6 +43,8 @@ export type BrandIconData = Pick<SimpleIcon, 'title' | 'path'>
 */
 const lovable: BrandIconData = {
   title: 'Lovable',
+  hex: 'FF5A5F',
+  gradient: ['4B73FF', 'FF66F4', 'FE7B02'],
   path: 'M7.082 0c3.91 0 7.081 3.179 7.081 7.1v2.7h2.357c3.91 0 7.082 3.178 7.082 7.1 0 3.923-3.17 7.1-7.082 7.1H0V7.1C0 3.18 3.17 0 7.082 0z',
 }
 
@@ -48,17 +55,26 @@ const lovable: BrandIconData = {
 */
 const linkedin: BrandIconData = {
   title: 'LinkedIn',
+  hex: '0A66C2',
   path: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
 }
 
 /* O logo da Microsoft (quatro quadrados) também não está no "simple-icons". Marca da Microsoft. */
 const microsoft: BrandIconData = {
   title: 'Microsoft',
+  hex: '5E5E5E',
+  parts: [
+    { path: 'M1 1h10v10H1z', hex: 'F25022' },
+    { path: 'M13 1h10v10H13z', hex: '7FBA00' },
+    { path: 'M1 13h10v10H1z', hex: '00A4EF' },
+    { path: 'M13 13h10v10H13z', hex: 'FFB900' },
+  ],
   path: 'M1 1h10v10H1zM13 1h10v10H13zM1 13h10v10H1zM13 13h10v10H13z',
 }
 
 const windows: BrandIconData = {
   title: 'Windows',
+  hex: '0078D4',
   path: 'M0 3.449 9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.8',
 }
 
@@ -77,7 +93,7 @@ export const brands = {
   github: siGithub,
   google: siGoogle,
   html: siHtml5,
-  instagram: siInstagram,
+  instagram: { ...siInstagram, gradient: ['FEDA75', 'FA7E1E', 'D62976', '962FBF', '4F5BD5'] },
   javascript: siJavascript,
   kaliLinux: siKalilinux,
   linkedin,

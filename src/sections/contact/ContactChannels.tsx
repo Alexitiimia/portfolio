@@ -1,13 +1,16 @@
 import { BrandIcon } from '@/components/icons/BrandIcon'
 import { ContactLink } from '@/components/ui/ContactLink'
-import { contactChannels } from '@/content/contact'
+import { useContent, useUi } from '@/i18n/useI18n'
 import styles from './ContactChannels.module.css'
 
 /** "Prefere conversar direto?" e os botões dos canais de contato. Usado no portfólio e na página de orçamento. */
 export function ContactChannels() {
+  const { contactChannels } = useContent()
+  const ui = useUi()
+
   return (
     <>
-      <p className={styles.orChannel}>Prefere conversar direto? Escolha um canal:</p>
+      <p className={styles.orChannel}>{ui.contact.preferDirect}</p>
 
       <ul role="list" className={styles.channels}>
         {contactChannels.map((channel) => (

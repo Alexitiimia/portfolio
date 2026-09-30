@@ -7,9 +7,8 @@ import { ContactLink } from '@/components/ui/ContactLink'
 import { Cursor } from '@/components/ui/Cursor'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { LineIcon } from '@/components/ui/LineIcon'
-import { contactChannels } from '@/content/contact'
-import { SECTION_IDS, sections } from '@/content/sections'
-import { site } from '@/content/site'
+import { SECTION_IDS } from '@/content/sections'
+import { useContent, useUi } from '@/i18n/useI18n'
 import { Container } from './Container'
 import styles from './Footer.module.css'
 
@@ -18,6 +17,8 @@ const CURRENT_YEAR = new Date().getFullYear()
 export function Footer() {
   // O corvo do rodapé é o logo: pousa no espaço dele e sai de lá para passear.
   const perch = useRef<HTMLSpanElement>(null)
+  const { site, sections, contactChannels } = useContent()
+  const ui = useUi()
 
   return (
     <footer className={styles.foot}>
@@ -30,10 +31,10 @@ export function Footer() {
             <p className={styles.about}>{site.footer.about}</p>
           </div>
 
-          <nav aria-label="Rodapé">
+          <nav aria-label={ui.footer.navLabel}>
             <h3 className={styles.heading}>
               <LineIcon icon={Compass} size={14} />
-              Navegar
+              {ui.footer.navigate}
             </h3>
             <ul role="list" className={styles.list}>
               {SECTION_IDS.map((id) => (
@@ -48,7 +49,7 @@ export function Footer() {
           <div>
             <h3 className={styles.heading}>
               <LineIcon icon={ShieldCheck} size={14} />
-              Segurança
+              {ui.footer.security}
             </h3>
             <ul role="list" className={styles.list}>
               {site.footer.securityFacts.map((fact) => (
@@ -60,7 +61,7 @@ export function Footer() {
               <li className={styles.item}>
                 <LineIcon icon={CodeXml} className={styles.icon} />
                 <ExternalLink href={site.links.repository} showArrow>
-                  Código-fonte
+                  {ui.footer.sourceCode}
                 </ExternalLink>
               </li>
             </ul>
@@ -69,7 +70,7 @@ export function Footer() {
           <div>
             <h3 className={styles.heading}>
               <LineIcon icon={MessageCircle} size={14} />
-              Contato
+              {ui.footer.contact}
             </h3>
             <ul role="list" className={styles.list}>
               {contactChannels.map((channel) => (
@@ -84,7 +85,7 @@ export function Footer() {
 
         <div className={styles.term}>
           <span>
-            <b>©</b> {CURRENT_YEAR} {site.name} · {site.person.name} — todos os direitos reservados
+            <b>©</b> {CURRENT_YEAR} {site.name} · {site.person.name} — {ui.footer.rights}
           </span>
           <span>
             {site.footer.closing}

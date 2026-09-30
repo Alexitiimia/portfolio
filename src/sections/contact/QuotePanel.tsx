@@ -2,7 +2,8 @@ import { useId, useState, type ChangeEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { contactChannels, whatsappHref } from '@/content/contact'
-import { quoteCatalog, type QuoteCatalog, type QuoteItem } from '@/content/quote'
+import type { QuoteCatalog, QuoteItem } from '@/content/quote'
+import { useContent, useUi } from '@/i18n/useI18n'
 import {
   DETAILS_MAX_LENGTH,
   NAME_MAX_LENGTH,
@@ -13,18 +14,20 @@ import {
   missingFields,
   priceLabel,
   priceSummary,
+  type QuoteText,
 } from '@/lib/quote'
 import styles from './QuotePanel.module.css'
 
 interface ChoiceProps {
   readonly type: 'radio' | 'checkbox'
+  readonly text: QuoteText
   readonly name: string
   readonly item: QuoteItem
   readonly checked: boolean
   readonly onChange: () => void
 }
 
-function Choice({ type, name, item, checked, onChange }: ChoiceProps) {
+function Choice({ type, text, name, item, checked, onChange }: ChoiceProps) {
   return (
     <label className={styles.choice}>
       <input
@@ -39,7 +42,7 @@ function Choice({ type, name, item, checked, onChange }: ChoiceProps) {
         <span className={styles.choiceLabel}>{item.label}</span>
         <span className={styles.choiceDescription}>{item.description}</span>
       </span>
-      <span className={styles.price}>{priceLabel(item)}</span>
+      <span className={styles.price}>{priceLabel(item, text)}</span>
     </label>
   )
 }
@@ -51,8 +54,12 @@ const instagramProfile = contactChannels.find((channel) => channel.id === 'insta
  * resumo já escrito para o seu WhatsApp (ou Instagram). Nada passa por servidor nem é guardado
  * aqui: o "enviar" é só um link que abre a conversa com a mensagem pronta.
  */
-export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: QuoteCatalog }) {
+export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalog }) {
   const uid = useId()
+  const content = useContent()
+  const { quotePanel: ui } = useUi()
+  const catalog = custom ?? content.quoteCatalog
+  const { text } = ui
   const [projectId, setProjectId] = useState<string | null>(null)
   const [extraIds, setExtraIds] = useState<readonly string[]>([])
   const [deadlineId, setDeadlineId] = useState(catalog.deadlines[0]?.id ?? '')
@@ -64,12 +71,12 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
   const extras = catalog.extras.filter((item) => extraIds.includes(item.id))
   const deadlineLabel = catalog.deadlines.find((item) => item.id === deadlineId)?.label ?? ''
   const chosen = project === null ? extras : [project, ...extras]
-  const total = describePrice(priceSummary(chosen))
+  const total = describePrice(priceSummary(chosen), text)
 
   const input = { project, extras, deadlineLabel, name, details }
   const ready = isReady(input)
-  const missing = missingFields(input)
-  const message = buildMessage(input)
+  const missing = missingFields(input, text)
+  const message = buildMessage(input, text)
   const instagramUrl = instagramProfile === undefined ? null : instagramDmUrl(instagramProfile)
 
   const toggleExtra = (id: string) => {
@@ -100,12 +107,13 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
         noValidate
       >
         <fieldset className={styles.group}>
-          <legend className={styles.legend}>1. O que você precisa?</legend>
+          <legend className={styles.legend}>{ui.stepProject}</legend>
           <div className={styles.choices}>
             {catalog.projects.map((item) => (
               <Choice
                 key={item.id}
                 type="radio"
+                text={text}
                 name={`${uid}-projeto`}
                 item={item}
                 checked={projectId === item.id}
@@ -118,12 +126,13 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
         </fieldset>
 
         <fieldset className={styles.group}>
-          <legend className={styles.legend}>2. Extras (opcional)</legend>
+          <legend className={styles.legend}>{ui.stepExtras}</legend>
           <div className={styles.choices}>
             {catalog.extras.map((item) => (
               <Choice
                 key={item.id}
                 type="checkbox"
+                text={text}
                 name={`${uid}-extras`}
                 item={item}
                 checked={extraIds.includes(item.id)}
@@ -136,7 +145,7 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
         </fieldset>
 
         <fieldset className={styles.group}>
-          <legend className={styles.legend}>3. Prazo</legend>
+          <legend className={styles.legend}>{ui.stepDeadline}</legend>
           <div className={styles.pills}>
             {catalog.deadlines.map((item) => (
               <label key={item.id} className={styles.pill}>
@@ -158,7 +167,7 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
 
         <div className={styles.group}>
           <label htmlFor={`${uid}-nome`} className={styles.legend}>
-            4. Seu nome
+            {ui.stepName}
           </label>
           <input
             id={`${uid}-nome`}
@@ -166,7 +175,7 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
             value={name}
             maxLength={NAME_MAX_LENGTH}
             autoComplete="name"
-            placeholder="Como devo te chamar?"
+            placeholder={ui.namePlaceholder}
             onChange={(event: ChangeEvent<HTMLInputElement>) => {
               setName(event.target.value)
             }}
@@ -176,14 +185,14 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
 
         <div className={styles.group}>
           <label htmlFor={`${uid}-detalhes`} className={styles.legend}>
-            5. Conte sobre o projeto (opcional)
+            {ui.stepDetails}
           </label>
           <textarea
             id={`${uid}-detalhes`}
             value={details}
             maxLength={DETAILS_MAX_LENGTH}
             rows={4}
-            placeholder="O que ele faz, para quem é, exemplos que você gosta…"
+            placeholder={ui.detailsPlaceholder}
             onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
               setDetails(event.target.value)
             }}
@@ -196,36 +205,34 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
       </form>
 
       <div className={styles.summary}>
-        <h2 className={styles.summaryTitle}>Resumo</h2>
+        <h2 className={styles.summaryTitle}>{ui.summary}</h2>
 
         {chosen.length === 0 ? (
-          <p className={styles.empty}>Escolha o tipo de projeto para começar.</p>
+          <p className={styles.empty}>{ui.empty}</p>
         ) : (
           <ul role="list" className={styles.lines}>
             {chosen.map((item) => (
               <li key={item.id} className={styles.line}>
                 <span>{item.label}</span>
-                <span className={styles.linePrice}>{priceLabel(item)}</span>
+                <span className={styles.linePrice}>{priceLabel(item, text)}</span>
               </li>
             ))}
           </ul>
         )}
 
         <p className={styles.total} aria-live="polite">
-          <span className={styles.totalLabel}>Estimativa</span>
+          <span className={styles.totalLabel}>{ui.estimate}</span>
           <span className={styles.totalValue}>{total}</span>
         </p>
-        <p className={styles.note}>
-          O valor final é confirmado na conversa, depois de eu ler os detalhes.
-        </p>
+        <p className={styles.note}>{ui.note}</p>
 
         <div className={styles.actions}>
           {ready ? (
             <ButtonLink href={whatsappHref(message)} external arrow="↗">
-              enviar pelo WhatsApp
+              {ui.sendWhatsApp}
             </ButtonLink>
           ) : (
-            <Button disabled>enviar pelo WhatsApp</Button>
+            <Button disabled>{ui.sendWhatsApp}</Button>
           )}
           {ready && instagramUrl !== null ? (
             <ButtonLink
@@ -235,27 +242,20 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
               arrow="↗"
               onClick={copyMessage}
             >
-              enviar pelo Instagram
+              {ui.sendInstagram}
             </ButtonLink>
           ) : null}
         </div>
 
         <p className={styles.status} role="status">
-          {ready
-            ? copied
-              ? 'Mensagem copiada: cole na conversa do Instagram.'
-              : 'Tudo certo. Ao enviar, o resumo abre pronto na conversa.'
-            : `Falta informar: ${missing.join(' e ')}.`}
+          {ready ? (copied ? ui.copied : ui.ready) : ui.missing(missing.join(text.and))}
         </p>
 
         <details className={styles.preview}>
-          <summary>Ver a mensagem que será enviada</summary>
+          <summary>{ui.preview}</summary>
           <pre className={styles.message}>{message}</pre>
         </details>
-        <p className={styles.privacy}>
-          Este site não guarda nada do que você digita. Os dados só saem daqui quando você toca em
-          enviar.
-        </p>
+        <p className={styles.privacy}>{ui.privacy}</p>
       </div>
     </div>
   )

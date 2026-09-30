@@ -1,9 +1,12 @@
 import { Section } from '@/components/layout/Section'
 import { ButtonLink } from '@/components/ui/ButtonLink'
-import { projects, type Project } from '@/content/projects'
+import type { Project } from '@/content/projects'
+import { useContent, useUi } from '@/i18n/useI18n'
 import styles from './Projects.module.css'
 
 function ProjectItem({ project }: { readonly project: Project }) {
+  const ui = useUi()
+
   return (
     <article className={styles.project}>
       <div className={styles.since}>
@@ -30,7 +33,7 @@ function ProjectItem({ project }: { readonly project: Project }) {
       </div>
 
       <div className={styles.aside}>
-        <ul role="list" aria-label="Tecnologias" className={styles.stack}>
+        <ul role="list" aria-label={ui.projects.technologies} className={styles.stack}>
           {project.stack.map((item) => (
             <li key={item} className={styles.tag}>
               {item}
@@ -60,6 +63,9 @@ function ProjectItem({ project }: { readonly project: Project }) {
 }
 
 export function Projects() {
+  const { projects } = useContent()
+  const ui = useUi()
+
   return (
     <Section id="projetos">
       <ul role="list" className={styles.list}>
@@ -70,9 +76,9 @@ export function Projects() {
         ))}
         <li className={styles.item}>
           <div className={styles.cta}>
-            <p className={styles.ctaText}>O próximo projeto pode ser o seu.</p>
+            <p className={styles.ctaText}>{ui.projects.nextProject}</p>
             <ButtonLink href="#contato" arrow="→">
-              solicitar orçamento
+              {ui.projects.requestQuote}
             </ButtonLink>
           </div>
         </li>

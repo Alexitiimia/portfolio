@@ -1,8 +1,10 @@
 import { useEffect, useId, useState } from 'react'
 import { Brand } from '@/components/brand/Brand'
+import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
-import { SECTION_IDS, navItems, sectionNumber } from '@/content/sections'
+import { SECTION_IDS, sectionNumber } from '@/content/sections'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { useContent, useUi } from '@/i18n/useI18n'
 import { cx } from '@/lib/cx'
 import { Container } from './Container'
 import styles from './Header.module.css'
@@ -11,6 +13,8 @@ export function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
   const navId = useId()
   const activeId = useActiveSection(SECTION_IDS)
+  const { navItems } = useContent()
+  const ui = useUi()
 
   // Esc fecha o menu no celular.
   useEffect(() => {
@@ -34,7 +38,7 @@ export function Header() {
 
         <nav
           id={navId}
-          aria-label="Principal"
+          aria-label={ui.header.navLabel}
           className={cx(styles.nav, menuOpen && styles.navOpen)}
         >
           <ul role="list" className={styles.list}>
@@ -60,6 +64,7 @@ export function Header() {
         </nav>
 
         <div className={styles.actions}>
+          <LanguageSwitcher page="home" />
           <ThemeToggle />
           <button
             type="button"
@@ -70,7 +75,7 @@ export function Header() {
               setMenuOpen((open) => !open)
             }}
           >
-            menu
+            {ui.header.menu}
           </button>
         </div>
       </Container>

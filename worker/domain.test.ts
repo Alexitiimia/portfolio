@@ -326,7 +326,7 @@ describe('Worker: rotas', () => {
   })
 
   it('entrega os arquivos do site para as demais rotas', async () => {
-    const response = await worker.fetch(new Request(`${ORIGIN}/`), env())
+    const response = await worker.fetch(new Request(`${ORIGIN}/favicon.svg`), env())
 
     expect(await response.text()).toBe('site estático')
   })

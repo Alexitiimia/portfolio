@@ -5,6 +5,8 @@ import '@fontsource-variable/jetbrains-mono'
 import '@/styles/index.css'
 import { App } from '@/app/App'
 import { ErrorBoundary } from '@/app/ErrorBoundary'
+import { langFromPath } from '@/i18n/lang'
+import { LangProvider } from '@/i18n/LangProvider'
 
 const container = document.getElementById('root')
 if (container === null) {
@@ -13,8 +15,10 @@ if (container === null) {
 
 createRoot(container).render(
   <StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <LangProvider lang={langFromPath(window.location.pathname)}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </LangProvider>
   </StrictMode>,
 )

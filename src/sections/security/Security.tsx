@@ -1,6 +1,7 @@
 import { Section } from '@/components/layout/Section'
 import { IconBox } from '@/components/ui/IconBox'
-import { capabilities, methodologies, type Capability, type Methodology } from '@/content/security'
+import type { Capability, Methodology } from '@/content/security'
+import { useContent, useUi } from '@/i18n/useI18n'
 import { BoxDiagram } from './BoxDiagram'
 import styles from './Security.module.css'
 import { useBoxInteraction } from './useBoxInteraction'
@@ -19,13 +20,14 @@ function CapabilityItem({ capability }: { readonly capability: Capability }) {
 
 /** Um nível de conhecimento. O cartão inteiro reage ao mouse: a caixa acompanha o ponteiro. */
 function MethodCard({ method }: { readonly method: Methodology }) {
+  const ui = useUi()
   const { view, cardRef, svgRef, handlers } = useBoxInteraction()
 
   return (
     <li ref={cardRef} className={styles.method} {...handlers}>
       <BoxDiagram variant={method.id} view={view} svgRef={svgRef} />
       <div>
-        <p className={styles.knowledge}>Conhecimento do sistema: {method.knowledge}</p>
+        <p className={styles.knowledge}>{ui.security.knowledge(method.knowledge)}</p>
         <h3 className={styles.name}>{method.name}</h3>
         <p className={styles.translation}>{method.translation}</p>
       </div>
@@ -35,6 +37,8 @@ function MethodCard({ method }: { readonly method: Methodology }) {
 }
 
 export function Security() {
+  const { methodologies, capabilities } = useContent()
+
   return (
     <Section id="seguranca">
       <ul role="list" className={styles.methods}>

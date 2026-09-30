@@ -1,14 +1,11 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="{{lang}}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The Crow · Full stack e segurança da informação</title>
-    <meta
-      name="description"
-      content="Sites de vendas, gestão financeira, automações e análise de segurança. Front-end e back-end, com domínio grátis por 1 ano e suporte 24h."
-    />
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}" />
 
     <meta name="author" content="Endriky Axel" />
 
@@ -18,38 +15,31 @@
 
     <!--
       Prévia do link (WhatsApp, Instagram, Discord, X/Twitter, Telegram, LinkedIn, bio.site).
-      As URLs precisam ser ABSOLUTAS: ao trocar de domínio, troque "https://portfolio.axeldev.workers.dev" nos dois HTMLs
-      (index.html e orcamento/index.html). A imagem (1200x630) vem de brand/og/ (ver LEIAME.md).
+      As URLs precisam ser ABSOLUTAS: ao trocar de domínio, troque SITE_ORIGIN em src/i18n/lang.ts.
+      A imagem (1200x630) vem de brand/og/ (ver LEIAME.md).
+      Este arquivo é um MODELO: os marcadores entre chaves duplas (título, descrição, idioma...) são preenchidos, um
+      idioma por vez, por vite.i18n.ts com os textos de src/i18n/meta.ts. Sai um HTML por idioma
+      (dist/pt/, dist/en/, dist/es/).
     -->
-    <link rel="canonical" href="https://portfolio.axeldev.workers.dev/" />
+    <link rel="canonical" href="{{url}}" />
+    {{alternates}}
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content="{{ogLocale}}" />
+    {{ogLocaleAlternates}}
     <meta property="og:site_name" content="The Crow" />
-    <meta property="og:url" content="https://portfolio.axeldev.workers.dev/" />
-    <meta property="og:title" content="The Crow · Full stack e segurança da informação" />
-    <meta
-      property="og:description"
-      content="Sites de vendas, gestão financeira, automações e análise de segurança. Front-end e back-end, com domínio grátis por 1 ano e suporte 24h."
-    />
-    <meta property="og:image" content="https://portfolio.axeldev.workers.dev/og-image.png" />
+    <meta property="og:url" content="{{url}}" />
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:description" content="{{description}}" />
+    <meta property="og:image" content="{{image}}" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="The Crow: sistemas web seguros, do banco de dados à interface. Por Endriky Axel, full stack e segurança da informação. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
-    />
+    <meta property="og:image:alt" content="{{imageAlt}}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="The Crow · Full stack e segurança da informação" />
-    <meta
-      name="twitter:description"
-      content="Sites de vendas, gestão financeira, automações e análise de segurança. Front-end e back-end, com domínio grátis por 1 ano e suporte 24h."
-    />
-    <meta name="twitter:image" content="https://portfolio.axeldev.workers.dev/og-image.png" />
-    <meta
-      name="twitter:image:alt"
-      content="The Crow: sistemas web seguros, do banco de dados à interface. Por Endriky Axel, full stack e segurança da informação. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
-    />
+    <meta name="twitter:title" content="{{title}}" />
+    <meta name="twitter:description" content="{{description}}" />
+    <meta name="twitter:image" content="{{image}}" />
+    <meta name="twitter:image:alt" content="{{imageAlt}}" />
 
     <!-- Ícones da identidade (brand/favicons/5-silhueta-olho): corvo preto sobre quadrado arredondado (favicon.svg) e o .ico de reserva. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -63,8 +53,8 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <p>Este site precisa de JavaScript para funcionar.</p>
-      <p><a href="https://github.com/Alexitiimia">github.com/Alexitiimia</a></p>
+      <p>{{noscript}}</p>
+      <p><a href="{{noscriptHref}}">{{noscriptLink}}</a></p>
     </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>

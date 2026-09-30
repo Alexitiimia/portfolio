@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { sectionNumber, sections, type SectionId } from '@/content/sections'
+import { sectionNumber, type SectionId } from '@/content/sections'
+import { useContent } from '@/i18n/useI18n'
 import { Container } from './Container'
 import styles from './Section.module.css'
 
@@ -13,7 +14,7 @@ interface SectionProps {
  * então o menu, os títulos e as âncoras nunca ficam fora de sincronia.
  */
 export function Section({ id, children }: SectionProps) {
-  const { label, lead } = sections[id]
+  const { label, lead } = useContent().sections[id]
   const titleId = `${id}-titulo`
 
   return (

@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { site } from '@/content/site'
+import { renderPage } from '@/i18n/html'
+import { LANGS, SITE_ORIGIN, pagePath, type Lang, type PageId } from '@/i18n/lang'
 import { THEME_STORAGE_KEY } from '@/lib/theme'
 import { SELF_WORKER_NAME } from '../../worker/domain.ts'
 
@@ -28,10 +30,27 @@ const publicFiles = new Set(
   Object.keys(import.meta.glob('/public/*')).map((path) => path.replace('/public/', '')),
 )
 
-function read(path: string): string {
+/** Os dois HTML da raiz são modelos com {{marcadores}}: `read` os entrega já em português. */
+const TEMPLATE_PAGES: Readonly<Record<string, PageId>> = {
+  '/index.html': 'home',
+  '/orcamento/index.html': 'quote',
+}
+
+function readRaw(path: string): string {
   const content = files[path]
   if (content === undefined || content.length === 0) throw new Error(`${path} não foi lido`)
   return content
+}
+
+/** Página pronta, no idioma pedido (só vale para os dois modelos). */
+function readPage(path: string, lang: Lang): string {
+  const page = TEMPLATE_PAGES[path]
+  if (page === undefined) throw new Error(`${path} não é um modelo de página`)
+  return renderPage(readRaw(path), lang, page)
+}
+
+function read(path: string): string {
+  return TEMPLATE_PAGES[path] === undefined ? readRaw(path) : readPage(path, 'pt')
 }
 
 /** Primeiro grupo de uma regex que precisa existir: sem `undefined` escapando para o teste. */
@@ -160,8 +179,9 @@ describe('cabeçalhos de segurança (public/_headers)', () => {
 function resourceUrls(html: string): string[] {
   const tags = [...html.matchAll(/<(?:script|link)\b[^>]*>/gi)]
     .map((match) => match[0])
-    // O endereço canônico só diz qual é a URL "oficial" da página: o navegador não baixa nada dele.
-    .filter((tag) => !/\brel="canonical"/i.test(tag))
+    // O canônico e as versões em outros idiomas (hreflang) só dizem qual é a URL de cada página:
+    // o navegador não baixa nada deles.
+    .filter((tag) => !/\brel="(?:canonical|alternate)"/i.test(tag))
   return tags.flatMap((tag) => {
     const url = /\b(?:src|href)\s*=\s*"([^"]+)"/i.exec(tag)?.[1]
     return url === undefined ? [] : [url]
@@ -279,11 +299,11 @@ function wranglerConfig(): WranglerConfig {
 }
 
 describe('Worker da verificação de domínio', () => {
-  it('só as rotas /api/* passam pelo Worker antes dos arquivos estáticos', () => {
+  it('só /api/* e as entradas sem idioma passam pelo Worker antes dos arquivos estáticos', () => {
     const { assets } = wranglerConfig()
 
     // Assim o site inteiro continua sendo servido direto, com os cabeçalhos do _headers.
-    expect(assets.run_worker_first).toEqual(['/api/*'])
+    expect(assets.run_worker_first).toEqual(['/api/*', '/', '/orcamento', '/orcamento/'])
     expect(assets.binding).toBe('ASSETS')
   })
 
@@ -449,18 +469,25 @@ const previewImages = import.meta.glob<string>('/public/og-*.png', {
   eager: true,
 })
 
-const previewPages = [
-  { name: 'index.html', file: '/index.html', path: '/', image: 'og-image.png' },
+const previewPages = LANGS.flatMap((lang) => [
   {
-    name: 'orcamento/index.html',
+    name: `${lang}/home`,
+    file: '/index.html',
+    lang,
+    path: pagePath(lang, 'home'),
+    image: 'og-image.png',
+  },
+  {
+    name: `${lang}/quote`,
     file: '/orcamento/index.html',
-    path: '/orcamento/',
+    lang,
+    path: pagePath(lang, 'quote'),
     image: 'og-orcamento.png',
   },
-] as const
+])
 
-describe.each(previewPages)('prévia do link: $name', ({ file, path, image }) => {
-  const html = read(file)
+describe.each(previewPages)('prévia do link: $name', ({ file, lang, path, image }) => {
+  const html = readPage(file, lang)
   const url = new URL(metaContent(html, 'og:url'))
 
   it('tem endereço absoluto em HTTPS, igual ao canônico e ao caminho da página', () => {
@@ -501,12 +528,12 @@ describe.each(previewPages)('prévia do link: $name', ({ file, path, image }) =>
 })
 
 describe('prévia do link: o site inteiro', () => {
-  it('as duas páginas usam o mesmo domínio (ao trocar de domínio, troque nas duas)', () => {
+  it('todas as páginas usam o mesmo domínio (ao trocar de domínio, troque SITE_ORIGIN)', () => {
     const origins = previewPages.map(
-      ({ file }) => new URL(metaContent(read(file), 'og:url')).origin,
+      ({ file, lang }) => new URL(metaContent(readPage(file, lang), 'og:url')).origin,
     )
 
-    expect(new Set(origins).size).toBe(1)
+    expect([...new Set(origins)]).toEqual([SITE_ORIGIN])
   })
 
   it('o robots.txt deixa os robôs de prévia entrarem', () => {

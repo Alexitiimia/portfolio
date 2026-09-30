@@ -1,14 +1,11 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="{{lang}}">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Orçamento · The Crow</title>
-    <meta
-      name="description"
-      content="Monte o orçamento do seu site, loja ou sistema, veja a estimativa e envie o resumo pronto para o WhatsApp. Sem cadastro e sem pagar nada agora."
-    />
+    <title>{{title}}</title>
+    <meta name="description" content="{{description}}" />
 
     <meta name="author" content="Endriky Axel" />
 
@@ -18,38 +15,31 @@
 
     <!--
       Prévia do link (WhatsApp, Instagram, Discord, X/Twitter, Telegram, LinkedIn, bio.site).
-      As URLs precisam ser ABSOLUTAS: ao trocar de domínio, troque "https://portfolio.axeldev.workers.dev" nos dois HTMLs
-      (index.html e orcamento/index.html). A imagem (1200x630) vem de brand/og/ (ver LEIAME.md).
+      As URLs precisam ser ABSOLUTAS: ao trocar de domínio, troque SITE_ORIGIN em src/i18n/lang.ts.
+      A imagem (1200x630) vem de brand/og/ (ver LEIAME.md).
+      Este arquivo é um MODELO: os marcadores entre chaves duplas (título, descrição, idioma...) são preenchidos, um
+      idioma por vez, por vite.i18n.ts com os textos de src/i18n/meta.ts. Sai um HTML por idioma
+      (dist/pt/, dist/en/, dist/es/).
     -->
-    <link rel="canonical" href="https://portfolio.axeldev.workers.dev/orcamento/" />
+    <link rel="canonical" href="{{url}}" />
+    {{alternates}}
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:locale" content="{{ogLocale}}" />
+    {{ogLocaleAlternates}}
     <meta property="og:site_name" content="The Crow" />
-    <meta property="og:url" content="https://portfolio.axeldev.workers.dev/orcamento/" />
-    <meta property="og:title" content="Orçamento · The Crow" />
-    <meta
-      property="og:description"
-      content="Monte o orçamento do seu site, loja ou sistema, veja a estimativa e envie o resumo pronto para o WhatsApp. Sem cadastro e sem pagar nada agora."
-    />
-    <meta property="og:image" content="https://portfolio.axeldev.workers.dev/og-orcamento.png" />
+    <meta property="og:url" content="{{url}}" />
+    <meta property="og:title" content="{{title}}" />
+    <meta property="og:description" content="{{description}}" />
+    <meta property="og:image" content="{{image}}" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta
-      property="og:image:alt"
-      content="Orçamento The Crow: monte o orçamento do seu projeto, sem cadastro. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
-    />
+    <meta property="og:image:alt" content="{{imageAlt}}" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Orçamento · The Crow" />
-    <meta
-      name="twitter:description"
-      content="Monte o orçamento do seu site, loja ou sistema, veja a estimativa e envie o resumo pronto para o WhatsApp. Sem cadastro e sem pagar nada agora."
-    />
-    <meta name="twitter:image" content="https://portfolio.axeldev.workers.dev/og-orcamento.png" />
-    <meta
-      name="twitter:image:alt"
-      content="Orçamento The Crow: monte o orçamento do seu projeto, sem cadastro. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
-    />
+    <meta name="twitter:title" content="{{title}}" />
+    <meta name="twitter:description" content="{{description}}" />
+    <meta name="twitter:image" content="{{image}}" />
+    <meta name="twitter:image:alt" content="{{imageAlt}}" />
 
     <!-- Ícones da identidade (brand/favicons/5-silhueta-olho): corvo preto sobre quadrado arredondado (favicon.svg) e o .ico de reserva. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
@@ -63,8 +53,8 @@
   <body>
     <div id="root"></div>
     <noscript>
-      <p>Esta página precisa de JavaScript para funcionar.</p>
-      <p><a href="/">Voltar ao portfólio</a></p>
+      <p>{{noscript}}</p>
+      <p><a href="{{noscriptHref}}">{{noscriptLink}}</a></p>
     </noscript>
     <script type="module" src="/src/orcamento.tsx"></script>
   </body>

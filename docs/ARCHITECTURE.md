@@ -5,8 +5,9 @@
 ```
 brand/            Kit original da identidade (a marca hoje é "The Crow"). Fonte da verdade; não entra no build.
 docs/             Documentação.
-orcamento/        HTML da segunda página do site (/orcamento/). Entrada: src/orcamento.tsx. Listada em vite.config.ts.
-worker/           Único código de servidor: /api/dominio (verificação de nomes livres). Ver docs/DEPLOY.md.
+orcamento/        Modelo HTML da segunda página (orçamento). Entrada: src/orcamento.tsx. Listada em vite.config.ts.
+vite.i18n.ts      Plugin do Vite: gera um HTML por idioma a partir dos dois modelos (index.html e orcamento/index.html).
+worker/           Único código de servidor: /api/dominio (verificação de nomes livres) e o redirecionamento de "/" para /pt/, /en/ ou /es/. Ver docs/DEPLOY.md.
 public/           Copiado como está para a raiz do site (sem hash): _headers, 404, favicons, robots.
 src/
   app/            Composição das páginas (App = portfólio, QuotePage = /orcamento/) e ErrorBoundary.
@@ -16,8 +17,10 @@ src/
     icons/        Logos de marcas de tecnologia (brands.ts) e o componente BrandIcon.
     layout/       Header, Footer, StatusBar, Section, Container, SkipLink.
     ui/           Peças reutilizáveis: botões, links, ícones, cursor, alternador de tema.
-  content/        TODO o texto do site, tipado. É aqui que se edita.
+  content/        TODO o texto do site, tipado. É aqui que se edita. O português fica nos próprios arquivos;
+                  as traduções (en, es) ficam em content/translations/, indexadas pelo id de cada item.
   hooks/          useTheme, useActiveSection.
+  i18n/           Idiomas (pt, en, es): rotas (lang.ts), textos da interface (ui.ts), títulos/prévias do <head> (meta.ts), contexto e hooks (useI18n.ts).
   lib/            Funções puras: tema, URLs seguras, cx.
   sections/       Uma pasta por seção da página (hero, projects, tools, services, security, offers, contact).
   styles/         tokens.css (cores, fontes, espaços), reset.css, base.css.
@@ -26,6 +29,22 @@ src/
 
 Regra de dependência: `sections` → `components` → `lib`/`content`. `content` e `lib` não importam
 componentes de tela (exceto o registro de logos, `components/icons/brands.ts`).
+
+## Idiomas (/pt/, /en/, /es/)
+
+Cada idioma é uma página estática própria: `/pt/`, `/en/`, `/es/` e o orçamento em
+`/pt/orcamento/`, `/en/quote/`, `/es/presupuesto/` (nomes em `src/i18n/lang.ts`). O Vite gera um HTML
+por idioma (título, descrição, prévia de link e `hreflang` no idioma certo) e o React lê o idioma da
+URL. A raiz `/` (e o antigo `/orcamento/`) passa pelo Worker, que encaminha para o idioma do
+navegador (`Accept-Language`). O seletor fica no cabeçalho, ao lado do botão de tema.
+
+- **Mudar um texto em português:** edite o arquivo de `src/content/` (ou `src/i18n/ui.ts`, para botões
+  e avisos). Depois ajuste a mesma chave em `content/translations/en.ts` e `es.ts`.
+- **Acrescentar um item** (projeto, serviço, oferta...): coloque a tradução com o mesmo `id` em
+  `en.ts` e `es.ts`. Se esquecer, `src/i18n/i18n.test.ts` falha.
+- **Título da aba e prévia do link:** `src/i18n/meta.ts`.
+- Não traduzidos de propósito: nomes de marcas e projetos, `public/404.html` e a imagem da prévia
+  (`og-image.png`, igual nos três idiomas).
 
 ## Convenções
 

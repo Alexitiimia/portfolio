@@ -1,6 +1,8 @@
 .dialog {
   width: min(36rem, calc(100vw - 2rem));
   max-height: calc(100dvh - 2rem);
+  /* O reset zera a margem; sem "auto" o <dialog> modal gruda no canto em vez de centralizar. */
+  margin: auto;
   padding: 0;
   overflow: auto;
   border: 1px solid var(--color-line-strong);

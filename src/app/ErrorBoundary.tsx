@@ -2,6 +2,9 @@ import { Component, type ErrorInfo, type ReactNode } from 'react'
 import { CorvoMascot } from '@/components/brand/CorvoMascot'
 import { ExternalLink } from '@/components/ui/ExternalLink'
 import { site } from '@/content/site'
+import type { Lang } from '@/i18n/lang'
+import { LangContext } from '@/i18n/langContext'
+import { ui } from '@/i18n/ui'
 import styles from './ErrorBoundary.module.css'
 
 interface ErrorBoundaryProps {
@@ -17,6 +20,9 @@ interface ErrorBoundaryState {
  * mensagem simples em vez de uma tela em branco.
  */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  static override contextType = LangContext
+  declare context: Lang
+
   override state: ErrorBoundaryState = { hasError: false }
 
   static getDerivedStateFromError(): ErrorBoundaryState {
@@ -30,13 +36,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   override render(): ReactNode {
     if (!this.state.hasError) return this.props.children
 
+    const { error } = ui[this.context]
+
     return (
       <main className={styles.fallback}>
-        <CorvoMascot variant="falha" label="Corvo com falha: algo quebrou" />
-        <h1 className={styles.title}>Algo deu errado por aqui.</h1>
-        <p className={styles.text}>
-          Não foi possível exibir esta página. Recarregue o navegador ou acesse o perfil no GitHub.
-        </p>
+        <CorvoMascot variant="falha" label={error.mascot} />
+        <h1 className={styles.title}>{error.title}</h1>
+        <p className={styles.text}>{error.text}</p>
         <p>
           <ExternalLink href={site.links.github} showArrow>
             github.com/Alexitiimia

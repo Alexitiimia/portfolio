@@ -1,22 +1,24 @@
 import { Section } from '@/components/layout/Section'
 import { ButtonLink } from '@/components/ui/ButtonLink'
+import { pagePath } from '@/i18n/lang'
+import { useLang, useUi } from '@/i18n/useI18n'
 import { ContactChannels } from './ContactChannels'
 import styles from './Contact.module.css'
 
 export function Contact() {
+  const lang = useLang()
+  const ui = useUi()
+
   return (
     <Section id="contato">
-      <p className={styles.statement}>Vamos tirar o seu projeto do papel.</p>
+      <p className={styles.statement}>{ui.contact.statement}</p>
 
       <div className={styles.quote}>
-        <h3 className={styles.quoteTitle}>Monte o orçamento do seu projeto</h3>
-        <p className={styles.quoteText}>
-          Escolha o que precisa, veja a estimativa e envie o resumo pronto para o meu WhatsApp. Sem
-          cadastro e sem pagar nada agora.
-        </p>
+        <h3 className={styles.quoteTitle}>{ui.contact.quoteTitle}</h3>
+        <p className={styles.quoteText}>{ui.contact.quoteText}</p>
         <div className={styles.quoteAction}>
-          <ButtonLink href="/orcamento/" arrow="→">
-            montar orçamento
+          <ButtonLink href={pagePath(lang, 'quote')} arrow="→">
+            {ui.contact.quoteButton}
           </ButtonLink>
         </div>
       </div>

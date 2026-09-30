@@ -4,13 +4,14 @@
   "name": "portfolio",
   "compatibility_date": "2026-09-29",
   // O site é estático (arquivos gerados em ./dist). O único código de servidor é worker/index.ts,
-  // que atende /api/dominio: a verificação de nomes de endereço livres.
+  // que atende /api/dominio (verificação de nomes de endereço livres) e escolhe o idioma em "/".
   "main": "worker/index.ts",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    // Só /api/* passa pelo Worker primeiro; todo o resto continua sendo servido direto da Cloudflare.
-    "run_worker_first": ["/api/*"],
+    // Passam pelo Worker primeiro: /api/* e as entradas sem idioma ("/" e o antigo "/orcamento/"),
+    // que ele encaminha para /pt/, /en/ ou /es/. Todo o resto é servido direto pela Cloudflare.
+    "run_worker_first": ["/api/*", "/", "/orcamento", "/orcamento/"],
     // Caminho inexistente devolve public/404.html (com status 404) em vez de cair no index.html.
     "not_found_handling": "404-page"
   },

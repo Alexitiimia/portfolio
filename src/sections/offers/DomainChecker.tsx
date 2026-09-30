@@ -4,6 +4,9 @@ import { Button } from '@/components/ui/Button'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { LineIcon } from '@/components/ui/LineIcon'
 import { whatsappHref } from '@/content/contact'
+import { pagePath } from '@/i18n/lang'
+import { useLang, useUi } from '@/i18n/useI18n'
+import type { Ui } from '@/i18n/ui'
 import { cx } from '@/lib/cx'
 import {
   DOMAIN_SUFFIX,
@@ -12,6 +15,7 @@ import {
   fullAddress,
   validateName,
   type DomainCheck,
+  type NameProblem,
 } from '@/lib/domainName'
 import { AvailableBadge } from './AvailableBadge'
 import styles from './DomainChecker.module.css'
@@ -25,54 +29,44 @@ interface Message {
   readonly offer?: string
 }
 
-function describeResult(result: DomainCheck): Message {
+function describeResult(result: DomainCheck, ui: Ui['domain']): Message {
   switch (result.status) {
     case 'available':
       return {
         tone: 'good',
         icon: CircleCheck,
-        text: `${fullAddress(result.name)} está livre agora. Ele só fica seu depois de fechar comigo, então fale antes que alguém escolha o mesmo.`,
+        text: ui.available(fullAddress(result.name)),
         offer: fullAddress(result.name),
       }
     case 'taken':
-      return {
-        tone: 'bad',
-        icon: CircleX,
-        text: `${fullAddress(result.name)} já está em uso. Tente outro nome.`,
-      }
+      return { tone: 'bad', icon: CircleX, text: ui.taken(fullAddress(result.name)) }
     case 'reserved':
-      return {
-        tone: 'bad',
-        icon: CircleX,
-        text: `"${result.name}" é um nome reservado. Tente outro.`,
-      }
+      return { tone: 'bad', icon: CircleX, text: ui.reserved(result.name) }
     case 'invalid':
       return { tone: 'warn', icon: TriangleAlert, text: result.message }
     case 'rate_limited':
-      return {
-        tone: 'warn',
-        icon: TriangleAlert,
-        text: 'Muitas consultas seguidas. Espere um minuto e tente de novo.',
-      }
+      return { tone: 'warn', icon: TriangleAlert, text: ui.rateLimited }
     case 'unavailable':
-      return {
-        tone: 'warn',
-        icon: TriangleAlert,
-        text: 'Não consegui verificar agora. Tente de novo em instantes ou fale comigo pelo WhatsApp.',
-      }
+      return { tone: 'warn', icon: TriangleAlert, text: ui.unavailable }
   }
 }
 
-function describeState(state: CheckState, formatProblem: string | null): Message | null {
-  if (formatProblem !== null) return { tone: 'warn', icon: TriangleAlert, text: formatProblem }
-  if (state.phase === 'checking') {
+function describeState(
+  state: CheckState,
+  formatProblem: NameProblem | null,
+  ui: Ui['domain'],
+): Message | null {
+  if (formatProblem !== null) {
     return {
-      tone: 'busy',
-      icon: LoaderCircle,
-      text: `Verificando ${fullAddress(state.name)}…`,
+      tone: 'warn',
+      icon: TriangleAlert,
+      text: ui.problems[formatProblem](NAME_MIN_LENGTH, NAME_MAX_LENGTH),
     }
   }
-  if (state.phase === 'done') return describeResult(state.result)
+  if (state.phase === 'checking') {
+    return { tone: 'busy', icon: LoaderCircle, text: ui.checking(fullAddress(state.name)) }
+  }
+  if (state.phase === 'done') return describeResult(state.result, ui)
   return null
 }
 
@@ -82,9 +76,11 @@ function describeState(state: CheckState, formatProblem: string | null): Message
  */
 export function DomainChecker() {
   const inputId = useId()
+  const lang = useLang()
+  const { domain: ui } = useUi()
   const hintId = `${inputId}-dica`
   const [value, setValue] = useState('')
-  const [formatProblem, setFormatProblem] = useState<string | null>(null)
+  const [formatProblem, setFormatProblem] = useState<NameProblem | null>(null)
   const { state, check, reset } = useDomainCheck()
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -99,20 +95,20 @@ export function DomainChecker() {
     const validation = validateName(value)
     if (!validation.ok) {
       reset()
-      setFormatProblem(validation.message)
+      setFormatProblem(validation.problem)
       return
     }
     setFormatProblem(null)
     void check(validation.name)
   }
 
-  const message = describeState(state, formatProblem)
+  const message = describeState(state, formatProblem, ui)
   const checking = state.phase === 'checking'
 
   return (
     <form className={styles.panel} onSubmit={handleSubmit} noValidate>
       <label htmlFor={inputId} className={styles.label}>
-        Nome desejado
+        {ui.fieldLabel}
       </label>
       <div className={styles.row}>
         <div className={styles.field}>
@@ -123,7 +119,7 @@ export function DomainChecker() {
             value={value}
             onChange={handleChange}
             maxLength={NAME_MAX_LENGTH}
-            placeholder="minha-loja"
+            placeholder={ui.placeholder}
             autoComplete="off"
             autoCapitalize="none"
             autoCorrect="off"
@@ -136,12 +132,11 @@ export function DomainChecker() {
             .{DOMAIN_SUFFIX}
           </span>
         </div>
-        <Button disabled={checking}>{checking ? 'verificando…' : 'verificar'}</Button>
+        <Button disabled={checking}>{checking ? ui.verifying : ui.verify}</Button>
       </div>
 
       <p id={hintId} className={styles.hint}>
-        De {String(NAME_MIN_LENGTH)} a {String(NAME_MAX_LENGTH)} caracteres: letras sem acento,
-        números e hífen.
+        {ui.hint(NAME_MIN_LENGTH, NAME_MAX_LENGTH)}
       </p>
 
       <div role="status" aria-live="polite" className={styles.result}>
@@ -160,18 +155,16 @@ export function DomainChecker() {
               <p>{message.text}</p>
               {message.offer === undefined ? null : (
                 <div className={styles.offer}>
-                  <ButtonLink href="/orcamento/" arrow="→">
-                    montar orçamento
+                  <ButtonLink href={pagePath(lang, 'quote')} arrow="→">
+                    {ui.buildQuote}
                   </ButtonLink>
                   <ButtonLink
-                    href={whatsappHref(
-                      `Olá! Vi seu portfólio e quero o endereço ${message.offer} para o meu site.`,
-                    )}
+                    href={whatsappHref(ui.whatsappMessage(message.offer))}
                     external
                     variant="secondary"
                     arrow="↗"
                   >
-                    falar no WhatsApp
+                    {ui.talkOnWhatsApp}
                   </ButtonLink>
                 </div>
               )}

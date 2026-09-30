@@ -1,5 +1,6 @@
 import type { MouseEventHandler, ReactNode } from 'react'
 import type { HttpsUrl } from '@/lib/url'
+import { useUi } from '@/i18n/useI18n'
 import { VisuallyHidden } from './VisuallyHidden'
 import styles from './ExternalLink.module.css'
 
@@ -23,6 +24,8 @@ export function ExternalLink({
   onClick,
   showArrow = false,
 }: ExternalLinkProps) {
+  const ui = useUi()
+
   return (
     <a
       href={href}
@@ -38,7 +41,7 @@ export function ExternalLink({
         </span>
       ) : null}
       {/* O espaço fica fora do span: dentro dele seria aparado e o nome saía "GitHub(abre...)". */}{' '}
-      <VisuallyHidden>(abre em nova aba)</VisuallyHidden>
+      <VisuallyHidden>{ui.externalLinkHint}</VisuallyHidden>
     </a>
   )
 }

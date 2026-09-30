@@ -1,5 +1,6 @@
 import { useId, type RefObject } from 'react'
 import type { MethodologyId } from '@/content/security'
+import { useUi } from '@/i18n/useI18n'
 import { cx } from '@/lib/cx'
 import { boxGeometry, TILE_SIZE, type BoxView } from './boxGeometry'
 import styles from './BoxDiagram.module.css'
@@ -32,6 +33,7 @@ interface BoxDiagramProps {
  */
 export function BoxDiagram({ variant, view, svgRef }: BoxDiagramProps) {
   const uid = useId()
+  const ui = useUi()
   const silhouetteClip = `${uid}-caixa`
   const revealClip = `${uid}-lanterna`
 
@@ -145,7 +147,7 @@ export function BoxDiagram({ variant, view, svgRef }: BoxDiagramProps) {
 
       <g>
         <text className={styles.readout} x="8" y="14">
-          VISÃO {visible * 10}%
+          {ui.security.vision(visible * 10)}
         </text>
         {CELLS.map((cell) => (
           <rect

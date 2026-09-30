@@ -1,5 +1,5 @@
 import type { MouseEventHandler, RefObject } from 'react'
-import { site } from '@/content/site'
+import { useContent, useUi } from '@/i18n/useI18n'
 import { cx } from '@/lib/cx'
 import { CorvoIcon } from './CorvoIcon'
 import styles from './Brand.module.css'
@@ -22,11 +22,14 @@ interface BrandProps {
 
 /** Logo completo: corvo, nome e assinatura. Sempre leva ao topo da página. */
 export function Brand({ href, onClick, slotRef, iconNavigates = true }: BrandProps) {
+  const { site } = useContent()
+  const ui = useUi()
+
   return (
     <a
       href={href}
       className={styles.brand}
-      aria-label={`${site.name}, início da página`}
+      aria-label={ui.brandLabel(site.name)}
       onClick={onClick}
     >
       {slotRef === undefined ? (

@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from 'react'
 import { X } from 'lucide-react'
 import { IconButton } from '@/components/ui/IconButton'
 import { LineIcon } from '@/components/ui/LineIcon'
+import { useUi } from '@/i18n/useI18n'
 import { DOMAIN_SUFFIX } from '@/lib/domainName'
 import { DomainChecker } from './DomainChecker'
 import styles from './DomainDialog.module.css'
@@ -20,6 +21,7 @@ interface DomainDialogProps {
 export function DomainDialog({ open, onClose }: DomainDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null)
   const titleId = useId()
+  const { domain } = useUi()
 
   useEffect(() => {
     const dialog = dialogRef.current
@@ -50,15 +52,18 @@ export function DomainDialog({ open, onClose }: DomainDialogProps) {
         <div className={styles.body}>
           <div className={styles.head}>
             <h2 id={titleId} className={styles.title}>
-              Confira se o nome do seu site está livre
+              {domain.dialogTitle}
             </h2>
-            <IconButton label="Fechar" onClick={onClose}>
+            <IconButton label={domain.close} onClick={onClose}>
               <LineIcon icon={X} size={18} />
             </IconButton>
           </div>
           <p className={styles.lead}>
-            O endereço grátis do primeiro ano tem o formato <b>seunome.{DOMAIN_SUFFIX}</b>. A
-            consulta é feita na hora, direto na conta da Cloudflare.
+            {domain.leadBefore}
+            <b>
+              {domain.nameExample}.{DOMAIN_SUFFIX}
+            </b>
+            {domain.leadAfter}
           </p>
           <DomainChecker />
         </div>

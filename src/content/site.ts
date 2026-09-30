@@ -11,7 +11,7 @@ export interface SecurityFact {
   readonly icon: LucideIcon
 }
 
-interface SiteConfig {
+export interface SiteConfig {
   /** Nome da marca, exibido ao lado do corvo. */
   readonly name: string
   /** Assinatura curta abaixo do nome. */

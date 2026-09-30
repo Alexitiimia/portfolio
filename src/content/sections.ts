@@ -26,7 +26,7 @@ export type SectionId = (typeof SECTION_IDS)[number]
 /** A seção que o botão de destaque do menu ("contato --24h →") leva a visitar. */
 export const CTA_SECTION_ID: SectionId = 'contato'
 
-interface SectionMeta {
+export interface SectionMeta {
   /** Título da seção. */
   readonly label: string
   /** Texto no menu, em minúsculas, no estilo de terminal. */
@@ -76,18 +76,23 @@ export const sections: Readonly<Record<SectionId, SectionMeta>> = {
   },
 }
 
-interface NavItem {
+export interface NavItem {
   readonly id: SectionId
   readonly label: string
   /** Item de destaque do menu (borda e seta). */
   readonly isCta: boolean
 }
 
-export const navItems: readonly NavItem[] = SECTION_IDS.map((id) => ({
-  id,
-  label: sections[id].navLabel,
-  isCta: id === CTA_SECTION_ID,
-}))
+/** Itens do menu, a partir dos textos de um idioma (`sections` é o português). */
+export function buildNavItems(meta: Readonly<Record<SectionId, SectionMeta>>): readonly NavItem[] {
+  return SECTION_IDS.map((id) => ({
+    id,
+    label: meta[id].navLabel,
+    isCta: id === CTA_SECTION_ID,
+  }))
+}
+
+export const navItems: readonly NavItem[] = buildNavItems(sections)
 
 /** Número exibido ao lado do título da seção, sempre derivado da ordem em `SECTION_IDS`. */
 export function sectionNumber(id: SectionId): string {

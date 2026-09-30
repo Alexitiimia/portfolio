@@ -11,6 +11,13 @@
   width: 4.5rem;
 }
 
+/* Celular estreito: logo um pouco menor, para o nome e a assinatura não quebrarem de linha. */
+@media (max-width: 30rem) {
+  .icon {
+    width: 3.5rem;
+  }
+}
+
 /* Espaço vazio com a proporção do sprite: o corvo do rodapé pousa aqui. */
 .slot {
   aspect-ratio: 176 / 151;

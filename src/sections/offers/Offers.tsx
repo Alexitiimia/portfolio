@@ -2,11 +2,12 @@ import { useState } from 'react'
 import { Section } from '@/components/layout/Section'
 import { Button } from '@/components/ui/Button'
 import { IconBox } from '@/components/ui/IconBox'
-import { offers } from '@/content/offers'
+import { useContent } from '@/i18n/useI18n'
 import { DomainDialog } from './DomainDialog'
 import styles from './Offers.module.css'
 
 export function Offers() {
+  const { offers } = useContent()
   const [checkingDomain, setCheckingDomain] = useState(false)
 
   return (

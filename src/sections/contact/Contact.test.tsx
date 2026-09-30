@@ -8,7 +8,7 @@ describe('Contato (portfólio)', () => {
     render(<Contact />)
 
     const link = screen.getByRole('link', { name: /montar orçamento/ })
-    expect(link).toHaveAttribute('href', '/orcamento/')
+    expect(link).toHaveAttribute('href', '/pt/orcamento/')
     // É uma página do próprio site: abre na mesma aba, sem "nova aba".
     expect(link).not.toHaveAttribute('target')
     expect(screen.queryByRole('radio')).toBeNull()

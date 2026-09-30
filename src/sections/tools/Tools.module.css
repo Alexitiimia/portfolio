@@ -26,6 +26,9 @@
 
 .tile {
   display: grid;
+  height: 100%;
+  color: inherit;
+  text-decoration: none;
   align-content: start;
   gap: var(--space-4);
   min-height: 7rem;
@@ -38,7 +41,8 @@
     border-color var(--duration-fast) ease;
 }
 
-.tile:hover {
+.tile:hover,
+.tile:focus-visible {
   border-color: var(--color-line-strong);
   background: var(--color-surface-raised);
 }

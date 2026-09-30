@@ -1,7 +1,8 @@
 import { BrandIcon } from '@/components/icons/BrandIcon'
 import { Section } from '@/components/layout/Section'
 import { IconBox } from '@/components/ui/IconBox'
-import { services, type Service } from '@/content/services'
+import type { Service } from '@/content/services'
+import { useContent } from '@/i18n/useI18n'
 import styles from './Services.module.css'
 
 function ServiceItem({ service }: { readonly service: Service }) {
@@ -26,6 +27,8 @@ function ServiceItem({ service }: { readonly service: Service }) {
 }
 
 export function Services() {
+  const { services } = useContent()
+
   return (
     <Section id="servicos">
       <ul role="list" className={styles.grid}>

@@ -125,6 +125,8 @@ describe('ferramentas', () => {
         expectCleanText(tool.name, tool.icon.title)
         if (tool.note !== undefined) expectCleanText(tool.note)
         expect(tool.icon.path, `${tool.id}: desenho do logo inválido`).toMatch(SVG_PATH)
+        expect(isHttpsUrl(tool.href), `${tool.id}: ${tool.href}`).toBe(true)
+        expect(tool.icon.hex, `${tool.id}: cor da marca inválida`).toMatch(/^[0-9A-F]{6}$/i)
       }
     }
   })

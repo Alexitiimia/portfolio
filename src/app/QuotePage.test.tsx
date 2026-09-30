@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { contactChannels } from '@/content/contact'
 import { site } from '@/content/site'
 import { describeViolations, findA11yViolations } from '@/test/a11y'
+import { LangProvider } from '@/i18n/LangProvider'
 import { QuotePage } from './QuotePage'
 
 describe('QuotePage: corvo do logo', () => {
@@ -43,9 +44,9 @@ describe('QuotePage: estrutura', () => {
   it('o logo e o "voltar" levam ao portfólio (página inicial)', () => {
     render(<QuotePage />)
 
-    expect(screen.getByRole('link', { name: /início da página/ })).toHaveAttribute('href', '/')
+    expect(screen.getByRole('link', { name: /início da página/ })).toHaveAttribute('href', '/pt/')
     for (const link of screen.getAllByRole('link', { name: /voltar ao portfólio/ })) {
-      expect(link).toHaveAttribute('href', '/')
+      expect(link).toHaveAttribute('href', '/pt/')
     }
   })
 
@@ -107,5 +108,55 @@ describe('QuotePage: conteúdo', () => {
     const violations = await findA11yViolations(document.documentElement)
 
     expect(violations, describeViolations(violations)).toEqual([])
+  })
+})
+
+describe('QuotePage: outros idiomas', () => {
+  it('em inglês, o título, o logo e o "voltar" estão em inglês e levam a /en/', () => {
+    render(
+      <LangProvider lang="en">
+        <QuotePage />
+      </LangProvider>,
+    )
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Build a quote for your project',
+    )
+    expect(screen.getByRole('link', { name: /top of the page/ })).toHaveAttribute('href', '/en/')
+    for (const link of screen.getAllByRole('link', { name: /back to the portfolio/ })) {
+      expect(link).toHaveAttribute('href', '/en/')
+    }
+    expect(screen.getByRole('radio', { name: /Business website/ })).toBeInTheDocument()
+  })
+
+  it('em espanhol, o painel e o resumo estão em espanhol', () => {
+    render(
+      <LangProvider lang="es">
+        <QuotePage />
+      </LangProvider>,
+    )
+
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      'Arma el presupuesto de tu proyecto',
+    )
+    expect(screen.getByText('Elige el tipo de proyecto para empezar.')).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: /¿Qué necesitas\?/ })).toBeInTheDocument()
+  })
+
+  it('o seletor de idioma leva à mesma página nas outras versões', () => {
+    render(
+      <LangProvider lang="en">
+        <QuotePage />
+      </LangProvider>,
+    )
+
+    expect(screen.getByRole('link', { name: /Español/ })).toHaveAttribute(
+      'href',
+      '/es/presupuesto/',
+    )
+    expect(screen.getByRole('link', { name: /Português/ })).toHaveAttribute(
+      'href',
+      '/pt/orcamento/',
+    )
   })
 })

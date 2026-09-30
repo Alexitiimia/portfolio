@@ -2,12 +2,13 @@ import { Fragment } from 'react'
 import { Container } from '@/components/layout/Container'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { Cursor } from '@/components/ui/Cursor'
-import { offers } from '@/content/offers'
-import { site } from '@/content/site'
+import { useContent, useUi } from '@/i18n/useI18n'
 import { ageOn } from '@/lib/age'
 import styles from './Hero.module.css'
 
 export function Hero() {
+  const { site, offers } = useContent()
+  const ui = useUi()
   const age = ageOn(site.person.birthDate, new Date())
 
   return (
@@ -19,7 +20,7 @@ export function Hero() {
               $ {site.hero.command}
             </span>
             <span className={styles.name}>
-              {site.person.name} · {age} anos
+              {site.person.name} · {ui.hero.age(age)}
             </span>
             <span>
               {site.hero.role}
@@ -43,10 +44,10 @@ export function Hero() {
 
           <div className={styles.actions}>
             <ButtonLink href="#projetos" arrow="↓">
-              ver projetos
+              {ui.hero.seeProjects}
             </ButtonLink>
             <ButtonLink href="#contato" variant="secondary" arrow="→">
-              falar comigo
+              {ui.hero.talkToMe}
             </ButtonLink>
           </div>
         </div>

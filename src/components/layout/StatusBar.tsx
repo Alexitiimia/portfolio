@@ -1,4 +1,4 @@
-import { site } from '@/content/site'
+import { useContent } from '@/i18n/useI18n'
 import { Container } from './Container'
 import styles from './StatusBar.module.css'
 
@@ -8,7 +8,7 @@ import styles from './StatusBar.module.css'
  * Só o lado esquerdo aparece no celular.
  */
 export function StatusBar() {
-  const { left, prompt, command, result } = site.statusBar
+  const { left, prompt, command, result } = useContent().site.statusBar
 
   return (
     <div className={styles.bar} aria-hidden="true">
