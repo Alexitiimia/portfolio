@@ -24,6 +24,33 @@ export interface Project {
  */
 export const projects: readonly Project[] = [
   {
+    id: 'f-cordeiro',
+    name: 'F Cordeiro Soluções 3D',
+    summary:
+      'Loja online de peças impressas em 3D, com carrinho, favoritos, conta de cliente, pagamento pelo Mercado Pago, cálculo de frete para todo o Brasil e pedido de orçamento sob medida.',
+    stack: ['JavaScript', 'Supabase', 'Mercado Pago', 'Cloudflare'],
+    year: 2025,
+    links: [{ label: 'Ver a loja', href: 'https://f-cordeiro.axeldev.workers.dev/' }],
+  },
+  {
+    id: 'vila-cartola',
+    name: 'Vila Cartola',
+    summary:
+      'Site de um servidor de Minecraft com jogo entre Java e Bedrock: login com Discord para entrar na whitelist, mapa 3D ao vivo do mundo, ranking e área de apoiadores.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Discord', 'Cloudflare'],
+    year: 2025,
+    links: [{ label: 'Ver o site', href: 'https://vilacartola.com/' }],
+  },
+  {
+    id: 'pure-tone-check',
+    name: 'Pure Tone Check',
+    summary:
+      'Triagem auditiva online e gratuita, em inglês: toca tons puros em cinco frequências, um ouvido por vez, e entrega um gráfico com o resultado, que pode ser baixado em PDF.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Web Audio', 'Cloudflare'],
+    year: 2025,
+    links: [{ label: 'Fazer o teste', href: 'https://puretonecheck.com/' }],
+  },
+  {
     id: 'portfolio',
     name: 'Este portfólio',
     summary:

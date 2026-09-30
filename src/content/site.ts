@@ -52,7 +52,7 @@ export const site: SiteConfig = {
   name: 'CORVO',
   tagline: 'DEV // CYBERSEC',
   person: {
-    name: 'Endrily Axel',
+    name: 'Endriky Axel',
     birthDate: '2006-03-29',
   },
   statusBar: {

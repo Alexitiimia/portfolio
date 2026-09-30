@@ -26,6 +26,7 @@ export const toolGroups: readonly ToolGroup[] = [
       { id: 'html', name: 'HTML', icon: brands.html },
       { id: 'css', name: 'CSS', icon: brands.css },
       { id: 'react', name: 'React', icon: brands.react },
+      { id: 'nextjs', name: 'Next.js', icon: brands.nextjs },
       { id: 'nodejs', name: 'Node.js', icon: brands.nodejs },
     ],
   },
@@ -38,6 +39,16 @@ export const toolGroups: readonly ToolGroup[] = [
       { id: 'vercel', name: 'Vercel', icon: brands.vercel },
       { id: 'github', name: 'GitHub', icon: brands.github },
       { id: 'lovable', name: 'Lovable', icon: brands.lovable },
+    ],
+  },
+  {
+    id: 'sistemas',
+    title: 'Sistemas operacionais',
+    tools: [
+      { id: 'ubuntu', name: 'Ubuntu', icon: brands.ubuntu, note: 'Linux' },
+      { id: 'debian', name: 'Debian', icon: brands.debian, note: 'Linux' },
+      { id: 'kali-linux', name: 'Kali Linux', icon: brands.kaliLinux, note: 'Linux' },
+      { id: 'windows-server', name: 'Windows Server', icon: brands.windows },
     ],
   },
   {

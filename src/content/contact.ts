@@ -19,10 +19,40 @@ export interface ContactChannel {
  */
 export const contactChannels: readonly ContactChannel[] = [
   {
+    id: 'whatsapp',
+    label: 'WhatsApp',
+    value: '(47) 99127-5759',
+    href: `https://wa.me/5547991275759?text=${encodeURIComponent(
+      'Olá! Vi seu portfólio e gostaria de pedir um orçamento.',
+    )}`,
+    icon: brands.whatsapp,
+  },
+  {
     id: 'github',
     label: 'GitHub',
     value: '@Alexitiimia',
     href: site.links.github,
     icon: brands.github,
+  },
+  {
+    id: 'linkedin',
+    label: 'LinkedIn',
+    value: 'endriky-657a89197',
+    href: 'https://www.linkedin.com/in/endriky-657a89197/',
+    icon: brands.linkedin,
+  },
+  {
+    id: 'discord',
+    label: 'Discord',
+    value: 'ID 970456964406575164',
+    href: 'https://discord.com/users/970456964406575164',
+    icon: brands.discord,
+  },
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    value: '@antigo.dont',
+    href: 'https://www.instagram.com/antigo.dont/',
+    icon: brands.instagram,
   },
 ]
