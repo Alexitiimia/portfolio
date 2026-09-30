@@ -7,16 +7,6 @@
   color: var(--color-fg);
 }
 
-/* Corvo "fantasma" ao fundo, no canto inferior direito. */
-.ghost {
-  position: absolute;
-  right: var(--space-4);
-  bottom: -2.5rem;
-  color: var(--color-line);
-  opacity: 0.55;
-  pointer-events: none;
-}
-
 .wrap {
   position: relative;
 }

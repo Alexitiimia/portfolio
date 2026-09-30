@@ -1,5 +1,5 @@
 /*
-  Design tokens da identidade CORVO (fonte: brand/brand.css). Só preto, branco e cinzas.
+  Design tokens da identidade The Crow (fonte: brand/brand.css). Só preto, branco e cinzas.
   O tema escuro é o padrão; `data-theme="light"` (definido em public/theme-init.js) inverte a paleta.
 */
 :root {
@@ -21,8 +21,8 @@
   --box-grey: #808080;
   --box-white: #ffffff;
 
-  /* Fundo do logo animado: fixo nos dois temas, porque o corvo é escuro */
-  --brand-tile: #f5f5f5;
+  /* O corvo é escuro: no tema escuro ganha um contorno claro fino para não sumir no fundo */
+  --crow-glow: drop-shadow(0 0 1.5px rgb(255 255 255 / 0.75));
 
   /* Tipografia: mono para interface e títulos, sans para texto corrido */
   --font-sans:
@@ -78,4 +78,5 @@
   --color-line: #d4d4d4;
   --color-line-strong: #8a8a8a;
   --color-header-bg: rgb(255 255 255 / 0.88);
+  --crow-glow: none;
 }

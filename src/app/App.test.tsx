@@ -10,7 +10,7 @@ import { App } from './App'
 beforeEach(() => {
   // Em produção estes dois vêm do index.html; o jsdom parte de um documento vazio.
   document.documentElement.lang = 'pt-BR'
-  document.title = 'CORVO · Full stack e segurança da informação'
+  document.title = 'The Crow · Full stack e segurança da informação'
 })
 
 describe('App: estrutura da página', () => {
@@ -108,10 +108,17 @@ describe('App: acessibilidade', () => {
     for (const list of lists) expect(list).toHaveAttribute('role', 'list')
   })
 
-  it('não tem imagens sem descrição nem ícones expostos a leitores de tela', () => {
+  it('só tem imagens decorativas, do próprio site, e ícones ocultos a leitores de tela', () => {
     const { container } = render(<App />)
 
-    expect(container.querySelectorAll('img')).toHaveLength(0)
+    const images = [...container.querySelectorAll('img')]
+    expect(images.length).toBeGreaterThan(0)
+    for (const image of images) {
+      // O nome do projeto está em texto ao lado: a imagem não precisa ser lida em voz alta.
+      expect(image, 'imagem decorativa precisa de alt vazio').toHaveAttribute('alt', '')
+      // A CSP só libera imagens do próprio site: nada de endereço de outro domínio.
+      expect(image.getAttribute('src'), 'imagem de outro site').not.toMatch(/^(https?:)?\/\//)
+    }
     for (const svg of container.querySelectorAll('svg')) {
       expect(svg, 'todo SVG do site é decorativo').toHaveAttribute('aria-hidden', 'true')
     }

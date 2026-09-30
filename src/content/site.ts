@@ -49,7 +49,7 @@ interface SiteConfig {
 }
 
 export const site: SiteConfig = {
-  name: 'CORVO',
+  name: 'The Crow',
   tagline: 'DEV // CYBERSEC',
   person: {
     name: 'Endriky Axel',
@@ -57,7 +57,7 @@ export const site: SiteConfig = {
   },
   statusBar: {
     left: 'CANAL SEGURO · TLS 1.3 · HSTS',
-    prompt: 'operador@corvo:~$',
+    prompt: 'operador@thecrow:~$',
     command: 'status --all',
     result: 'ok',
   },

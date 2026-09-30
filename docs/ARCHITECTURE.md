@@ -3,14 +3,14 @@
 ## Estrutura de pastas
 
 ```
-brand/            Kit original da identidade (CORVO). Fonte da verdade; não entra no build.
+brand/            Kit original da identidade (a marca hoje é "The Crow"). Fonte da verdade; não entra no build.
 docs/             Documentação.
 public/           Copiado como está para a raiz do site (sem hash): _headers, 404, favicons, robots.
 src/
   app/            Composição da página (App) e ErrorBoundary.
   assets/brand/   Sprites do mascote importados pelo CSS (ganham hash no build).
   components/
-    brand/        Logo (BrandMark, Brand) e mascote animado (CorvoMascot).
+    brand/        Logo (Brand), corvo (CorvoSprite, CorvoIcon, FooterCrow) e mascote de erro (CorvoMascot).
     icons/        Logos de marcas de tecnologia (brands.ts) e o componente BrandIcon.
     layout/       Header, Footer, StatusBar, Section, Container, SkipLink.
     ui/           Peças reutilizáveis: botões, links, ícones, cursor, alternador de tema.
@@ -59,17 +59,15 @@ preview:cf`) e uma extensão como axe DevTools ou o Lighthouse.
 
 O kit em `brand/` é a origem; o que o site usa foi copiado/portado assim:
 
-| Do kit                              | Onde está no site                                                                                  |
-| ----------------------------------- | -------------------------------------------------------------------------------------------------- |
-| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                            |
-| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                           |
-| Corvo 32×32 (`d` do `<path>`)       | `components/brand/corvoPath.ts`                                                                    |
-| `favicons/1-poleiro/*`              | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`                                        |
-| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                          |
-| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                               |
-| `animacoes/corvo-voo-original.png`  | `components/brand/PerchedCorvo` + `src/assets/brand/corvo-voo-sprite.png`                          |
-| `brand/crow/crow.png`               | `components/brand/CorvoIcon` (logo animado do header) + `src/assets/brand/corvo-header-sprite.png` |
-| `brand/crow/crowfavicon.png`        | `public/favicon-32.png`, `favicon.ico`, `apple-touch-icon.png`                                     |
+| Do kit                              | Onde está no site                                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                    |
+| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                   |
+| `favicons/1-poleiro/*`              | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`                                |
+| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                  |
+| `brand/crow/crow.png`               | `components/brand/{CorvoSprite,CorvoIcon,FooterCrow}` + `src/assets/brand/crow-sprite.png` |
+| `brand/crow/crowfavicon.png`        | `public/favicon-32.png`, `favicon.ico`, `apple-touch-icon.png`                             |
+| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                       |
 
 Para trocar o favicon por outra variante, copie os 3 arquivos da pasta escolhida para `public/`.
 Se o kit for atualizado, refaça a cópia acima; não edite `brand/` à mão.
@@ -77,23 +75,20 @@ Se o kit for atualizado, refaça a cópia acima; não edite `brand/` à mão.
 O Lovable ainda não existe no pacote de logos usado (`simple-icons`), por isso seu desenho está
 embutido em `brands.ts` com a fonte anotada. Troque por `siLovable` quando o pacote incluir.
 
-### Corvo interativo do hero (`PerchedCorvo`)
+### O corvo (`brand/crow/`)
 
-Folha original gerada por IA em `brand/animacoes/corvo-voo-original.png`, com ruído de borda e
-pixels de tamanhos diferentes em cada pose. O script `brand/animacoes/build-voo-sprite.py` (Python +
-numpy/scipy/Pillow) a limpa: reconstrói cada quadro na sua grade real, unifica a escala, alinha
-(chão nas poses paradas, olho nas de voo) e grava `src/assets/brand/corvo-voo-sprite.png` (8 quadros
-iguais, 2 cores). Para regenerar: `python build-voo-sprite.py <folha> <saida.png>`.
+`crow.png` (folha de voo) e `crowfavicon.png` (cabeça) são as fontes.
 
-Comportamento: parado gira de direção sozinho; com mouse/foco vira à esquerda; ao clicar decola,
-sai do quadrado e volta pousando. Com "reduzir movimento" ligado nada disso anima. O tempo do voo
-(3,6 s) e os quadros ficam em `PerchedCorvo.module.css`; mudar a duração exige mudar as duas
-animações e `FLIGHT_FALLBACK_MS` no componente.
-
-### Logo animado e favicon (`brand/crow/`)
-
-`crow.png` (folha de voo) e `crowfavicon.png` (cabeça) são as fontes. `build-crow-sprite.py` separa
-cada corvo, alinha pelo olho vermelho e gera o sprite do header (11 quadros, paleta de 48 cores).
-O ciclo de 8 quadros (800 ms) está em `CorvoIcon.module.css`; sem movimento, fica o quadro com asas
-abertas. O logo usa um quadro claro fixo (`--brand-tile`) nos dois temas, porque o corvo é escuro.
-O favicon é a cabeça sobre esse mesmo quadro claro, para não sumir em abas escuras.
+- `build-crow-sprite.py` separa cada corvo, alinha (chão nas poses paradas, olho vermelho no voo) e
+  gera `src/assets/brand/crow-sprite.png`: 14 quadros de fundo transparente (parado direita,
+  esquerda e de frente; agachado; 9 de voo; pouso).
+- **Header** (`CorvoIcon`): parado, olha para o ponteiro do mouse (esquerda, frente ou direita); ao
+  clicar ou tocar, decola, bate asas e pousa (2,81 s). No celular não há ponteiro, então fica
+  olhando para a direita e só reage ao toque. Sem movimento (preferência do sistema), não voa.
+- **Rodapé** (`FooterCrow`): camada decorativa que patrulha o rodapé de um lado ao outro, batendo
+  asas e virando nas pontas (28 s por volta, só CSS com `cqw`/`cqh`).
+- Mudar a duração da decolagem exige mexer em `CorvoSprite.module.css`, `CorvoIcon.module.css` e
+  `FLIGHT_MS` em `CorvoIcon.tsx`.
+- `build-favicon.py` gera o favicon: transparente, o maior possível sem cortar, com contorno claro
+  fino para aparecer em aba escura.
+- O tom escuro do corvo ganha esse contorno (`--crow-glow`) só no tema escuro.

@@ -1,6 +1,6 @@
 import { CodeXml, Compass, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Brand } from '@/components/brand/Brand'
-import { BrandMark } from '@/components/brand/BrandMark'
+import { FooterCrow } from '@/components/brand/FooterCrow'
 import { BrandIcon } from '@/components/icons/BrandIcon'
 import { ContactLink } from '@/components/ui/ContactLink'
 import { Cursor } from '@/components/ui/Cursor'
@@ -17,13 +17,13 @@ const CURRENT_YEAR = new Date().getFullYear()
 export function Footer() {
   return (
     <footer className={styles.foot}>
-      <BrandMark size={288} className={styles.ghost} />
+      <FooterCrow />
 
       <Container className={styles.wrap}>
         <div className={styles.grid}>
           <div>
             <div className={styles.brandRow}>
-              <Brand href="#inicio" animated={false} />
+              <Brand href="#inicio" interactive={false} />
             </div>
             <p className={styles.about}>{site.footer.about}</p>
           </div>

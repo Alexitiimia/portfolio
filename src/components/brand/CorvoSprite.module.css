@@ -1,0 +1,190 @@
+/*
+  Sprite do corvo (brand/crow/build-crow-sprite.py): 14 quadros iguais, lado a lado, com fundo
+  transparente. Posição do quadro i = i / 13 × 100%.
+
+    0 parado p/ direita · 1 parado p/ esquerda · 2 parado de frente · 3 agachado
+    4 a 12 voo (asas subindo e descendo) · 13 pouso agachado
+
+  Duração da decolagem: 2810 ms. Se mudar, mude também o trajeto em CorvoIcon.module.css e
+  `FLIGHT_MS` em CorvoIcon.tsx.
+*/
+.sprite {
+  display: block;
+  width: 100%;
+  aspect-ratio: 176 / 151;
+  background-image: url('../../assets/brand/crow-sprite.png');
+  background-repeat: no-repeat;
+  background-size: 1400% 100%;
+  background-position: 0 0;
+  filter: var(--crow-glow);
+}
+
+.left {
+  background-position: 7.6923% 0;
+}
+
+.front {
+  background-position: 15.3846% 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .takeoff {
+    animation: decolar 2810ms step-end 1 both;
+  }
+
+  .flap {
+    animation: bater 720ms step-end infinite;
+  }
+}
+
+@keyframes decolar {
+  0.000% {
+    background-position: 23.0769% 0;
+  }
+
+  5.338% {
+    background-position: 30.7692% 0;
+  }
+
+  8.897% {
+    background-position: 38.4615% 0;
+  }
+
+  12.456% {
+    background-position: 53.8462% 0;
+  }
+
+  15.658% {
+    background-position: 61.5385% 0;
+  }
+
+  18.861% {
+    background-position: 69.2308% 0;
+  }
+
+  22.064% {
+    background-position: 76.9231% 0;
+  }
+
+  25.267% {
+    background-position: 84.6154% 0;
+  }
+
+  28.470% {
+    background-position: 46.1538% 0;
+  }
+
+  31.673% {
+    background-position: 30.7692% 0;
+  }
+
+  34.875% {
+    background-position: 38.4615% 0;
+  }
+
+  38.078% {
+    background-position: 53.8462% 0;
+  }
+
+  41.281% {
+    background-position: 61.5385% 0;
+  }
+
+  44.484% {
+    background-position: 69.2308% 0;
+  }
+
+  47.687% {
+    background-position: 76.9231% 0;
+  }
+
+  50.890% {
+    background-position: 84.6154% 0;
+  }
+
+  54.093% {
+    background-position: 46.1538% 0;
+  }
+
+  57.295% {
+    background-position: 30.7692% 0;
+  }
+
+  60.498% {
+    background-position: 38.4615% 0;
+  }
+
+  63.701% {
+    background-position: 53.8462% 0;
+  }
+
+  66.904% {
+    background-position: 61.5385% 0;
+  }
+
+  70.107% {
+    background-position: 69.2308% 0;
+  }
+
+  73.310% {
+    background-position: 76.9231% 0;
+  }
+
+  76.512% {
+    background-position: 84.6154% 0;
+  }
+
+  79.715% {
+    background-position: 46.1538% 0;
+  }
+
+  82.918% {
+    background-position: 30.7692% 0;
+  }
+
+  86.121% {
+    background-position: 38.4615% 0;
+  }
+
+  89.324% {
+    background-position: 92.3077% 0;
+  }
+
+  93.950% {
+    background-position: 100% 0;
+  }
+}
+
+@keyframes bater {
+  0.000% {
+    background-position: 53.8462% 0;
+  }
+
+  12.500% {
+    background-position: 61.5385% 0;
+  }
+
+  25.000% {
+    background-position: 69.2308% 0;
+  }
+
+  37.500% {
+    background-position: 76.9231% 0;
+  }
+
+  50.000% {
+    background-position: 84.6154% 0;
+  }
+
+  62.500% {
+    background-position: 46.1538% 0;
+  }
+
+  75.000% {
+    background-position: 30.7692% 0;
+  }
+
+  87.500% {
+    background-position: 38.4615% 0;
+  }
+}

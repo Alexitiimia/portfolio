@@ -1,0 +1,74 @@
+/* O céu é o próprio rodapé: `cqw`/`cqh` medem a largura e a altura dele. */
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;
+  pointer-events: none;
+}
+
+.mover {
+  --bird: 6rem;
+  --travel: calc(100cqw - var(--bird));
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--bird);
+  transform: translate(var(--travel), 58cqh);
+  will-change: transform;
+}
+
+/* Com movimento: vai e volta pelo rodapé, subindo e descendo, e vira nas pontas (28 s por volta). */
+@media (prefers-reduced-motion: no-preference) {
+  .mover {
+    animation: patrulhar 28s ease-in-out infinite;
+  }
+}
+
+/* Ida à direita, virada, volta à esquerda, virada de novo. */
+@keyframes patrulhar {
+  0% {
+    transform: translate(0, 62cqh) scaleX(1);
+  }
+
+  10% {
+    transform: translate(calc(var(--travel) * 0.2), 40cqh) scaleX(1);
+  }
+
+  25% {
+    transform: translate(calc(var(--travel) * 0.5), 18cqh) scaleX(1);
+  }
+
+  40% {
+    transform: translate(calc(var(--travel) * 0.85), 45cqh) scaleX(1);
+  }
+
+  47% {
+    transform: translate(var(--travel), 30cqh) scaleX(1);
+  }
+
+  48% {
+    transform: translate(var(--travel), 30cqh) scaleX(-1);
+  }
+
+  60% {
+    transform: translate(calc(var(--travel) * 0.75), 12cqh) scaleX(-1);
+  }
+
+  75% {
+    transform: translate(calc(var(--travel) * 0.4), 50cqh) scaleX(-1);
+  }
+
+  90% {
+    transform: translate(calc(var(--travel) * 0.1), 25cqh) scaleX(-1);
+  }
+
+  99% {
+    transform: translate(0, 62cqh) scaleX(-1);
+  }
+
+  100% {
+    transform: translate(0, 62cqh) scaleX(1);
+  }
+}

@@ -32,7 +32,7 @@ npm run preview:cf   # abre o site no motor real da Cloudflare (http://localhost
 
 ```bash
 git add -A
-git commit -m "Portfólio CORVO"
+git commit -m "Portfólio The Crow"
 git remote add origin git@github.com:Alexitiimia/portfolio.git   # se ainda não existir
 git push -u origin main
 ```

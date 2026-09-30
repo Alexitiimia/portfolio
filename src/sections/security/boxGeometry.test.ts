@@ -49,13 +49,15 @@ describe('boxGeometry', () => {
     expect(boxGeometry({ x: 50, y: -50 })).toEqual(boxGeometry({ x: 1, y: -1 }))
   })
 
-  it('o centro da face da direita fica dentro da face, para a sonda bater na caixa', () => {
+  it('o ponto de impacto da sonda fica na aresta de trás, dentro do desenho e à frente da origem', () => {
     for (const x of EXTREMES) {
       for (const y of EXTREMES) {
-        const { rightFaceCenter, center } = boxGeometry({ x, y })
+        const { rightFaceEdge, center } = boxGeometry({ x, y })
 
-        expect(rightFaceCenter.x).toBeGreaterThan(102)
-        expect(rightFaceCenter.x).toBeLessThan(TILE_SIZE - 10)
+        expect(rightFaceEdge.x).toBeGreaterThan(102)
+        expect(rightFaceEdge.x).toBeLessThan(150)
+        expect(rightFaceEdge.y).toBeGreaterThan(30)
+        expect(rightFaceEdge.y).toBeLessThan(130)
         expect(center.x).toBeGreaterThan(30)
         expect(center.y).toBeLessThan(130)
       }

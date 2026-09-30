@@ -90,6 +90,7 @@ describe('projetos', () => {
       expect(new Set(project.stack).size, `${project.id}: tecnologia repetida`).toBe(
         project.stack.length,
       )
+      expect(project.icon.length, `${project.id}: sem favicon`).toBeGreaterThan(0)
       expect(Number.isInteger(project.year)).toBe(true)
       expect(project.year).toBeGreaterThanOrEqual(2000)
     }

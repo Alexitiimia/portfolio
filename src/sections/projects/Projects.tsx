@@ -1,6 +1,5 @@
 import { Section } from '@/components/layout/Section'
 import { ButtonLink } from '@/components/ui/ButtonLink'
-import { ExternalLink } from '@/components/ui/ExternalLink'
 import { projects, type Project } from '@/content/projects'
 import styles from './Projects.module.css'
 
@@ -10,7 +9,18 @@ function ProjectItem({ project }: { readonly project: Project }) {
       <p className={styles.year}>{project.year}</p>
 
       <div className={styles.main}>
-        <h3 className={styles.name}>{project.name}</h3>
+        <div className={styles.heading}>
+          <img
+            src={project.icon}
+            alt=""
+            width={48}
+            height={48}
+            loading="lazy"
+            decoding="async"
+            className={styles.icon}
+          />
+          <h3 className={styles.name}>{project.name}</h3>
+        </div>
         <p className={styles.summary}>{project.summary}</p>
       </div>
 
@@ -25,11 +35,16 @@ function ProjectItem({ project }: { readonly project: Project }) {
 
         {project.links.length > 0 ? (
           <ul role="list" className={styles.links}>
-            {project.links.map((link) => (
+            {project.links.map((link, index) => (
               <li key={link.href}>
-                <ExternalLink href={link.href} showArrow>
+                <ButtonLink
+                  href={link.href}
+                  external
+                  arrow="↗"
+                  variant={index === 0 ? 'primary' : 'secondary'}
+                >
                   {link.label}
-                </ExternalLink>
+                </ButtonLink>
               </li>
             ))}
           </ul>

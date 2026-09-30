@@ -1,4 +1,4 @@
-# CORVO · Portfólio
+# The Crow · Portfólio
 
 Site estático de portfólio (projetos, ferramentas, serviços, segurança e condições), feito para ser
 linkado no bio.site e publicado na Cloudflare. Identidade preto e branco em pixel art.

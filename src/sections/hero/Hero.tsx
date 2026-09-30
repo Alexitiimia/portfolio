@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { PerchedCorvo } from '@/components/brand/PerchedCorvo'
 import { Container } from '@/components/layout/Container'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { Cursor } from '@/components/ui/Cursor'
@@ -50,10 +49,6 @@ export function Hero() {
               falar comigo
             </ButtonLink>
           </div>
-        </div>
-
-        <div className={styles.art}>
-          <PerchedCorvo />
         </div>
 
         <dl className={styles.facts}>

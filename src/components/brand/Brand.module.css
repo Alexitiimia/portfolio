@@ -6,20 +6,17 @@
   text-decoration: none;
 }
 
-/* Quadro claro nos dois temas: o corvo é escuro e precisa de fundo claro para aparecer. */
-.tile {
+.icon {
   flex: none;
-  width: 4rem;
-  background: var(--brand-tile);
-  box-shadow: inset 0 0 0 1px var(--color-line);
+  width: 4.5rem;
 }
 
 .name {
   display: block;
   font-family: var(--font-mono);
-  font-size: 1.0625rem;
+  font-size: 1.125rem;
   font-weight: 700;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.04em;
   line-height: 1;
 }
 

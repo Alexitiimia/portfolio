@@ -45,8 +45,8 @@ export interface BoxGeometry {
   readonly links: string
   /** Centro da caixa, onde fica o núcleo. */
   readonly center: Point
-  /** Centro da face da direita, onde bate a sonda da caixa preta. */
-  readonly rightFaceCenter: Point
+  /** Ponto na aresta vertical de trás da face da direita, onde bate a sonda da caixa preta. */
+  readonly rightFaceEdge: Point
 }
 
 const round = (value: number) => Math.round(value * 100) / 100
@@ -147,9 +147,6 @@ export function boxGeometry(tilt: BoxTilt): BoxGeometry {
       open(backBottomRight, coreBackBottomRight) +
       open(backBottomLeft, coreBackBottomLeft),
     center,
-    rightFaceCenter: corner(
-      FRONT.x + FRONT.size + depthX / 2,
-      FRONT.y + FRONT.size / 2 - depthY / 2,
-    ),
+    rightFaceEdge: corner(FRONT.x + FRONT.size + depthX, FRONT.y + FRONT.size / 2 - depthY / 2),
   }
 }

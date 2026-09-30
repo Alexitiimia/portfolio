@@ -74,9 +74,10 @@
   stroke-width: 1.25;
 }
 
+/* Cinza claro fixo: a onda nasce na borda da caixa preta, que é preta nos dois temas. */
 .ripple {
   fill: none;
-  stroke: var(--color-fg);
+  stroke: #c4c4c4;
   stroke-width: 1.25;
 }
 

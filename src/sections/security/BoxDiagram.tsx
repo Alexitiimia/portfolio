@@ -85,24 +85,24 @@ export function BoxDiagram({ variant, view, svgRef }: BoxDiagramProps) {
 
           <g>
             <rect className={styles.origin} x="4" y="93" width="6" height="6" />
-            <path className={styles.probe} d="M10 96H32" />
-            <circle className={styles.ripple} cx="33" cy="96" r="3" />
+            <path className={styles.probe} d="M10 96H29" />
+            <circle className={styles.ripple} cx="30" cy="96" r="3" />
 
             <rect
               className={styles.origin}
-              x="150"
-              y={box.rightFaceCenter.y - 3}
+              x="152"
+              y={box.rightFaceEdge.y - 3}
               width="6"
               height="6"
             />
             <path
               className={cx(styles.probe, styles.later)}
-              d={`M150 ${String(box.rightFaceCenter.y)}H${String(box.rightFaceCenter.x + 2)}`}
+              d={`M152 ${String(box.rightFaceEdge.y)}H${String(box.rightFaceEdge.x + 1)}`}
             />
             <circle
               className={cx(styles.ripple, styles.later)}
-              cx={box.rightFaceCenter.x + 1}
-              cy={box.rightFaceCenter.y}
+              cx={box.rightFaceEdge.x}
+              cy={box.rightFaceEdge.y}
               r="3"
             />
           </g>

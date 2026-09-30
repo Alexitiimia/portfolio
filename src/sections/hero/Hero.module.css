@@ -76,11 +76,6 @@
   margin-top: var(--space-6);
 }
 
-/* Só telas largas: o corvo interativo num painel quadrado (ver PerchedCorvo). */
-.art {
-  display: none;
-}
-
 .facts {
   grid-column: 1 / -1;
   display: grid;
@@ -117,17 +112,8 @@
 
 @media (min-width: 56rem) {
   .inner {
-    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
     align-items: center;
     column-gap: var(--space-8);
-  }
-
-  .art {
-    display: block;
-    aspect-ratio: 1;
-    border: 1px solid var(--color-line);
-    background: var(--color-surface);
-    color: var(--color-fg);
   }
 
   .facts {
@@ -151,7 +137,6 @@
   .title,
   .lead,
   .actions,
-  .art,
   .facts {
     animation: rise var(--duration-slow) var(--ease-out) both;
   }
@@ -166,10 +151,6 @@
 
   .actions {
     animation-delay: 240ms;
-  }
-
-  .art {
-    animation-delay: 200ms;
   }
 
   .facts {

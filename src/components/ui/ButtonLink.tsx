@@ -7,7 +7,7 @@ import styles from './ButtonLink.module.css'
 interface BaseProps {
   readonly variant?: 'primary' | 'secondary'
   /** Seta exibida depois do texto. */
-  readonly arrow?: '→' | '↓'
+  readonly arrow?: '→' | '↓' | '↗'
   readonly children: ReactNode
 }
 

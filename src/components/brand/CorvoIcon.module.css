@@ -1,55 +1,66 @@
-/*
-  Sprite gerado por brand/crow/build-crow-sprite.py a partir de brand/crow/crow.png: 11 quadros do
-  mesmo tamanho, alinhados pelo olho vermelho (a cabeça fica parada e o corpo bate as asas).
-  Quadro 0 = parado; 1 a 10 = voo. O ciclo abaixo usa 8 deles; o quadro 4 é a imagem parada de
-  quem prefere menos movimento.
-*/
-.icon {
+.box {
   display: block;
   width: 100%;
-  aspect-ratio: 156 / 134;
-  background-image: url('../../assets/brand/corvo-header-sprite.png');
-  background-repeat: no-repeat;
-  background-size: 1100% 100%;
-  background-position: 40% 0;
+  cursor: pointer;
+}
+
+.mover {
+  display: block;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .flying {
-    animation: bater 800ms step-end infinite;
+  .box[data-flying='true'] .mover {
+    animation: subir 2810ms ease-in-out 1 both;
   }
 }
 
-@keyframes bater {
+/* O corvo sobe um pouco ao decolar, balança enquanto bate as asas e desce ao pousar. */
+@keyframes subir {
   0% {
-    background-position: 40% 0;
+    transform: translateY(0%);
   }
 
-  12.5% {
-    background-position: 50% 0;
+  6% {
+    transform: translateY(0%);
   }
 
-  25% {
-    background-position: 60% 0;
+  11% {
+    transform: translateY(-8%);
   }
 
-  37.5% {
-    background-position: 70% 0;
+  20% {
+    transform: translateY(-14%);
   }
 
-  50% {
-    background-position: 80% 0;
+  32% {
+    transform: translateY(-9%);
   }
 
-  62.5% {
-    background-position: 30% 0;
+  44% {
+    transform: translateY(-14%);
   }
 
-  75% {
-    background-position: 10% 0;
+  56% {
+    transform: translateY(-9%);
   }
 
-  87.5% {
-    background-position: 20% 0;
+  68% {
+    transform: translateY(-14%);
+  }
+
+  80% {
+    transform: translateY(-10%);
+  }
+
+  90% {
+    transform: translateY(-6%);
+  }
+
+  96% {
+    transform: translateY(0%);
+  }
+
+  100% {
+    transform: translateY(0%);
   }
 }
