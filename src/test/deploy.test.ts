@@ -388,6 +388,14 @@ describe('ícones e manifesto do site', () => {
     expect(publicFiles.has('favicon-32.png'), 'ícone antigo sobrando').toBe(false)
   })
 
+  it('o favicon.svg é preto em qualquer tema: sem regra que o troque por branco', () => {
+    const svg = read('/public/favicon.svg')
+
+    expect(svg).not.toMatch(/prefers-color-scheme|@media/i)
+    expect(svg).toMatch(/\.k\s*\{\s*fill:\s*#0a0a0a/i)
+    expect(svg).not.toMatch(/#f5f5f5|#fff\b|#ffffff|white/i)
+  })
+
   it('o favicon.svg é só desenho: sem script, imagem embutida nem endereço externo', () => {
     const svg = read('/public/favicon.svg')
 
