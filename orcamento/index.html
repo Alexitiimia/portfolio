@@ -16,18 +16,42 @@
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
 
-    <!-- Prévia do link (WhatsApp, Instagram, bio.site). Quando houver domínio: og:url e og:image (URL absoluta). -->
+    <!--
+      Prévia do link (WhatsApp, Instagram, Discord, X/Twitter, Telegram, LinkedIn, bio.site).
+      As URLs precisam ser ABSOLUTAS: ao trocar de domínio, troque "https://portfolio.axeldev.workers.dev" nos dois HTMLs
+      (index.html e orcamento/index.html). A imagem (1200x630) vem de brand/og/ (ver LEIAME.md).
+    -->
+    <link rel="canonical" href="https://portfolio.axeldev.workers.dev/orcamento/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="The Crow" />
+    <meta property="og:url" content="https://portfolio.axeldev.workers.dev/orcamento/" />
     <meta property="og:title" content="Orçamento · The Crow" />
     <meta
       property="og:description"
       content="Monte o orçamento do seu site, loja ou sistema, veja a estimativa e envie o resumo pronto para o WhatsApp. Sem cadastro e sem pagar nada agora."
     />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://portfolio.axeldev.workers.dev/og-orcamento.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Orçamento The Crow: monte o orçamento do seu projeto, sem cadastro. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Orçamento · The Crow" />
+    <meta
+      name="twitter:description"
+      content="Monte o orçamento do seu site, loja ou sistema, veja a estimativa e envie o resumo pronto para o WhatsApp. Sem cadastro e sem pagar nada agora."
+    />
+    <meta name="twitter:image" content="https://portfolio.axeldev.workers.dev/og-orcamento.png" />
+    <meta
+      name="twitter:image:alt"
+      content="Orçamento The Crow: monte o orçamento do seu projeto, sem cadastro. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho."
+    />
 
-    <!-- Ícones da identidade (brand/favicons/5-silhueta-olho): corvo preto (favicon.svg) e o .ico de reserva. -->
+    <!-- Ícones da identidade (brand/favicons/5-silhueta-olho): corvo preto sobre quadrado arredondado (favicon.svg) e o .ico de reserva. -->
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

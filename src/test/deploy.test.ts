@@ -18,6 +18,7 @@ const files = import.meta.glob<string>(
     '/public/404.css',
     '/public/theme-init.js',
     '/public/site.webmanifest',
+    '/public/robots.txt',
     '/public/favicon.svg',
     '/src/styles/tokens.css',
   ],
@@ -157,7 +158,10 @@ describe('cabeçalhos de segurança (public/_headers)', () => {
 /* ---------- páginas ---------- */
 
 function resourceUrls(html: string): string[] {
-  const tags = [...html.matchAll(/<(?:script|link)\b[^>]*>/gi)].map((match) => match[0])
+  const tags = [...html.matchAll(/<(?:script|link)\b[^>]*>/gi)]
+    .map((match) => match[0])
+    // O endereço canônico só diz qual é a URL "oficial" da página: o navegador não baixa nada dele.
+    .filter((tag) => !/\brel="canonical"/i.test(tag))
   return tags.flatMap((tag) => {
     const url = /\b(?:src|href)\s*=\s*"([^"]+)"/i.exec(tag)?.[1]
     return url === undefined ? [] : [url]
@@ -413,5 +417,102 @@ describe('ícones e manifesto do site', () => {
 
     expect(svg).toMatch(/^<svg\b/)
     expect(svg).not.toMatch(/<script|<image|<foreignObject|onload|href\s*=\s*"https?:/i)
+  })
+})
+
+/* ---------- prévia do link (WhatsApp, Instagram, Discord, X/Twitter...) ---------- */
+
+/** Conteúdo de `<meta property|name="chave" content="...">`, mesmo com a tag em várias linhas. */
+function metaContent(html: string, key: string): string {
+  return matchOrThrow(
+    html,
+    new RegExp(`<meta\\s+(?:property|name)="${key}"\\s+content="([^"]*)"`),
+    `a meta ${key}`,
+  )
+}
+
+/** Tamanho em bytes e dimensões de um PNG lido como data URL base64 (`?inline`). */
+function pngInfo(dataUrl: string): { bytes: number; width: number; height: number } {
+  const base64 = matchOrThrow(dataUrl, /^data:image\/png;base64,(.+)$/, 'o PNG em base64')
+  const binary = atob(base64)
+  const word = (offset: number) =>
+    (binary.charCodeAt(offset) << 24) |
+    (binary.charCodeAt(offset + 1) << 16) |
+    (binary.charCodeAt(offset + 2) << 8) |
+    binary.charCodeAt(offset + 3)
+  return { bytes: binary.length, width: word(16), height: word(20) }
+}
+
+const previewImages = import.meta.glob<string>('/public/og-*.png', {
+  query: '?inline',
+  import: 'default',
+  eager: true,
+})
+
+const previewPages = [
+  { name: 'index.html', file: '/index.html', path: '/', image: 'og-image.png' },
+  {
+    name: 'orcamento/index.html',
+    file: '/orcamento/index.html',
+    path: '/orcamento/',
+    image: 'og-orcamento.png',
+  },
+] as const
+
+describe.each(previewPages)('prévia do link: $name', ({ file, path, image }) => {
+  const html = read(file)
+  const url = new URL(metaContent(html, 'og:url'))
+
+  it('tem endereço absoluto em HTTPS, igual ao canônico e ao caminho da página', () => {
+    expect(url.protocol).toBe('https:')
+    expect(url.pathname).toBe(path)
+    expect(matchOrThrow(html, /<link rel="canonical" href="([^"]+)"/, 'o canonical')).toBe(url.href)
+  })
+
+  it('aponta para uma imagem do próprio site que existe em public/', () => {
+    const imageUrl = new URL(metaContent(html, 'og:image'))
+
+    expect(imageUrl.origin).toBe(url.origin)
+    expect(imageUrl.pathname).toBe(`/${image}`)
+    expect(publicFiles.has(image)).toBe(true)
+    expect(metaContent(html, 'twitter:image')).toBe(imageUrl.href)
+  })
+
+  it('declara a imagem 1200x630 e o arquivo realmente é assim, leve o bastante para o WhatsApp', () => {
+    expect(metaContent(html, 'og:image:width')).toBe('1200')
+    expect(metaContent(html, 'og:image:height')).toBe('630')
+    expect(metaContent(html, 'og:image:type')).toBe('image/png')
+
+    const data = previewImages[`/public/${image}`]
+    if (data === undefined) throw new Error(`${image} não foi lido`)
+    const info = pngInfo(data)
+    expect(info.width).toBe(1200)
+    expect(info.height).toBe(630)
+    expect(info.bytes, 'o WhatsApp descarta imagens acima de ~300 KB').toBeLessThan(300 * 1024)
+  })
+
+  it('descreve a imagem em texto (acessibilidade) e repete título e descrição no cartão do X/Twitter', () => {
+    expect(metaContent(html, 'og:image:alt').length).toBeGreaterThan(30)
+    expect(metaContent(html, 'twitter:image:alt')).toBe(metaContent(html, 'og:image:alt'))
+    expect(metaContent(html, 'twitter:card')).toBe('summary_large_image')
+    expect(metaContent(html, 'twitter:title')).toBe(metaContent(html, 'og:title'))
+    expect(metaContent(html, 'twitter:description')).toBe(metaContent(html, 'og:description'))
+  })
+})
+
+describe('prévia do link: o site inteiro', () => {
+  it('as duas páginas usam o mesmo domínio (ao trocar de domínio, troque nas duas)', () => {
+    const origins = previewPages.map(
+      ({ file }) => new URL(metaContent(read(file), 'og:url')).origin,
+    )
+
+    expect(new Set(origins).size).toBe(1)
+  })
+
+  it('o robots.txt deixa os robôs de prévia entrarem', () => {
+    const robots = read('/public/robots.txt')
+
+    expect(robots).toMatch(/^User-agent:\s*\*/m)
+    expect(robots).not.toMatch(/^Disallow:\s*\/\s*$/m)
   })
 })

@@ -82,6 +82,26 @@ git remote add origin git@github.com:Alexitiimia/portfolio.git   # se ainda não
 git push -u origin main
 ```
 
+## Prévia do link (quando alguém cola o endereço)
+
+Ao colar o link no WhatsApp, Instagram (mensagens), Discord, X/Twitter, Telegram ou LinkedIn, o
+aplicativo lê as tags `og:*` e `twitter:*` do HTML e mostra um cartão com imagem, título e
+descrição. Elas estão em `index.html` e `orcamento/index.html` (cada página tem a sua imagem:
+`public/og-image.png` e `public/og-orcamento.png`, 1200 × 630, geradas a partir de `brand/og/`).
+
+- **As URLs são absolutas de propósito** (os aplicativos exigem). Hoje apontam para
+  `https://portfolio.axeldev.workers.dev`. Quando tiver domínio próprio, procure esse endereço nos
+  dois HTMLs e troque tudo (`canonical`, `og:url`, `og:image`, `twitter:image`).
+  `deploy.test.ts` falha se as páginas ficarem com endereços diferentes ou apontarem para uma
+  imagem que não existe.
+- **Cache:** os aplicativos guardam a prévia antiga. Para atualizar depois de mudar a imagem ou o
+  texto, mude o nome do arquivo da imagem (ou acrescente `?v=2` na URL do `og:image`). Para
+  WhatsApp, Instagram e Facebook também existe o depurador de compartilhamento da Meta
+  (developers.facebook.com/tools/debug), que força a leitura de novo.
+- **Instagram:** o cartão aparece em mensagens diretas e nos stories com link. Legenda de
+  postagem não vira link clicável, então lá só o endereço aparece como texto.
+- O `robots.txt` deixa todos os robôs entrarem (eles precisam ler a página e a imagem).
+
 ## bio.site
 
 Use a URL do Worker (`https://portfolio.<sua-conta>.workers.dev`) como link no bio.site. O site é
