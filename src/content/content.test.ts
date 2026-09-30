@@ -227,6 +227,13 @@ describe('orçamento', () => {
     }
   })
 
+  it('cada serviço que aponta para o orçamento aponta para um item que existe', () => {
+    const ids = new Set(items.map((item) => item.id))
+    for (const service of services) {
+      if (service.quoteItem !== undefined) expect(ids.has(service.quoteItem), service.id).toBe(true)
+    }
+  })
+
   it('valor da hora, quando definido, é um número positivo em reais', () => {
     if (HOURLY_RATE === null) return
     expect(Number.isFinite(HOURLY_RATE)).toBe(true)

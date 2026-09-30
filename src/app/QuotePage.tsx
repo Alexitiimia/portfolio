@@ -3,6 +3,7 @@ import { Container } from '@/components/layout/Container'
 import { SkipLink } from '@/components/layout/SkipLink'
 import { LanguageSwitcher } from '@/components/ui/LanguageSwitcher'
 import { ThemeToggle } from '@/components/ui/ThemeToggle'
+import { ExternalLink } from '@/components/ui/ExternalLink'
 import { pagePath } from '@/i18n/lang'
 import { useContent, useLang, useUi } from '@/i18n/useI18n'
 import { ContactChannels } from '@/sections/contact/ContactChannels'
@@ -15,7 +16,7 @@ const CURRENT_YEAR = new Date().getFullYear()
 export function QuotePage() {
   const lang = useLang()
   const { quotePage: ui } = useUi()
-  const { site } = useContent()
+  const { site, projects } = useContent()
   const home = pagePath(lang, 'home')
 
   return (
@@ -58,6 +59,35 @@ export function QuotePage() {
                 </li>
               ))}
             </ol>
+          </section>
+
+          <section aria-labelledby="projetos-no-ar" className={styles.proof}>
+            <h2 id="projetos-no-ar" className={styles.howTitle}>
+              {ui.proofTitle}
+            </h2>
+            <p className={styles.proofLead}>{ui.proofLead}</p>
+            <ul role="list" className={styles.proofList}>
+              {projects.map((project) => {
+                const link = project.links[0]
+                if (link === undefined) return null
+                return (
+                  <li key={project.id}>
+                    <ExternalLink href={link.href} showArrow className={styles.proofLink}>
+                      <img
+                        src={project.icon}
+                        alt=""
+                        width={24}
+                        height={24}
+                        loading="lazy"
+                        decoding="async"
+                        className={styles.proofIcon}
+                      />
+                      <span>{project.name}</span>
+                    </ExternalLink>
+                  </li>
+                )
+              })}
+            </ul>
           </section>
 
           <QuotePanel />

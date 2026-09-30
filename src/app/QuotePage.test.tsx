@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { contactChannels } from '@/content/contact'
+import { projects } from '@/content/projects'
 import { site } from '@/content/site'
 import { describeViolations, findA11yViolations } from '@/test/a11y'
 import { LangProvider } from '@/i18n/LangProvider'
@@ -67,6 +68,22 @@ describe('QuotePage: conteúdo', () => {
     expect(within(main).getByRole('radio', { name: /Loja virtual/ })).toBeInTheDocument()
     expect(within(main).getByRole('checkbox', { name: /Frete/ })).toBeInTheDocument()
     expect(within(main).getByLabelText(/Seu nome/)).toBeInTheDocument()
+  })
+
+  it('mostra os projetos já publicados como links para os sites reais', () => {
+    render(<QuotePage />)
+
+    const section = screen.getByRole('region', { name: 'Projetos meus que já estão no ar' })
+    for (const project of projects) {
+      const link = within(section).getByRole('link', { name: new RegExp(project.name) })
+      expect(link).toHaveAttribute('href', project.links[0]?.href)
+    }
+  })
+
+  it('promete a resposta em até 24 horas, no passo a passo e ao lado do botão de enviar', () => {
+    render(<QuotePage />)
+
+    expect(screen.getAllByText(/24 horas/).length).toBeGreaterThanOrEqual(2)
   })
 
   it('oferece os canais de contato para quem prefere conversar', () => {

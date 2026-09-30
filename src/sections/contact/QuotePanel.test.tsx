@@ -55,6 +55,36 @@ describe('QuotePanel', () => {
     expect(screen.getByText('Pronto para enviar')).toBeInTheDocument()
   })
 
+  it('abre com o projeto marcado quando a URL traz ?item= (vindo de um cartão de serviços)', () => {
+    window.history.pushState({}, '', '/pt/orcamento/?item=loja')
+    try {
+      render(<QuotePanel catalog={catalog} />)
+      expect(screen.getByRole('radio', { name: /Loja virtual/ })).toBeChecked()
+    } finally {
+      window.history.pushState({}, '', '/')
+    }
+  })
+
+  it('abre com o extra marcado quando o ?item= é um extra', () => {
+    window.history.pushState({}, '', '/pt/orcamento/?item=frete')
+    try {
+      render(<QuotePanel catalog={catalog} />)
+      expect(screen.getByRole('checkbox', { name: /Frete/ })).toBeChecked()
+    } finally {
+      window.history.pushState({}, '', '/')
+    }
+  })
+
+  it('ignora um ?item= que não existe', () => {
+    window.history.pushState({}, '', '/pt/orcamento/?item=nada')
+    try {
+      render(<QuotePanel catalog={catalog} />)
+      expect(screen.getAllByRole('radio', { checked: true })).toHaveLength(1)
+    } finally {
+      window.history.pushState({}, '', '/')
+    }
+  })
+
   it('oferece um atalho para o resumo só depois de escolher o projeto', async () => {
     const user = userEvent.setup()
     render(<QuotePanel catalog={catalog} />)

@@ -101,14 +101,12 @@ describe('buildMessage', () => {
     expect(message.length).toBeLessThan(DETAILS_MAX_LENGTH + 500)
   })
 
-  it('funciona com todos os itens do catálogo real (ainda sem preço)', () => {
-    const message = buildMessage({
-      ...base,
-      project: quoteCatalog.projects[0] ?? null,
-      extras: quoteCatalog.extras,
-    })
+  it('funciona com todos os itens do catálogo real e leva o total do painel', () => {
+    const project = quoteCatalog.projects[0] ?? null
+    const message = buildMessage({ ...base, project, extras: quoteCatalog.extras })
 
-    expect(message).toContain('*Estimativa:* a combinar')
+    const chosen = project === null ? quoteCatalog.extras : [project, ...quoteCatalog.extras]
+    expect(message).toContain(`*Estimativa:* ${describePrice(priceSummary(chosen))}`)
   })
 })
 

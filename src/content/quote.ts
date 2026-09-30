@@ -6,7 +6,7 @@ import { priceFromHours } from '@/lib/pricing'
  * Enquanto for `null`, o painel mostra "sob consulta" e o total aparece como "a combinar".
  * Nenhum valor é inventado.
  */
-export const HOURLY_RATE: number | null = null
+export const HOURLY_RATE: number | null = 150
 
 /**
  * Catálogo do painel de orçamento (seção Contato). As horas de cada item são estimativas de

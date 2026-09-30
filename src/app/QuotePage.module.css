@@ -158,3 +158,52 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
+
+/* Projetos já publicados: prova de que o trabalho existe e funciona. Chips compactos, o nome todo é o link. */
+.proof {
+  margin-bottom: var(--space-6);
+}
+
+.proofLead {
+  margin-bottom: var(--space-3);
+  color: var(--color-fg-muted);
+  font-size: var(--text-sm);
+}
+
+.proofList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.proofLink {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius);
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.proofLink:hover {
+  border-color: var(--color-fg);
+}
+
+.proofLink:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+.proofIcon {
+  flex: none;
+  border-radius: var(--radius);
+  image-rendering: pixelated;
+}

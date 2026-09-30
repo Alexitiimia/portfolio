@@ -48,6 +48,12 @@ function Choice({ type, text, name, item, checked, onChange }: ChoiceProps) {
   )
 }
 
+/** Item vindo da URL (?item=...), quando o visitante chega por um cartão de "Serviços". */
+function itemFromUrl(): string | null {
+  if (typeof window === 'undefined') return null
+  return new URLSearchParams(window.location.search).get('item')
+}
+
 const instagramProfile = contactChannels.find((channel) => channel.id === 'instagram')?.href
 
 /**
@@ -61,8 +67,14 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
   const { quotePanel: ui } = useUi()
   const catalog = custom ?? content.quoteCatalog
   const { text } = ui
-  const [projectId, setProjectId] = useState<string | null>(null)
-  const [extraIds, setExtraIds] = useState<readonly string[]>([])
+  const [projectId, setProjectId] = useState<string | null>(() => {
+    const wanted = itemFromUrl()
+    return catalog.projects.find((item) => item.id === wanted)?.id ?? null
+  })
+  const [extraIds, setExtraIds] = useState<readonly string[]>(() => {
+    const wanted = itemFromUrl()
+    return catalog.extras.some((item) => item.id === wanted) && wanted !== null ? [wanted] : []
+  })
   const [deadlineId, setDeadlineId] = useState(catalog.deadlines[0]?.id ?? '')
   const [name, setName] = useState('')
   const [details, setDetails] = useState('')
@@ -261,6 +273,11 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
           <span className={styles.totalValue}>{total}</span>
         </p>
         <p className={styles.note}>{ui.note}</p>
+
+        <p className={styles.reply}>
+          <span className={styles.replyDot} aria-hidden="true" />
+          {ui.reply}
+        </p>
 
         <div className={styles.actions}>
           {ready ? (

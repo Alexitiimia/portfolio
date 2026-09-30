@@ -2,10 +2,19 @@ import { BrandIcon } from '@/components/icons/BrandIcon'
 import { Section } from '@/components/layout/Section'
 import { IconBox } from '@/components/ui/IconBox'
 import type { Service } from '@/content/services'
-import { useContent } from '@/i18n/useI18n'
+import { pagePath } from '@/i18n/lang'
+import { useContent, useLang, useUi } from '@/i18n/useI18n'
 import styles from './Services.module.css'
 
 function ServiceItem({ service }: { readonly service: Service }) {
+  const lang = useLang()
+  const { services: ui } = useUi()
+  // O item vai na URL (?item=...): a página do orçamento já abre com ele marcado.
+  const quoteHref =
+    service.quoteItem === undefined
+      ? pagePath(lang, 'quote')
+      : `${pagePath(lang, 'quote')}?item=${service.quoteItem}`
+
   return (
     <li className={styles.item}>
       <IconBox icon={service.icon} />
@@ -21,6 +30,9 @@ function ServiceItem({ service }: { readonly service: Service }) {
             ))}
           </ul>
         ) : null}
+        <a href={quoteHref} className={styles.quote} aria-label={ui.quoteFor(service.title)}>
+          {ui.quote} <span aria-hidden="true">→</span>
+        </a>
       </div>
     </li>
   )

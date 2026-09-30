@@ -70,12 +70,18 @@ export interface Ui {
     buildQuote: string
     whatsappMessage: (address: string) => string
   }
+  services: {
+    quote: string
+    quoteFor: (title: string) => string
+  }
   quotePage: {
     eyebrow: string
     title: string
     lead: string
     backToPortfolio: string
     howItWorks: string
+    proofTitle: string
+    proofLead: string
     steps: readonly { readonly title: string; readonly text: string }[]
   }
   quotePanel: {
@@ -92,6 +98,7 @@ export interface Ui {
     note: string
     sendWhatsApp: string
     sendInstagram: string
+    reply: string
     required: string
     progress: (done: number, total: number) => string
     progressDone: string
@@ -176,16 +183,25 @@ const pt: Ui = {
     whatsappMessage: (address) =>
       `Olá! Vi seu portfólio e quero o endereço ${address} para o meu site.`,
   },
+  services: {
+    quote: 'pedir orçamento',
+    quoteFor: (title) => `Pedir orçamento: ${title}`,
+  },
   quotePage: {
     eyebrow: '$ orcamento --novo',
     title: 'Monte o orçamento do seu projeto',
     lead: 'Escolha o que precisa e veja a estimativa. No fim, o resumo segue pronto para o meu WhatsApp, sem cadastro e sem pagar nada agora.',
     backToPortfolio: 'voltar ao portfólio',
     howItWorks: 'Como funciona',
+    proofTitle: 'Projetos meus que já estão no ar',
+    proofLead: 'Sites e sistemas reais, publicados. Abra e veja funcionando.',
     steps: [
       { title: 'Monte o orçamento', text: 'Escolha o que precisa em poucos cliques.' },
       { title: 'Envie pelo WhatsApp', text: 'O resumo já vai escrito, é só tocar em enviar.' },
-      { title: 'Converso com você', text: 'Leio os detalhes e confirmo o valor final juntos.' },
+      {
+        title: 'Converso com você',
+        text: 'Respondo em até 24 horas, leio os detalhes e confirmamos o valor final juntos.',
+      },
     ],
   },
   quotePanel: {
@@ -202,6 +218,7 @@ const pt: Ui = {
     note: 'O valor final é confirmado na conversa, depois de eu ler os detalhes.',
     sendWhatsApp: 'enviar meu orçamento no WhatsApp',
     sendInstagram: 'enviar pelo Instagram',
+    reply: 'Respondo em até 24 horas',
     required: 'obrigatório',
     progress: (done, total) => `${String(done)} de ${String(total)} passos obrigatórios`,
     progressDone: 'Pronto para enviar',
@@ -305,16 +322,25 @@ const en: Ui = {
     whatsappMessage: (address) =>
       `Hi! I saw your portfolio and I want the address ${address} for my site.`,
   },
+  services: {
+    quote: 'ask for a quote',
+    quoteFor: (title) => `Ask for a quote: ${title}`,
+  },
   quotePage: {
     eyebrow: '$ quote --new',
     title: 'Build a quote for your project',
     lead: 'Pick what you need and see the estimate. In the end, the summary goes ready to my WhatsApp, with no sign-up and nothing to pay now.',
     backToPortfolio: 'back to the portfolio',
     howItWorks: 'How it works',
+    proofTitle: 'My projects already live',
+    proofLead: 'Real, published sites and systems. Open them and see them working.',
     steps: [
       { title: 'Build your quote', text: 'Pick what you need in a few clicks.' },
       { title: 'Send it on WhatsApp', text: 'The summary is already written, just tap send.' },
-      { title: 'We talk', text: 'I read the details and we confirm the final price together.' },
+      {
+        title: 'We talk',
+        text: 'I reply within 24 hours, read the details and we confirm the final price together.',
+      },
     ],
   },
   quotePanel: {
@@ -331,6 +357,7 @@ const en: Ui = {
     note: 'The final price is confirmed in our chat, after I read the details.',
     sendWhatsApp: 'send my quote on WhatsApp',
     sendInstagram: 'send on Instagram',
+    reply: 'I reply within 24 hours',
     required: 'required',
     progress: (done, total) => `${String(done)} of ${String(total)} required steps`,
     progressDone: 'Ready to send',
@@ -436,16 +463,25 @@ const es: Ui = {
     whatsappMessage: (address) =>
       `¡Hola! Vi tu portafolio y quiero la dirección ${address} para mi sitio.`,
   },
+  services: {
+    quote: 'pedir presupuesto',
+    quoteFor: (title) => `Pedir presupuesto: ${title}`,
+  },
   quotePage: {
     eyebrow: '$ presupuesto --nuevo',
     title: 'Arma el presupuesto de tu proyecto',
     lead: 'Elige lo que necesitas y mira la estimación. Al final, el resumen va listo a mi WhatsApp, sin registro y sin pagar nada ahora.',
     backToPortfolio: 'volver al portafolio',
     howItWorks: 'Cómo funciona',
+    proofTitle: 'Mis proyectos ya publicados',
+    proofLead: 'Sitios y sistemas reales, publicados. Ábrelos y míralos funcionando.',
     steps: [
       { title: 'Arma el presupuesto', text: 'Elige lo que necesitas en pocos clics.' },
       { title: 'Envíalo por WhatsApp', text: 'El resumen ya va escrito, solo toca enviar.' },
-      { title: 'Conversamos', text: 'Leo los detalles y confirmamos juntos el precio final.' },
+      {
+        title: 'Conversamos',
+        text: 'Respondo en hasta 24 horas, leo los detalles y confirmamos juntos el precio final.',
+      },
     ],
   },
   quotePanel: {
@@ -462,6 +498,7 @@ const es: Ui = {
     note: 'El precio final se confirma en la conversación, después de leer los detalles.',
     sendWhatsApp: 'enviar mi presupuesto por WhatsApp',
     sendInstagram: 'enviar por Instagram',
+    reply: 'Respondo en hasta 24 horas',
     required: 'obligatorio',
     progress: (done, total) => `${String(done)} de ${String(total)} pasos obligatorios`,
     progressDone: 'Listo para enviar',
