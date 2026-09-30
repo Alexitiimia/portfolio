@@ -80,24 +80,20 @@ preview:cf`) e uma extensão como axe DevTools ou o Lighthouse.
 
 O kit em `brand/` é a origem; o que o site usa foi copiado/portado assim:
 
-| Do kit                              | Onde está no site                                                                                   |
-| ----------------------------------- | --------------------------------------------------------------------------------------------------- |
-| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                             |
-| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                            |
-| `favicons/5-silhueta-olho/*`        | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest` |
-| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                           |
-| `brand/crow/crow.png`               | `components/brand/{CorvoSprite,CorvoIcon,FooterCrow}` + `src/assets/brand/crow-sprite.png`          |
-| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                                |
+| Do kit                              | Onde está no site                                                                          |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                    |
+| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                   |
+| `favicons/5-silhueta-olho/*`        | `public/site.webmanifest` (os ícones em si vêm da imagem do corvo, ver abaixo)             |
+| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                  |
+| `brand/crow/crow.png`               | `components/brand/{CorvoSprite,CorvoIcon,FooterCrow}` + `src/assets/brand/crow-sprite.png` |
+| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                       |
 
-Para trocar o favicon por outra variante, copie os arquivos da pasta escolhida para `public/` (o
-SVG, o `.ico`, o `apple-touch-icon.png` e, para Android, `icon-192/512.png` + `site.webmanifest`).
+Os ícones (`favicon.ico` 16/32/48, `apple-touch-icon.png` 180, `icon-192/512.png`) saem todos da mesma
+imagem: a cabeça do corvo em pixel art, cortada no quadrado arredondado e reduzida para cada tamanho
+(Pillow). **Não há `favicon.svg` de propósito**: o navegador prefere o SVG e ignoraria o `.ico`, então
+trocar só um dos arquivos não muda a aba. Para trocar o ícone, regenere os quatro arquivos juntos.
 O manifesto usa o nome da marca (`site.name`) e o preto do tema escuro; `deploy.test.ts` confere.
-Os ícones **não são cópia do kit**: `favicons/5-silhueta-olho/build-tile.py` lê o `corvo-preto.svg`
-e gera `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` e `icon-192/512.png` com o corvo preto
-sobre um quadrado cinza claro de cantos arredondados (aparece em aba clara e escura; o
-`favicon.svg` do kit, que virava branco no tema escuro, foi descartado de propósito). Para mudar
-cor ou arredondamento, edite as constantes do script e rode `python3
-brand/favicons/5-silhueta-olho/build-tile.py` (precisa do Pillow).
 Se o kit for atualizado, refaça a cópia acima; não edite `brand/` à mão.
 
 O Lovable ainda não existe no pacote de logos usado (`simple-icons`), por isso seu desenho está

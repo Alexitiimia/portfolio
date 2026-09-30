@@ -21,7 +21,6 @@ const files = import.meta.glob<string>(
     '/public/theme-init.js',
     '/public/site.webmanifest',
     '/public/robots.txt',
-    '/public/favicon.svg',
     '/src/styles/tokens.css',
   ],
   { query: '?raw', import: 'default', eager: true },
@@ -214,7 +213,8 @@ describe.each([
 
   it('declara idioma, ícones da identidade e tema', () => {
     expect(html).toMatch(/<html lang="pt-BR">/)
-    expect(html).toMatch(/rel="icon" href="\/favicon\.svg" type="image\/svg\+xml"/)
+    // Sem favicon.svg de propósito: o navegador preferiria o SVG e ignoraria o .ico com o corvo novo.
+    expect(html).not.toMatch(/favicon\.svg/)
     expect(html).toMatch(/rel="icon" href="\/favicon\.ico"/)
     expect(html).toMatch(/rel="apple-touch-icon" href="\/apple-touch-icon\.png"/)
     expect(html).toMatch(/rel="manifest" href="\/site\.webmanifest"/)
@@ -406,37 +406,11 @@ describe('ícones e manifesto do site', () => {
   })
 
   it('tem todos os arquivos de ícone que as páginas citam', () => {
-    for (const file of ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest']) {
+    for (const file of ['favicon.ico', 'apple-touch-icon.png', 'site.webmanifest']) {
       expect(publicFiles.has(file), `${file} não existe em public/`).toBe(true)
     }
     expect(publicFiles.has('favicon-32.png'), 'ícone antigo sobrando').toBe(false)
-  })
-
-  it('o favicon.svg é um corvo preto sobre um quadrado de cantos arredondados, igual em qualquer tema', () => {
-    const svg = read('/public/favicon.svg')
-
-    expect(svg).not.toMatch(/prefers-color-scheme|@media/i)
-    // Fundo: o primeiro retângulo cobre o desenho todo e tem cantos arredondados (rx > 0).
-    expect(svg).toMatch(/viewBox="0 0 (\d+) \1"/)
-    const side = matchOrThrow(svg, /viewBox="0 0 (\d+) \d+"/, 'o lado do desenho')
-    expect(svg).toMatch(
-      new RegExp(
-        `<rect width="${side}" height="${side}" rx="[1-9][\\d.]*" fill="#[0-9a-f]{6}"`,
-        'i',
-      ),
-    )
-    // Corvo: só preto (#0a0a0a) e o olho vermelho; nada branco por cima do fundo.
-    const ink = [...svg.matchAll(/fill="#0a0a0a"/gi)].length
-    expect(ink, 'o corvo precisa ser preto').toBeGreaterThan(15)
-    expect(svg).toMatch(/fill="#e3262b"/i)
-    expect(svg).not.toMatch(/fill="#(?:f5f5f5|fff|ffffff)"/i)
-  })
-
-  it('o favicon.svg é só desenho: sem script, imagem embutida nem endereço externo', () => {
-    const svg = read('/public/favicon.svg')
-
-    expect(svg).toMatch(/^<svg\b/)
-    expect(svg).not.toMatch(/<script|<image|<foreignObject|onload|href\s*=\s*"https?:/i)
+    expect(publicFiles.has('favicon.svg'), 'o SVG antigo sobrepõe o .ico novo').toBe(false)
   })
 })
 
