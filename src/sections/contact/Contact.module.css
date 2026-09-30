@@ -12,7 +12,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  margin-top: var(--space-7);
+  margin-top: var(--space-3);
 }
 
 .channel {
@@ -44,4 +44,11 @@
 
 .channelValue {
   opacity: 0.75;
+}
+
+.orChannel {
+  margin-top: var(--space-7);
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
 }

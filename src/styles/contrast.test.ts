@@ -67,6 +67,8 @@ const TEXT_ON_SURFACES: readonly (readonly [string, string])[] = [
 const CONTROL_BORDERS: readonly (readonly [string, string])[] = [
   ['--color-line-strong', '--color-bg'],
   ['--color-line-strong', '--color-surface'],
+  // Bolinha verde "disponível": é decorativa, mas precisa aparecer nos dois temas.
+  ['--color-online', '--color-bg'],
 ]
 
 describe.each([

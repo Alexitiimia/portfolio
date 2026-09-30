@@ -193,3 +193,18 @@ describe('Footer', () => {
     expect(screen.getByRole('contentinfo')).toBeInTheDocument()
   })
 })
+
+describe('Header: indicador de disponibilidade', () => {
+  it('mostra a bolinha verde só no botão de destaque, escondida de leitores de tela', () => {
+    renderHeaderWithSections()
+
+    const nav = screen.getByRole('navigation', { name: 'Principal' })
+    const links = within(nav).getAllByRole('link')
+    const cta = links.at(-1)
+    const dots = nav.querySelectorAll('span[aria-hidden="true"]:empty')
+
+    expect(dots).toHaveLength(1)
+    expect(cta?.contains(dots[0] ?? null)).toBe(true)
+    expect(cta).toHaveAccessibleName(sections[CTA_SECTION_ID].navLabel)
+  })
+})

@@ -2,7 +2,7 @@ import { cx } from '@/lib/cx'
 import type { CrowPose } from './crowPose'
 import styles from './CorvoSprite.module.css'
 
-export type CrowMotion = 'still' | 'takeoff' | 'flap'
+export type CrowMotion = 'still' | 'takeoff' | 'flap' | 'crouch' | 'land'
 
 const POSE_CLASS: Record<CrowPose, string | undefined> = {
   right: undefined,
@@ -14,12 +14,15 @@ const MOTION_CLASS: Record<CrowMotion, string | undefined> = {
   still: undefined,
   takeoff: styles.takeoff,
   flap: styles.flap,
+  crouch: styles.crouch,
+  land: styles.land,
 }
 
 interface CorvoSpriteProps {
   /** Para onde o corvo parado olha. Ignorado enquanto houver movimento. */
   readonly pose?: CrowPose
-  /** `takeoff`: decola, bate asas e pousa (uma vez). `flap`: bate asas sem parar. */
+  /** `takeoff`: decola, bate asas e pousa (uma vez). `flap`: bate asas sem parar.
+   * `crouch` e `land`: quadros parados de antes de decolar e de logo depois de pousar. */
   readonly motion?: CrowMotion
   readonly className?: string | undefined
 }

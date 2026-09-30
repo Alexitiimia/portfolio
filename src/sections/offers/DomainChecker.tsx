@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { LineIcon } from '@/components/ui/LineIcon'
 import { whatsappHref } from '@/content/contact'
+import { cx } from '@/lib/cx'
 import {
   DOMAIN_SUFFIX,
   NAME_MAX_LENGTH,
@@ -154,7 +155,7 @@ export function DomainChecker() {
             <LineIcon
               icon={message.icon}
               size={20}
-              className={message.tone === 'busy' ? styles.spinner : undefined}
+              className={cx(styles.icon, message.tone === 'busy' && styles.spinner)}
             />
             <div className={styles.text}>
               <p>{message.text}</p>
@@ -167,7 +168,7 @@ export function DomainChecker() {
                     external
                     arrow="↗"
                   >
-                    garantir pelo WhatsApp
+                    falar no WhatsApp
                   </ButtonLink>
                 </div>
               )}

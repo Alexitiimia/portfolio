@@ -11,6 +11,11 @@
   width: 4.5rem;
 }
 
+/* Espaço vazio com a proporção do sprite: o corvo do rodapé pousa aqui. */
+.slot {
+  aspect-ratio: 176 / 151;
+}
+
 .name {
   display: block;
   font-family: var(--font-mono);

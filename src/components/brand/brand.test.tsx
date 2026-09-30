@@ -1,3 +1,4 @@
+import { createRef } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { site } from '@/content/site'
@@ -44,11 +45,14 @@ describe('Brand', () => {
     expect(container).toHaveTextContent(site.tagline)
   })
 
-  it('no modo parado usa só o sprite, sem o corvo interativo', () => {
-    const { container } = render(<Brand href="#inicio" interactive={false} />)
+  it('com poleiro deixa o espaço do corvo vazio e entrega o elemento', () => {
+    const slotRef = createRef<HTMLSpanElement>()
+    const { container } = render(<Brand href="#inicio" slotRef={slotRef} />)
 
     expect(container.querySelector('[data-flying]')).toBeNull()
-    expect(container.querySelector('[data-pose="right"]')).not.toBeNull()
+    expect(container.querySelector('[data-pose]')).toBeNull()
+    expect(slotRef.current).toBeInstanceOf(HTMLSpanElement)
+    expect(slotRef.current).toBeEmptyDOMElement()
   })
 })
 
@@ -165,11 +169,74 @@ describe('CorvoIcon (logo do header)', () => {
 })
 
 describe('FooterCrow', () => {
-  it('é uma camada decorativa com o corvo batendo asas', () => {
-    const { container } = render(<FooterCrow />)
+  function renderCrow() {
+    const homeRef = createRef<HTMLSpanElement>()
+    const view = render(
+      <>
+        <span ref={homeRef} />
+        <FooterCrow homeRef={homeRef} />
+      </>,
+    )
+    return { ...view, sky: view.container.querySelector('[aria-hidden="true"]') }
+  }
 
-    expect(container.firstElementChild).toHaveAttribute('aria-hidden', 'true')
-    expect(container.querySelector('[data-motion="flap"]')).not.toBeNull()
+  it('é uma camada decorativa, com o corvo pousado no poleiro', () => {
+    const { sky } = renderCrow()
+
+    expect(sky).not.toBeNull()
+    expect(sky?.querySelector('[data-motion="still"]')).not.toBeNull()
+    expect(sky?.querySelector('[data-motion="flap"]')).toBeNull()
+  })
+
+  it('decola, passeia e volta a pousar sozinho', () => {
+    vi.useFakeTimers()
+    vi.spyOn(Math, 'random').mockReturnValue(0.5)
+    const homeRef = createRef<HTMLSpanElement>()
+    const { container } = render(
+      <>
+        <span ref={homeRef} />
+        <FooterCrow homeRef={homeRef} />
+      </>,
+    )
+    // O jsdom não tem layout: dá ao poleiro e ao céu um tamanho para o voo ser possível.
+    const sky = container.querySelector<HTMLElement>('[aria-hidden="true"]')
+    const perch = homeRef.current
+    if (sky === null || perch === null) throw new Error('corvo não renderizou')
+    sky.getBoundingClientRect = () => new DOMRect(0, 0, 1200, 600)
+    perch.getBoundingClientRect = () => new DOMRect(40, 300, 72, 62)
+
+    const sequence: string[] = []
+    for (let i = 0; i < 60 * 80; i++) {
+      act(() => {
+        vi.advanceTimersByTime(16)
+      })
+      const motion = sky.querySelector('[data-motion]')?.getAttribute('data-motion') ?? ''
+      if (sequence.at(-1) !== motion) sequence.push(motion)
+    }
+
+    // Pousado -> agacha -> voa -> pousa -> pousado de novo (e assim por diante).
+    expect(sequence.join(',')).toContain('still,crouch,flap,land,still')
+  })
+
+  it('com "reduzir movimento" fica sempre pousado', () => {
+    mockMatchMedia(true)
+    vi.useFakeTimers()
+    const { sky } = renderCrow()
+
+    act(() => {
+      vi.advanceTimersByTime(60_000)
+    })
+
+    expect(sky?.querySelector('[data-motion="still"]')).not.toBeNull()
+  })
+
+  it('para de animar ao sair de cena e ao desmontar', () => {
+    const cancel = vi.spyOn(window, 'cancelAnimationFrame')
+    const { unmount } = renderCrow()
+
+    unmount()
+
+    expect(cancel).toHaveBeenCalled()
   })
 })
 

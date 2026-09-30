@@ -92,6 +92,40 @@
   color: inherit;
 }
 
+/* Bolinha verde de "disponível": pulsa devagar. Decorativa, sempre com texto ao lado. */
+.online {
+  position: relative;
+  flex: none;
+  align-self: center;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--color-online);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .online::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: var(--color-online);
+    animation: pulsar 1.8s ease-out infinite;
+  }
+}
+
+@keyframes pulsar {
+  0% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+
 /* Telas largas: o menu fica na própria barra e o botão "menu" some. */
 @media (min-width: 68rem) {
   .nav,

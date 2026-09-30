@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import { CodeXml, Compass, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Brand } from '@/components/brand/Brand'
 import { FooterCrow } from '@/components/brand/FooterCrow'
@@ -15,15 +16,18 @@ import styles from './Footer.module.css'
 const CURRENT_YEAR = new Date().getFullYear()
 
 export function Footer() {
+  // O corvo do rodapé é o logo: pousa no espaço dele e sai de lá para passear.
+  const perch = useRef<HTMLSpanElement>(null)
+
   return (
     <footer className={styles.foot}>
-      <FooterCrow />
+      <FooterCrow homeRef={perch} />
 
       <Container className={styles.wrap}>
         <div className={styles.grid}>
           <div>
             <div className={styles.brandRow}>
-              <Brand href="#inicio" interactive={false} />
+              <Brand href="#inicio" slotRef={perch} />
             </div>
             <p className={styles.about}>{site.footer.about}</p>
           </div>

@@ -63,7 +63,7 @@ describe('DomainChecker: nome livre', () => {
       expect(status()).toHaveTextContent(`minha-loja.${DOMAIN_SUFFIX} está livre agora`)
     })
 
-    const link = screen.getByRole('link', { name: /garantir pelo WhatsApp/ })
+    const link = screen.getByRole('link', { name: /falar no WhatsApp/ })
     const href = new URL(link.getAttribute('href') ?? '')
     expect(href.origin + href.pathname).toBe('https://wa.me/5547991275759')
     expect(href.searchParams.get('text')).toContain(`minha-loja.${DOMAIN_SUFFIX}`)

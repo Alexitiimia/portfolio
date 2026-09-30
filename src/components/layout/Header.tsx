@@ -46,7 +46,9 @@ export function Header() {
                   aria-current={activeId === item.id ? 'location' : undefined}
                   onClick={closeMenu}
                 >
-                  {item.isCta ? null : (
+                  {item.isCta ? (
+                    <span className={styles.online} aria-hidden="true" />
+                  ) : (
                     <span className={styles.index}>{sectionNumber(item.id)}</span>
                   )}
                   {item.label}

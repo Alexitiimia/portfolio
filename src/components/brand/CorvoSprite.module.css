@@ -27,6 +27,14 @@
   background-position: 15.3846% 0;
 }
 
+.crouch {
+  background-position: 23.0769% 0;
+}
+
+.land {
+  background-position: 100% 0;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .takeoff {
     animation: decolar 2810ms step-end 1 both;

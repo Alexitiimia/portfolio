@@ -71,7 +71,7 @@ export const sections: Readonly<Record<SectionId, SectionMeta>> = {
   contato: {
     label: 'Contato',
     navLabel: 'contato --24h',
-    lead: 'Escolha o canal de sua preferência.',
+    lead: 'Monte o orçamento e envie pelo WhatsApp, ou fale por outro canal.',
     icon: MessageCircle,
   },
 }
