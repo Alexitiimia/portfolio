@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { site } from '@/content/site'
 import { THEME_STORAGE_KEY } from '@/lib/theme'
+import { SELF_WORKER_NAME } from '../../worker/domain.ts'
 
 /*
   "Contrato de implantação": confere os arquivos estáticos que a Cloudflare serve, porque erros
@@ -239,14 +240,71 @@ describe('arquivos de suporte', () => {
   })
 
   it('wrangler.jsonc aponta para o Worker "portfolio" e para a pasta do build', () => {
-    const config = JSON.parse(read('/wrangler.jsonc').replace(/^\s*\/\/.*$/gm, '')) as {
-      name: string
-      assets: { directory: string; not_found_handling: string }
-    }
+    const config = wranglerConfig()
 
     expect(config.name).toBe('portfolio')
     expect(config.assets.directory).toBe('./dist')
     expect(config.assets.not_found_handling).toBe('404-page')
     expect(publicFiles.has('404.html')).toBe(true)
+  })
+})
+
+/* ---------- Worker da verificação de domínio ---------- */
+
+interface WranglerConfig {
+  name: string
+  main?: string
+  assets: {
+    directory: string
+    not_found_handling: string
+    binding?: string
+    run_worker_first?: string[] | boolean
+  }
+  ratelimits?: { name: string; simple: { limit: number; period: number } }[]
+}
+
+function wranglerConfig(): WranglerConfig {
+  return JSON.parse(read('/wrangler.jsonc').replace(/^\s*\/\/.*$/gm, '')) as WranglerConfig
+}
+
+describe('Worker da verificação de domínio', () => {
+  it('só as rotas /api/* passam pelo Worker antes dos arquivos estáticos', () => {
+    const { assets } = wranglerConfig()
+
+    // Assim o site inteiro continua sendo servido direto, com os cabeçalhos do _headers.
+    expect(assets.run_worker_first).toEqual(['/api/*'])
+    expect(assets.binding).toBe('ASSETS')
+  })
+
+  it('o nome do Worker no código é o mesmo do wrangler.jsonc', () => {
+    // A verificação usa este nome como prova de que a resposta da Cloudflare é confiável.
+    expect(SELF_WORKER_NAME).toBe(wranglerConfig().name)
+  })
+
+  it('aponta para o arquivo do Worker, que existe', () => {
+    const workerFiles = Object.keys(import.meta.glob('/worker/index.ts'))
+
+    expect(wranglerConfig().main).toBe('worker/index.ts')
+    expect(workerFiles).toEqual(['/worker/index.ts'])
+  })
+
+  it('limita as consultas por IP', () => {
+    const limiter = wranglerConfig().ratelimits?.find((item) => item.name === 'DOMAIN_LIMITER')
+
+    expect(limiter, 'falta o limitador DOMAIN_LIMITER').toBeDefined()
+    expect(limiter?.simple.limit).toBeLessThanOrEqual(60)
+    expect([10, 60]).toContain(limiter?.simple.period)
+  })
+
+  it('não guarda segredo nem ID da conta no arquivo público', () => {
+    const raw = read('/wrangler.jsonc')
+
+    expect(raw).not.toMatch(/\b[0-9a-f]{32}\b/i)
+    expect(raw).not.toMatch(/"vars"/)
+    expect(raw).not.toMatch(/"account_id"/)
+  })
+
+  it('a página só chama o próprio site: a CSP não libera nenhum outro destino de rede', () => {
+    expect(headerValue('Content-Security-Policy')).toMatch(/connect-src 'self'(;|$)/)
   })
 })

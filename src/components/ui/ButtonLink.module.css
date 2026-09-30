@@ -40,3 +40,19 @@
   background: var(--color-fg);
   color: var(--color-bg);
 }
+
+.button:disabled {
+  cursor: progress;
+  opacity: 0.55;
+}
+
+.primary:disabled:hover {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
+.secondary:disabled:hover {
+  border-color: var(--color-line-strong);
+  background: transparent;
+  color: var(--color-fg);
+}

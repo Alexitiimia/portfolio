@@ -1,5 +1,5 @@
 import { brands, type BrandIconData } from '@/components/icons/brands'
-import type { ContactHref } from '@/lib/url'
+import type { ContactHref, HttpsUrl } from '@/lib/url'
 import { site } from './site'
 
 export interface ContactChannel {
@@ -12,6 +12,14 @@ export interface ContactChannel {
   readonly icon: BrandIconData
 }
 
+/** Número do WhatsApp em formato internacional, só dígitos (55 + DDD + número). */
+const WHATSAPP_NUMBER = '5547991275759'
+
+/** Link que abre a conversa do WhatsApp já com a mensagem escrita. */
+export function whatsappHref(message: string): HttpsUrl {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+}
+
 /**
  * Canais de contato exibidos na seção "Contato" e no rodapé. Só entram aqui os que você quer
  * tornar públicos. Exemplos de `href`: 'https://wa.me/55DDDNUMERO',
@@ -22,9 +30,7 @@ export const contactChannels: readonly ContactChannel[] = [
     id: 'whatsapp',
     label: 'WhatsApp',
     value: '(47) 99127-5759',
-    href: `https://wa.me/5547991275759?text=${encodeURIComponent(
-      'Olá! Vi seu portfólio e gostaria de pedir um orçamento.',
-    )}`,
+    href: whatsappHref('Olá! Vi seu portfólio e gostaria de pedir um orçamento.'),
     icon: brands.whatsapp,
   },
   {

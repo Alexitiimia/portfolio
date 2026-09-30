@@ -19,7 +19,7 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    include: ['src/**/*.test.{ts,tsx}', 'worker/**/*.test.ts'],
     restoreMocks: true,
     unstubGlobals: true,
     // Por padrão o Vitest esvazia todo .css importado. Liberamos só a leitura como texto

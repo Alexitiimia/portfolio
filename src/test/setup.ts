@@ -9,6 +9,8 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  // Os testes do Worker (worker/) rodam em Node, sem janela nem documento.
+  if (typeof window === 'undefined') return
   cleanup()
   window.localStorage.clear()
   document.documentElement.removeAttribute('data-theme')

@@ -5,6 +5,7 @@
 ```
 brand/            Kit original da identidade (a marca hoje é "The Crow"). Fonte da verdade; não entra no build.
 docs/             Documentação.
+worker/           Único código de servidor: /api/dominio (verificação de nomes livres). Ver docs/DEPLOY.md.
 public/           Copiado como está para a raiz do site (sem hash): _headers, 404, favicons, robots.
 src/
   app/            Composição da página (App) e ErrorBoundary.

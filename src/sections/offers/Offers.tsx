@@ -1,6 +1,7 @@
 import { Section } from '@/components/layout/Section'
 import { IconBox } from '@/components/ui/IconBox'
 import { offers } from '@/content/offers'
+import { DomainChecker } from './DomainChecker'
 import styles from './Offers.module.css'
 
 export function Offers() {
@@ -18,6 +19,8 @@ export function Offers() {
           </li>
         ))}
       </ul>
+
+      <DomainChecker />
     </Section>
   )
 }

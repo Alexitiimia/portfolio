@@ -16,7 +16,8 @@ export const offers: readonly Offer[] = [
     id: 'dominio',
     label: 'Domínio',
     highlight: 'Grátis por 1 ano',
-    description: 'Domínio grátis durante o primeiro ano.',
+    description:
+      'Endereço grátis durante o primeiro ano, no formato seunome.axeldev.workers.dev. Confira abaixo se o nome que você quer está livre.',
     icon: Globe,
   },
   {
@@ -28,16 +29,17 @@ export const offers: readonly Offer[] = [
   },
   {
     id: 'suporte',
-    label: 'Suporte',
+    label: 'Suporte técnico',
     highlight: '24 horas por dia',
-    description: 'Manutenção de bugs e solicitações de ajuda 24 horas por dia.',
+    description:
+      'Correção de bugs e atendimento de pedidos de ajuda técnica com o seu site ou sistema, a qualquer hora.',
     icon: LifeBuoy,
   },
   {
     id: 'primeiros-30-dias',
     label: 'Primeiros 30 dias',
-    highlight: 'Grátis na compra',
-    description: 'Os primeiros 30 dias são grátis ao realizar uma compra.',
+    highlight: 'Suporte técnico grátis',
+    description: 'Depois da compra, os primeiros 30 dias de suporte técnico não têm custo.',
     icon: CalendarCheck,
   },
 ]

@@ -1,0 +1,138 @@
+.panel {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.title {
+  font-size: var(--text-xl);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.lead {
+  max-width: 60ch;
+  color: var(--color-fg-muted);
+  font-size: var(--text-sm);
+}
+
+.lead b {
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.label {
+  margin-top: var(--space-3);
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Campo e sufixo fixo lado a lado, como um único endereço. */
+.field {
+  display: flex;
+  flex: 1 1 22rem;
+  align-items: center;
+  min-width: 0;
+  min-height: 2.75rem;
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
+
+.field:focus-within {
+  border-color: var(--color-fg);
+  outline: 2px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+.input {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0 0 0 var(--space-4);
+  border: 0;
+  background: transparent;
+  color: var(--color-fg);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  outline: 0;
+}
+
+.input::placeholder {
+  color: var(--color-fg-subtle);
+}
+
+.suffix {
+  flex: none;
+  padding-inline: 0 var(--space-4);
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.hint {
+  color: var(--color-fg-subtle);
+  font-size: var(--text-xs);
+}
+
+/* Reserva o espaço do resultado para a página não "pular" quando ele aparece. */
+.result {
+  min-height: 3.5rem;
+  margin-top: var(--space-2);
+}
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-line-strong);
+  border-radius: var(--radius);
+}
+
+.message[data-tone='good'] {
+  border-color: var(--color-fg);
+}
+
+.text {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.message[data-tone='busy'] .text,
+.message[data-tone='warn'] .text {
+  color: var(--color-fg-muted);
+}
+
+.offer {
+  display: flex;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
