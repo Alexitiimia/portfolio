@@ -184,7 +184,7 @@ describe.each([
 
   it('declara idioma, ícones da identidade e tema', () => {
     expect(html).toMatch(/<html lang="pt-BR">/)
-    expect(html).toMatch(/rel="icon" href="\/favicon\.svg"/)
+    expect(html).toMatch(/rel="icon" href="\/favicon-32\.png"/)
     expect(html).toMatch(/rel="apple-touch-icon" href="\/apple-touch-icon\.png"/)
     expect(html).toMatch(/<script src="\/theme-init\.js"><\/script>/)
   })

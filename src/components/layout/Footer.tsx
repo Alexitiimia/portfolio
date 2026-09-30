@@ -23,7 +23,7 @@ export function Footer() {
         <div className={styles.grid}>
           <div>
             <div className={styles.brandRow}>
-              <Brand href="#inicio" />
+              <Brand href="#inicio" animated={false} />
             </div>
             <p className={styles.about}>{site.footer.about}</p>
           </div>

@@ -1,8 +1,9 @@
 import { Section } from '@/components/layout/Section'
 import { IconBox } from '@/components/ui/IconBox'
-import { capabilities, methodologies, type Capability } from '@/content/security'
+import { capabilities, methodologies, type Capability, type Methodology } from '@/content/security'
 import { BoxDiagram } from './BoxDiagram'
 import styles from './Security.module.css'
+import { useBoxInteraction } from './useBoxInteraction'
 
 function CapabilityItem({ capability }: { readonly capability: Capability }) {
   return (
@@ -16,20 +17,29 @@ function CapabilityItem({ capability }: { readonly capability: Capability }) {
   )
 }
 
+/** Um nível de conhecimento. O cartão inteiro reage ao mouse: a caixa acompanha o ponteiro. */
+function MethodCard({ method }: { readonly method: Methodology }) {
+  const { view, cardRef, svgRef, handlers } = useBoxInteraction()
+
+  return (
+    <li ref={cardRef} className={styles.method} {...handlers}>
+      <BoxDiagram variant={method.id} view={view} svgRef={svgRef} />
+      <div>
+        <p className={styles.knowledge}>Conhecimento do sistema: {method.knowledge}</p>
+        <h3 className={styles.name}>{method.name}</h3>
+        <p className={styles.translation}>{method.translation}</p>
+      </div>
+      <p className={styles.description}>{method.description}</p>
+    </li>
+  )
+}
+
 export function Security() {
   return (
     <Section id="seguranca">
       <ul role="list" className={styles.methods}>
         {methodologies.map((method) => (
-          <li key={method.id} className={styles.method}>
-            <BoxDiagram variant={method.id} />
-            <div>
-              <p className={styles.knowledge}>Conhecimento do sistema: {method.knowledge}</p>
-              <h3 className={styles.name}>{method.name}</h3>
-              <p className={styles.translation}>{method.translation}</p>
-            </div>
-            <p className={styles.description}>{method.description}</p>
-          </li>
+          <MethodCard key={method.id} method={method} />
         ))}
       </ul>
 

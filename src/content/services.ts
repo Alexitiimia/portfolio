@@ -1,9 +1,12 @@
 import {
   ChartNoAxesCombined,
+  Cpu,
   CreditCard,
   GraduationCap,
   KeyRound,
   MailCheck,
+  PenTool,
+  Shapes,
   ShoppingCart,
   Smartphone,
   Truck,
@@ -81,6 +84,26 @@ export const services: readonly Service[] = [
     description:
       'Scripts automatizados e eficazes para manutenção, manuseio, armazenamento e atualização de dados.',
     icon: Workflow,
+  },
+  {
+    id: 'previa-de-design',
+    title: 'Prévia de design',
+    description:
+      'Protótipo visual do site ou sistema antes de programar, para você aprovar layout, cores e textos com clareza.',
+    icon: PenTool,
+  },
+  {
+    id: 'criacao-de-logo',
+    title: 'Criação de logo',
+    description: 'Logo e identidade visual simples para o seu negócio, prontos para site e redes.',
+    icon: Shapes,
+  },
+  {
+    id: 'automacao-de-sistemas',
+    title: 'Automação de sistemas',
+    description:
+      'Automação de sistemas virtuais, do processo interno à integração entre ferramentas.',
+    icon: Cpu,
   },
   {
     id: 'mentoria',

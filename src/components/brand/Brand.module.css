@@ -6,15 +6,12 @@
   text-decoration: none;
 }
 
-/* Quadrado com as cores invertidas: no tema escuro é branco, no claro é preto. */
+/* Quadro claro nos dois temas: o corvo é escuro e precisa de fundo claro para aparecer. */
 .tile {
-  display: grid;
   flex: none;
-  place-items: center;
-  width: 3rem;
-  height: 3rem;
-  background: var(--color-fg);
-  color: var(--color-bg);
+  width: 4rem;
+  background: var(--brand-tile);
+  box-shadow: inset 0 0 0 1px var(--color-line);
 }
 
 .name {
