@@ -17,6 +17,8 @@ const files = import.meta.glob<string>(
     '/public/404.html',
     '/public/404.css',
     '/public/theme-init.js',
+    '/public/site.webmanifest',
+    '/public/favicon.svg',
     '/src/styles/tokens.css',
   ],
   { query: '?raw', import: 'default', eager: true },
@@ -188,8 +190,10 @@ describe.each([
 
   it('declara idioma, ícones da identidade e tema', () => {
     expect(html).toMatch(/<html lang="pt-BR">/)
-    expect(html).toMatch(/rel="icon" href="\/favicon-32\.png"/)
+    expect(html).toMatch(/rel="icon" href="\/favicon\.svg" type="image\/svg\+xml"/)
+    expect(html).toMatch(/rel="icon" href="\/favicon\.ico"/)
     expect(html).toMatch(/rel="apple-touch-icon" href="\/apple-touch-icon\.png"/)
+    expect(html).toMatch(/rel="manifest" href="\/site\.webmanifest"/)
     expect(html).toMatch(/<script src="\/theme-init\.js"><\/script>/)
   })
 })
@@ -336,5 +340,58 @@ describe('página /orcamento/', () => {
 
     expect(config).toContain("'./index.html'")
     expect(config).toContain("'./orcamento/index.html'")
+  })
+})
+
+describe('ícones e manifesto do site', () => {
+  const manifest = JSON.parse(read('/public/site.webmanifest')) as {
+    name: string
+    short_name: string
+    start_url: string
+    theme_color: string
+    background_color: string
+    icons: { src: string; sizes: string; type: string }[]
+  }
+
+  it('o manifesto usa o nome da marca e as cores do tema escuro', () => {
+    const tokens = read('/src/styles/tokens.css')
+    const dark = matchOrThrow(
+      tokens,
+      /:root\s*\{[^}]*--color-bg:\s*(#[0-9a-f]{6})/i,
+      'o --color-bg escuro',
+    )
+
+    expect(manifest.name).toBe(site.name)
+    expect(manifest.short_name).toBe(site.name)
+    expect(manifest.start_url).toBe('/')
+    expect(manifest.theme_color).toBe(dark)
+    expect(manifest.background_color).toBe(dark)
+  })
+
+  it('todo ícone do manifesto existe em public/ e é PNG do tamanho declarado no nome', () => {
+    expect(manifest.icons.length).toBeGreaterThan(0)
+    for (const icon of manifest.icons) {
+      expect(publicFiles.has(icon.src.slice(1)), `${icon.src} não existe em public/`).toBe(true)
+      expect(icon.type).toBe('image/png')
+      const side = matchOrThrow(icon.sizes, /^(\d+)x\1$/, 'tamanho quadrado')
+      expect(icon.src, 'o nome do arquivo diz o tamanho').toContain(side)
+    }
+    expect(manifest.icons.map((icon) => icon.sizes)).toEqual(
+      expect.arrayContaining(['192x192', '512x512']),
+    )
+  })
+
+  it('tem todos os arquivos de ícone que as páginas citam', () => {
+    for (const file of ['favicon.svg', 'favicon.ico', 'apple-touch-icon.png', 'site.webmanifest']) {
+      expect(publicFiles.has(file), `${file} não existe em public/`).toBe(true)
+    }
+    expect(publicFiles.has('favicon-32.png'), 'ícone antigo sobrando').toBe(false)
+  })
+
+  it('o favicon.svg é só desenho: sem script, imagem embutida nem endereço externo', () => {
+    const svg = read('/public/favicon.svg')
+
+    expect(svg).toMatch(/^<svg\b/)
+    expect(svg).not.toMatch(/<script|<image|<foreignObject|onload|href\s*=\s*"https?:/i)
   })
 })

@@ -1,0 +1,13 @@
+Favicon Corvo — opção 09 (silhueta + olho)
+
+Para o site (copie para a raiz e cole head.html no <head>):
+  favicon.svg          adaptativo: preto em tema claro, branco em tema escuro (Chrome, Firefox, Edge)
+  favicon.ico          16/32/48 px, preto — reserva para Safari e navegadores antigos
+  apple-touch-icon.png 180 px, corvo branco em fundo preto (tela inicial do iPhone)
+  icon-192.png / icon-512.png + site.webmanifest  (Android / PWA)
+
+Extras:
+  favicon-16/32/48.png e versões -branco   PNGs transparentes
+  corvo-preto.svg / corvo-branco.svg       vetores de cor fixa
+
+Use sempre em múltiplos de 16 px para o pixel art não borrar.

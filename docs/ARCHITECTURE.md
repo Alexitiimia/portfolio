@@ -61,17 +61,18 @@ preview:cf`) e uma extensão como axe DevTools ou o Lighthouse.
 
 O kit em `brand/` é a origem; o que o site usa foi copiado/portado assim:
 
-| Do kit                              | Onde está no site                                                                          |
-| ----------------------------------- | ------------------------------------------------------------------------------------------ |
-| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                    |
-| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                   |
-| `favicons/1-poleiro/*`              | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`                                |
-| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                  |
-| `brand/crow/crow.png`               | `components/brand/{CorvoSprite,CorvoIcon,FooterCrow}` + `src/assets/brand/crow-sprite.png` |
-| `brand/crow/crowfavicon.png`        | `public/favicon-32.png`, `favicon.ico`, `apple-touch-icon.png`                             |
-| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                       |
+| Do kit                              | Onde está no site                                                                                   |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `brand.css` (paleta e fontes)       | `src/styles/tokens.css`                                                                             |
+| `layout.css` + `header/footer.html` | `components/layout/{StatusBar,Header,Footer}` e `components/brand/Brand`                            |
+| `favicons/5-silhueta-olho/*`        | `public/favicon.svg`, `favicon.ico`, `apple-touch-icon.png`, `icon-192/512.png`, `site.webmanifest` |
+| `animacoes/corvo-404-*`             | `public/404.css` + `corvo-404-sprite.png`                                                           |
+| `brand/crow/crow.png`               | `components/brand/{CorvoSprite,CorvoIcon,FooterCrow}` + `src/assets/brand/crow-sprite.png`          |
+| `animacoes/` (demais estados)       | `components/brand/CorvoMascot` + `src/assets/brand/`                                                |
 
-Para trocar o favicon por outra variante, copie os 3 arquivos da pasta escolhida para `public/`.
+Para trocar o favicon por outra variante, copie os arquivos da pasta escolhida para `public/` (o
+SVG, o `.ico`, o `apple-touch-icon.png` e, para Android, `icon-192/512.png` + `site.webmanifest`).
+O manifesto usa o nome da marca (`site.name`) e o preto do tema escuro; `deploy.test.ts` confere.
 Se o kit for atualizado, refaça a cópia acima; não edite `brand/` à mão.
 
 O Lovable ainda não existe no pacote de logos usado (`simple-icons`), por isso seu desenho está
@@ -91,6 +92,6 @@ embutido em `brands.ts` com a fonte anotada. Troque por `siLovable` quando o pac
   asas e virando nas pontas (28 s por volta, só CSS com `cqw`/`cqh`).
 - Mudar a duração da decolagem exige mexer em `CorvoSprite.module.css`, `CorvoIcon.module.css` e
   `FLIGHT_MS` em `CorvoIcon.tsx`.
-- `build-favicon.py` gera o favicon: transparente, o maior possível sem cortar, com contorno claro
-  fino para aparecer em aba escura.
+- `build-favicon.py` e `crowfavicon.png` geravam o favicon antigo (cabeça com contorno claro). O site
+  hoje usa o kit `favicons/5-silhueta-olho`; esses dois ficam só como fonte.
 - O tom escuro do corvo ganha esse contorno (`--crow-glow`) só no tema escuro.
