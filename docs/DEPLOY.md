@@ -105,6 +105,26 @@ de `brand/og/`.
 - **Instagram:** o cartão aparece em mensagens diretas e nos stories com link. Legenda de
   postagem não vira link clicável, então lá só o endereço aparece como texto.
 - O `robots.txt` deixa todos os robôs entrarem (eles precisam ler a página e a imagem).
+- **Miniatura quadrada (bio.site):** a imagem é cortada no centro, num quadrado de 630 × 630. Por isso
+  tudo que importa na `og-image.png` fica nesse quadrado (ver `brand/og/LEIAME.md`).
+
+## SEO (aparecer no Google)
+
+O que o código já faz: título e descrição com nome e palavras-chave em cada idioma
+(`src/i18n/meta.ts`), `canonical` e `hreflang`, dados estruturados schema.org (Person e WebSite, em
+JSON-LD na página inicial), `sitemap.xml` e `robots.txt` gerados no build a partir de `SITE_ORIGIN`
+(`src/i18n/seo.ts`). O que só você pode fazer:
+
+1. Entrar em [search.google.com/search-console](https://search.google.com/search-console), adicionar o
+   site e enviar `https://portfolio.axeldev.workers.dev/sitemap.xml`. Se escolher a verificação por
+   "tag HTML", me passe o código que eu coloco no `index.html`.
+2. Repetir no [Bing Webmaster Tools](https://www.bing.com/webmasters) (ele aceita importar do Google).
+3. Conseguir links para o site: GitHub, LinkedIn e Instagram apontando para ele ajudam.
+4. **Domínio próprio** (ex.: `endrikyaxel.com.br`) pesa bem mais que um `workers.dev`. Ao trocar, mude só
+   `SITE_ORIGIN` e reenvie o sitemap.
+
+Indexar leva de dias a semanas, e pesquisar só "The Crow" não vai trazer o site (há muita coisa com esse
+nome). O caminho realista é o nome "Endriky Axel" e termos como "desenvolvedor full stack" + cidade.
 
 ## bio.site
 

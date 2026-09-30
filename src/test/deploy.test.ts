@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { site } from '@/content/site'
 import { renderPage } from '@/i18n/html'
 import { LANGS, SITE_ORIGIN, pagePath, type Lang, type PageId } from '@/i18n/lang'
+import { renderRobots, renderSitemap } from '@/i18n/seo'
 import { THEME_STORAGE_KEY } from '@/lib/theme'
 import { SELF_WORKER_NAME } from '../../worker/domain.ts'
 
@@ -20,7 +21,6 @@ const files = import.meta.glob<string>(
     '/public/404.css',
     '/public/theme-init.js',
     '/public/site.webmanifest',
-    '/public/robots.txt',
     '/src/styles/tokens.css',
   ],
   { query: '?raw', import: 'default', eager: true },
@@ -196,6 +196,8 @@ describe.each([
 
   it('não tem script, estilo nem evento inline (a CSP bloquearia em produção)', () => {
     for (const [, attributes = ''] of html.matchAll(/<script\b([^>]*)>/gi)) {
+      // JSON-LD (dados para o Google) não é código: o navegador não executa e a CSP não se aplica.
+      if (/\btype\s*=\s*"application\/ld\+json"/.test(attributes)) continue
       expect(attributes, 'todo <script> precisa de src').toMatch(/\bsrc\s*=/)
     }
     expect(html).not.toMatch(/<style\b/i)
@@ -510,10 +512,37 @@ describe('prévia do link: o site inteiro', () => {
     expect([...new Set(origins)]).toEqual([SITE_ORIGIN])
   })
 
-  it('o robots.txt deixa os robôs de prévia entrarem', () => {
-    const robots = read('/public/robots.txt')
+  it('o robots.txt deixa os robôs entrarem e aponta para o sitemap', () => {
+    const robots = renderRobots()
 
     expect(robots).toMatch(/^User-agent:\s*\*/m)
     expect(robots).not.toMatch(/^Disallow:\s*\/\s*$/m)
+    expect(robots).toContain(`Sitemap: ${SITE_ORIGIN}/sitemap.xml`)
+  })
+
+  it('o sitemap lista toda página de cada idioma, com os hreflang', () => {
+    const sitemap = renderSitemap()
+
+    for (const { lang, path } of previewPages) {
+      expect(sitemap, `${lang} ${path}`).toContain(`<loc>${SITE_ORIGIN}${path}</loc>`)
+    }
+    expect(sitemap).toContain('hreflang="x-default"')
+    expect(sitemap).not.toMatch(/<loc>(?!https:\/\/)/)
+  })
+
+  it('a página inicial traz dados estruturados (Person e WebSite) sem contato privado', () => {
+    for (const lang of LANGS) {
+      const html = readPage('/index.html', lang)
+      const json = matchOrThrow(
+        html,
+        /<script type="application\/ld\+json">(.*?)<\/script>/s,
+        `o JSON-LD (${lang})`,
+      )
+      const data = JSON.parse(json) as { '@graph': { '@type': string; sameAs?: string[] }[] }
+      const types = data['@graph'].map((item) => item['@type'])
+
+      expect(types).toEqual(['WebSite', 'Person'])
+      expect(json).not.toMatch(/telephone|email|birthDate|wa\.me/i)
+    }
   })
 })

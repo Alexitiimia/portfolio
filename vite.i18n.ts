@@ -1,5 +1,6 @@
 import type { Plugin } from 'vite'
 import { renderPage } from './src/i18n/html.ts'
+import { renderRobots, renderSitemap } from './src/i18n/seo.ts'
 import { DEFAULT_LANG, LANGS, pageFile, parsePath, type PageId } from './src/i18n/lang.ts'
 
 /** Modelo de cada página (os arquivos de entrada do Vite) e o nome que ele ganha em `dist/`. */
@@ -82,6 +83,10 @@ export function i18nPages(): Plugin {
         }
         template.source = renderPage(restored, DEFAULT_LANG, page)
       }
+
+      // Endereços para os buscadores: saem daqui para seguir o SITE_ORIGIN sem ninguém lembrar de mexer.
+      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: renderSitemap() })
+      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: renderRobots() })
     },
   }
 }

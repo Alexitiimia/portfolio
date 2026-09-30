@@ -13,7 +13,7 @@ function escapeHtml(value: string): string {
 }
 
 /** Marcadores que já trazem HTML pronto (e por isso não são escapados). */
-const RAW_TOKENS: ReadonlySet<string> = new Set(['alternates', 'ogLocaleAlternates'])
+const RAW_TOKENS: ReadonlySet<string> = new Set(['alternates', 'ogLocaleAlternates', 'jsonLd'])
 
 /**
  * Preenche os `{{marcadores}}` de um modelo de página (index.html ou orcamento/index.html) com os

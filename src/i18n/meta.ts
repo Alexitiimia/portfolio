@@ -28,27 +28,27 @@ interface PageMeta {
 const META: Readonly<Record<PageId, Readonly<Record<Lang, PageMeta>>>> = {
   home: {
     pt: {
-      title: 'The Crow · Dev e Segurança',
+      title: 'Endriky Axel · Dev Full Stack e Segurança | The Crow',
       description:
-        'Sites de vendas, gestão financeira, automações e análise de segurança. Front-end e back-end, com domínio grátis por 1 ano e suporte 24h.',
+        'Endriky Axel, dev full stack e de segurança. Sites de vendas, gestão financeira, automações e análise de segurança. Domínio grátis por 1 ano e suporte 24h.',
       imageAlt:
         'The Crow: sistemas web seguros, do banco de dados à interface. Por Endriky Axel, full stack e segurança da informação. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho.',
       noscript: 'Este site precisa de JavaScript para funcionar.',
       noscriptLink: 'github.com/Alexitiimia',
     },
     en: {
-      title: 'The Crow · Dev & Security',
+      title: 'Endriky Axel · Full Stack Dev & Security | The Crow',
       description:
-        'Sales websites, financial management, automations and security analysis. Front end and back end, with a free domain for 1 year and 24/7 support.',
+        'Endriky Axel, full stack and security developer. Sales websites, financial management, automations and security analysis. Free domain for 1 year and 24/7 support.',
       imageAlt:
         'The Crow: secure web systems, from the database to the interface. By Endriky Axel, full stack and information security. Beside it, the head of a pixel-art crow with a red eye.',
       noscript: 'This site needs JavaScript to work.',
       noscriptLink: 'github.com/Alexitiimia',
     },
     es: {
-      title: 'The Crow · Dev y Seguridad',
+      title: 'Endriky Axel · Dev Full Stack y Seguridad | The Crow',
       description:
-        'Sitios de ventas, gestión financiera, automatizaciones y análisis de seguridad. Front-end y back-end, con dominio gratis por 1 año y soporte 24 h.',
+        'Endriky Axel, dev full stack y de seguridad. Sitios de ventas, gestión financiera, automatizaciones y análisis de seguridad. Dominio gratis por 1 año y soporte 24 h.',
       imageAlt:
         'The Crow: sistemas web seguros, de la base de datos a la interfaz. Por Endriky Axel, full stack y seguridad de la información. Al lado, la cabeza de un cuervo en pixel art con el ojo rojo.',
       noscript: 'Este sitio necesita JavaScript para funcionar.',
@@ -86,10 +86,60 @@ const META: Readonly<Record<PageId, Readonly<Record<Lang, PageMeta>>>> = {
   },
 }
 
-/** Imagem da prévia do link (1200x630), em public/. Igual em todos os idiomas. */
+/**
+ * Imagem da prévia do link (1200x630), em public/. Igual em todos os idiomas.
+ * O `?v=` força WhatsApp, Discord, bio.site etc. a buscarem a imagem de novo; some um número a cada troca.
+ */
 const OG_IMAGE: Readonly<Record<PageId, string>> = {
-  home: 'og-image.png',
-  quote: 'og-orcamento.png',
+  home: 'og-image.png?v=2',
+  quote: 'og-orcamento.png?v=2',
+}
+
+/** Perfis públicos que já aparecem na seção Contato (src/content/contact.ts e site.ts). */
+const PROFILES = [
+  'https://github.com/Alexitiimia',
+  'https://www.linkedin.com/in/endriky-657a89197/',
+  'https://www.instagram.com/antigo.dont/',
+] as const
+
+/**
+ * Dados estruturados (schema.org) da página inicial: dizem ao Google quem é a pessoa, qual é o site e
+ * onde estão os perfis dela. Não entram telefone, e-mail nem data de nascimento de propósito.
+ */
+function homeJsonLd(lang: Lang, url: string, description: string): string {
+  const jobTitle = {
+    pt: 'Desenvolvedor full stack e de segurança da informação',
+    en: 'Full stack and information security developer',
+    es: 'Desarrollador full stack y de seguridad de la información',
+  }[lang]
+  const data = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_ORIGIN}/#website`,
+        url: `${SITE_ORIGIN}/`,
+        name: 'The Crow',
+        inLanguage: LANG_INFO[lang].htmlLang,
+        publisher: { '@id': `${SITE_ORIGIN}/#person` },
+      },
+      {
+        '@type': 'Person',
+        '@id': `${SITE_ORIGIN}/#person`,
+        name: 'Endriky Axel',
+        alternateName: 'The Crow',
+        jobTitle,
+        description,
+        url,
+        image: `${SITE_ORIGIN}/icon-512.png`,
+        sameAs: PROFILES,
+        knowsAbout: ['React', 'TypeScript', 'Node.js', 'Cybersecurity', 'Web development'],
+      },
+    ],
+  }
+  // "<" vira < para que nenhum texto consiga fechar a tag <script> antes da hora.
+  const json = JSON.stringify(data).replace(/</g, '\\u003c')
+  return `<script type="application/ld+json">${json}</script>`
 }
 
 export function pageMeta(lang: Lang, page: PageId): PageMeta {
@@ -124,6 +174,7 @@ export function pageTokens(lang: Lang, page: PageId): Readonly<Record<string, st
     ogLocale: LANG_INFO[lang].ogLocale,
     ogLocaleAlternates: otherLocales,
     alternates,
+    jsonLd: page === 'home' ? homeJsonLd(lang, url, meta.description) : '',
     noscript: meta.noscript,
     noscriptLink: meta.noscriptLink,
     noscriptHref: page === 'home' ? 'https://github.com/Alexitiimia' : pagePath(lang, 'home'),

@@ -6,13 +6,16 @@ Discord, X/Twitter, Telegram, LinkedIn etc. Tamanho fixo: **1200 × 630**, PNG, 
 
 `og.html` é o modelo. `?v=home` gera a do portfólio e `?v=orcamento` a da página de orçamento. Os
 textos ficam no objeto `variants`, no fim do arquivo. Usa as fontes reais do site (JetBrains Mono e
-Inter, de `node_modules`) e o corvo do favicon.
+Inter, de `node_modules`) e o corvo de `public/icon-512.png`.
+
+**Tudo fica no quadrado central de 630 × 630** (x de 285 a 915): o bio.site e outros sites cortam a
+prévia em quadrado, e assim a miniatura aparece completa em vez de um pedaço do texto.
 
 ## Como gerar de novo
 
 1. Na raiz do projeto: `python3 -m http.server 8765` (as fontes só carregam por http, não por
    arquivo aberto direto).
-2. No Chrome, abra `http://127.0.0.1:8765/brand/og/og.html?v=home`, deixe a janela com 1200 × 630
+2. No Chrome (ou `chrome-headless-shell --window-size=1200,630 --screenshot=...`), abra `http://127.0.0.1:8765/brand/og/og.html?v=home`, deixe a janela com 1200 × 630
    (DevTools → Ctrl+Shift+M → "Responsive" → 1200 × 630) e capture a tela: DevTools → Ctrl+Shift+P →
    "Capture screenshot".
 3. Reduza as cores para o arquivo ficar pequeno, por exemplo com Pillow:
