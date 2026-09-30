@@ -65,7 +65,7 @@ describe('site', () => {
       hero.lead,
       footer.about,
       footer.closing,
-      ...footer.securityFacts,
+      ...footer.securityFacts.map((fact) => fact.label),
     )
     expect(footer.securityFacts.length).toBeGreaterThan(0)
   })

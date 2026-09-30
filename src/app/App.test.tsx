@@ -2,6 +2,8 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { SECTION_IDS, sections } from '@/content/sections'
+import { site } from '@/content/site'
+import { ageOn } from '@/lib/age'
 import { describeViolations, findA11yViolations } from '@/test/a11y'
 import { App } from './App'
 
@@ -40,6 +42,16 @@ describe('App: estrutura da página', () => {
 
     const ids = [...container.querySelectorAll('[id]')].map((element) => element.id)
     expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+describe('App: identificação', () => {
+  it('mostra o nome e a idade de quem assina, calculada pela data de nascimento', () => {
+    render(<App />)
+
+    const age = ageOn(site.person.birthDate, new Date())
+    expect(age).toBeGreaterThanOrEqual(20)
+    expect(screen.getByText(`${site.person.name} · ${String(age)} anos`)).toBeInTheDocument()
   })
 })
 

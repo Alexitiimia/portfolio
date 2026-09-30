@@ -140,7 +140,7 @@ describe('Footer', () => {
     render(<Footer />)
 
     for (const fact of site.footer.securityFacts) {
-      expect(screen.getByText(fact, { exact: false })).toBeInTheDocument()
+      expect(screen.getByText(fact.label, { exact: false })).toBeInTheDocument()
     }
   })
 
@@ -156,12 +156,35 @@ describe('Footer', () => {
     )
   })
 
-  it('cita o ano atual, o nome da marca e o aviso de marcas de terceiros', () => {
+  it('cita o ano atual, a marca e o nome de quem assina', () => {
     const { container } = render(<Footer />)
 
-    expect(container).toHaveTextContent(`© ${String(new Date().getFullYear())} ${site.name}`)
-    expect(container).toHaveTextContent(/pertencem aos seus respectivos proprietários/)
+    expect(container).toHaveTextContent(
+      `© ${String(new Date().getFullYear())} ${site.name} · ${site.person.name}`,
+    )
     expect(container).toHaveTextContent(site.footer.closing)
+  })
+
+  it('não traz aviso de marcas de terceiros', () => {
+    const { container } = render(<Footer />)
+
+    expect(container).not.toHaveTextContent(/Logotipos e marcas/)
+  })
+
+  it('põe um ícone em cada título e em cada item de Navegar, Segurança e Contato', () => {
+    const { container } = render(<Footer />)
+
+    const headings = [...container.querySelectorAll('h3')]
+    expect(headings.map((heading) => heading.textContent)).toEqual([
+      'Navegar',
+      'Segurança',
+      'Contato',
+    ])
+    for (const heading of headings) expect(heading.querySelector('svg')).not.toBeNull()
+
+    const items = [...container.querySelectorAll('li')]
+    expect(items.length).toBeGreaterThan(SECTION_IDS.length)
+    for (const item of items) expect(item.querySelector('svg')).not.toBeNull()
   })
 
   it('está dentro do marco "contentinfo"', () => {

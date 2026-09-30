@@ -1,8 +1,11 @@
+import { CodeXml, Compass, MessageCircle, ShieldCheck } from 'lucide-react'
 import { Brand } from '@/components/brand/Brand'
 import { BrandMark } from '@/components/brand/BrandMark'
+import { BrandIcon } from '@/components/icons/BrandIcon'
 import { ContactLink } from '@/components/ui/ContactLink'
 import { Cursor } from '@/components/ui/Cursor'
 import { ExternalLink } from '@/components/ui/ExternalLink'
+import { LineIcon } from '@/components/ui/LineIcon'
 import { contactChannels } from '@/content/contact'
 import { SECTION_IDS, sections } from '@/content/sections'
 import { site } from '@/content/site'
@@ -26,10 +29,14 @@ export function Footer() {
           </div>
 
           <nav aria-label="Rodapé">
-            <h3 className={styles.heading}>Navegar</h3>
+            <h3 className={styles.heading}>
+              <LineIcon icon={Compass} size={14} />
+              Navegar
+            </h3>
             <ul role="list" className={styles.list}>
               {SECTION_IDS.map((id) => (
-                <li key={id}>
+                <li key={id} className={styles.item}>
+                  <LineIcon icon={sections[id].icon} className={styles.icon} />
                   <a href={`#${id}`}>{sections[id].label}</a>
                 </li>
               ))}
@@ -37,17 +44,19 @@ export function Footer() {
           </nav>
 
           <div>
-            <h3 className={styles.heading}>Segurança</h3>
+            <h3 className={styles.heading}>
+              <LineIcon icon={ShieldCheck} size={14} />
+              Segurança
+            </h3>
             <ul role="list" className={styles.list}>
               {site.footer.securityFacts.map((fact) => (
-                <li key={fact}>
-                  <span aria-hidden="true" className={styles.ok}>
-                    [ok]
-                  </span>{' '}
-                  {fact}
+                <li key={fact.label} className={styles.item}>
+                  <LineIcon icon={fact.icon} className={styles.icon} />
+                  {fact.label}
                 </li>
               ))}
-              <li>
+              <li className={styles.item}>
+                <LineIcon icon={CodeXml} className={styles.icon} />
                 <ExternalLink href={site.links.repository} showArrow>
                   Código-fonte
                 </ExternalLink>
@@ -56,10 +65,14 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className={styles.heading}>Contato</h3>
+            <h3 className={styles.heading}>
+              <LineIcon icon={MessageCircle} size={14} />
+              Contato
+            </h3>
             <ul role="list" className={styles.list}>
               {contactChannels.map((channel) => (
-                <li key={channel.id}>
+                <li key={channel.id} className={styles.item}>
+                  <BrandIcon icon={channel.icon} size={16} className={styles.icon} />
                   <ContactLink href={channel.href}>{channel.label}</ContactLink>
                 </li>
               ))}
@@ -67,14 +80,9 @@ export function Footer() {
           </div>
         </div>
 
-        <p className={styles.legal}>
-          Logotipos e marcas citados pertencem aos seus respectivos proprietários e aparecem apenas
-          para identificar as tecnologias.
-        </p>
-
         <div className={styles.term}>
           <span>
-            <b>©</b> {CURRENT_YEAR} {site.name} — todos os direitos reservados
+            <b>©</b> {CURRENT_YEAR} {site.name} · {site.person.name} — todos os direitos reservados
           </span>
           <span>
             {site.footer.closing}

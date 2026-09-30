@@ -42,6 +42,10 @@
   color: var(--color-fg-subtle);
 }
 
+.name {
+  font-weight: 600;
+}
+
 .title {
   font-size: var(--text-display);
   letter-spacing: -0.04em;
@@ -72,7 +76,7 @@
   margin-top: var(--space-6);
 }
 
-/* Só telas largas: o corvo grande num painel quadrado. */
+/* Só telas largas: o corvo interativo num painel quadrado (ver PerchedCorvo). */
 .art {
   display: none;
 }
@@ -119,17 +123,11 @@
   }
 
   .art {
-    display: grid;
-    place-items: center;
+    display: block;
     aspect-ratio: 1;
     border: 1px solid var(--color-line);
     background: var(--color-surface);
     color: var(--color-fg);
-  }
-
-  .raven {
-    width: 74%;
-    height: auto;
   }
 
   .facts {

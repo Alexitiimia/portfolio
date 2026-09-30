@@ -141,10 +141,10 @@ describe('cabeçalhos de segurança (public/_headers)', () => {
       'Sem rastreadores': () => only('script-src', "'self'") && only('connect-src', "'self'"),
     }
 
-    for (const fact of site.footer.securityFacts) {
-      const check = evidence[fact]
-      expect(check, `"${fact}" aparece no rodapé mas não tem evidência neste teste`).toBeDefined()
-      expect(check?.(), `"${fact}" não é sustentada pelos cabeçalhos`).toBe(true)
+    for (const { label } of site.footer.securityFacts) {
+      const check = evidence[label]
+      expect(check, `"${label}" aparece no rodapé mas não tem evidência neste teste`).toBeDefined()
+      expect(check?.(), `"${label}" não é sustentada pelos cabeçalhos`).toBe(true)
     }
   })
 })

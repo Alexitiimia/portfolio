@@ -1,3 +1,13 @@
+import {
+  FolderCode,
+  Layers,
+  MessageCircle,
+  ScrollText,
+  ShieldCheck,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react'
+
 /**
  * Seções da página, na ordem em que aparecem. Esta lista é a fonte única de três coisas:
  * o menu, o número exibido ao lado de cada título ("01", "02"...) e os `id` das âncoras.
@@ -23,6 +33,8 @@ interface SectionMeta {
   readonly navLabel: string
   /** Frase curta exibida sob o título. */
   readonly lead: string
+  /** Ícone ao lado do nome da seção nos links do rodapé. */
+  readonly icon: LucideIcon
 }
 
 export const sections: Readonly<Record<SectionId, SectionMeta>> = {
@@ -30,31 +42,37 @@ export const sections: Readonly<Record<SectionId, SectionMeta>> = {
     label: 'Projetos',
     navLabel: 'projetos',
     lead: 'Alguns dos trabalhos que desenvolvi.',
+    icon: FolderCode,
   },
   ferramentas: {
     label: 'Ferramentas',
     navLabel: 'ferramentas',
     lead: 'Tecnologias e plataformas com as quais trabalho.',
+    icon: Wrench,
   },
   servicos: {
     label: 'Serviços',
     navLabel: 'serviços',
     lead: 'O que posso construir e manter para o seu negócio.',
+    icon: Layers,
   },
   seguranca: {
     label: 'Segurança',
     navLabel: 'segurança',
     lead: 'Análise de segurança em três níveis de conhecimento do sistema.',
+    icon: ShieldCheck,
   },
   condicoes: {
     label: 'Condições',
     navLabel: 'condições',
     lead: 'O que você recebe ao contratar.',
+    icon: ScrollText,
   },
   contato: {
     label: 'Contato',
     navLabel: 'contato --24h',
     lead: 'Escolha o canal de sua preferência.',
+    icon: MessageCircle,
   },
 }
 

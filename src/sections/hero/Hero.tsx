@@ -1,13 +1,16 @@
 import { Fragment } from 'react'
-import { BrandMark } from '@/components/brand/BrandMark'
+import { PerchedCorvo } from '@/components/brand/PerchedCorvo'
 import { Container } from '@/components/layout/Container'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { Cursor } from '@/components/ui/Cursor'
 import { offers } from '@/content/offers'
 import { site } from '@/content/site'
+import { ageOn } from '@/lib/age'
 import styles from './Hero.module.css'
 
 export function Hero() {
+  const age = ageOn(site.person.birthDate, new Date())
+
   return (
     <section id="inicio" aria-labelledby="inicio-titulo" className={styles.hero}>
       <Container className={styles.inner}>
@@ -15,6 +18,9 @@ export function Hero() {
           <p className={styles.eyebrow}>
             <span aria-hidden="true" className={styles.command}>
               $ {site.hero.command}
+            </span>
+            <span className={styles.name}>
+              {site.person.name} · {age} anos
             </span>
             <span>
               {site.hero.role}
@@ -46,8 +52,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div className={styles.art} aria-hidden="true">
-          <BrandMark size={320} className={styles.raven} />
+        <div className={styles.art}>
+          <PerchedCorvo />
         </div>
 
         <dl className={styles.facts}>

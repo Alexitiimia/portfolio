@@ -1,13 +1,26 @@
+import { EyeOff, FileLock2, Lock, type LucideIcon } from 'lucide-react'
+import type { IsoDate } from '@/lib/age'
 import type { HttpsUrl } from '@/lib/url'
 
 /** Trecho do título principal: texto comum ou palavra em destaque (barra com cores invertidas). */
 export type HeadlineSegment = string | { readonly mark: string }
+
+/** Uma garantia de segurança do próprio site, mostrada no rodapé. */
+export interface SecurityFact {
+  readonly label: string
+  readonly icon: LucideIcon
+}
 
 interface SiteConfig {
   /** Nome da marca, exibido ao lado do corvo. */
   readonly name: string
   /** Assinatura curta abaixo do nome. */
   readonly tagline: string
+  /** Quem assina o site. A idade é calculada a partir da data de nascimento. */
+  readonly person: {
+    readonly name: string
+    readonly birthDate: IsoDate
+  }
   /** Faixa fina no topo da página, no estilo de terminal. */
   readonly statusBar: {
     readonly left: string
@@ -26,7 +39,7 @@ interface SiteConfig {
   readonly footer: {
     readonly about: string
     /** Só afirmações que o próprio site garante (ver test/deploy.test.ts). */
-    readonly securityFacts: readonly string[]
+    readonly securityFacts: readonly SecurityFact[]
     readonly closing: string
   }
   readonly links: {
@@ -38,6 +51,10 @@ interface SiteConfig {
 export const site: SiteConfig = {
   name: 'CORVO',
   tagline: 'DEV // CYBERSEC',
+  person: {
+    name: 'Endrily Axel',
+    birthDate: '2006-03-29',
+  },
   statusBar: {
     left: 'CANAL SEGURO · TLS 1.3 · HSTS',
     prompt: 'operador@corvo:~$',
@@ -52,7 +69,11 @@ export const site: SiteConfig = {
   },
   footer: {
     about: 'Desenvolvimento web seguro e análise de segurança. Código auditável, zero ruído.',
-    securityFacts: ['HTTPS + HSTS', 'CSP estrita', 'Sem rastreadores'],
+    securityFacts: [
+      { label: 'HTTPS + HSTS', icon: Lock },
+      { label: 'CSP estrita', icon: FileLock2 },
+      { label: 'Sem rastreadores', icon: EyeOff },
+    ],
     closing: '$ echo "nevermore"',
   },
   links: {
