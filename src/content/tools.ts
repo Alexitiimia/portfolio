@@ -79,6 +79,7 @@ export const toolGroups: readonly ToolGroup[] = [
     tools: [
       { id: 'instagram-ads', name: 'Instagram Ads', icon: brands.instagram },
       { id: 'meta-ads', name: 'Meta Ads', icon: brands.meta },
+      { id: 'microsoft-ads', name: 'Microsoft Ads', icon: brands.microsoft },
     ],
   },
 ]

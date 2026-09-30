@@ -6,6 +6,7 @@ import {
   KeyRound,
   MailCheck,
   PenTool,
+  SearchCheck,
   Shapes,
   ShoppingCart,
   Smartphone,
@@ -104,6 +105,13 @@ export const services: readonly Service[] = [
     description:
       'Automação de sistemas virtuais, do processo interno à integração entre ferramentas.',
     icon: Cpu,
+  },
+  {
+    id: 'seo',
+    title: 'SEO para sites',
+    description:
+      'SEO autêntico, eficaz e otimizado para o seu site, para ser encontrado com mais facilidade nas buscas.',
+    icon: SearchCheck,
   },
   {
     id: 'mentoria',
