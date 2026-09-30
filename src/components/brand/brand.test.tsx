@@ -46,6 +46,27 @@ describe('Brand', () => {
     expect(container).toHaveTextContent(site.tagline)
   })
 
+  it('com iconNavigates=false, clicar no corvo o faz voar sem seguir o link; o nome segue', () => {
+    const { container } = render(<Brand href="/" iconNavigates={false} />)
+    const flyer = container.querySelector('[data-flying]')
+    if (flyer === null) throw new Error('corvo não encontrado')
+
+    const followed = fireEvent.click(flyer)
+
+    expect(followed).toBe(false) // preventDefault: a página não navega
+    expect(flyer).toHaveAttribute('data-flying', 'true')
+    expect(fireEvent.click(screen.getByText(site.name))).toBe(true)
+  })
+
+  it('por padrão, clicar no corvo segue o link (topo da página)', () => {
+    const { container } = render(<Brand href="#inicio" />)
+    const flyer = container.querySelector('[data-flying]')
+    if (flyer === null) throw new Error('corvo não encontrado')
+
+    expect(fireEvent.click(flyer)).toBe(true)
+    expect(flyer).toHaveAttribute('data-flying', 'true')
+  })
+
   it('com poleiro deixa o espaço do corvo vazio e entrega o elemento', () => {
     const slotRef = createRef<HTMLSpanElement>()
     const { container } = render(<Brand href="#inicio" slotRef={slotRef} />)

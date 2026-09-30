@@ -17,7 +17,7 @@ export function QuotePage() {
 
       <header className={styles.header}>
         <Container className={styles.bar}>
-          <Brand href="/" />
+          <Brand href="/" iconNavigates={false} />
           <div className={styles.actions}>
             <a href="/" className={styles.back}>
               <span aria-hidden="true">←</span> voltar ao portfólio

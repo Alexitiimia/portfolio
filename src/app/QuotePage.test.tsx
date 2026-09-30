@@ -1,10 +1,21 @@
-import { render, screen, within } from '@testing-library/react'
+import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 import { contactChannels } from '@/content/contact'
 import { site } from '@/content/site'
 import { describeViolations, findA11yViolations } from '@/test/a11y'
 import { QuotePage } from './QuotePage'
+
+describe('QuotePage: corvo do logo', () => {
+  it('clicar no corvo o faz voar aqui mesmo, em vez de ir para o portfólio', () => {
+    const { container } = render(<QuotePage />)
+    const flyer = container.querySelector('[data-flying]')
+    if (flyer === null) throw new Error('corvo não encontrado')
+
+    expect(fireEvent.click(flyer)).toBe(false)
+    expect(flyer).toHaveAttribute('data-flying', 'true')
+  })
+})
 
 describe('QuotePage: estrutura', () => {
   it('tem os marcos de página e um único h1, o título do orçamento', () => {

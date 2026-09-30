@@ -13,10 +13,15 @@ interface BrandProps {
    * o espaço dele vazio e entrega o elemento: é o poleiro de um corvo que vive em outro lugar.
    */
   readonly slotRef?: RefObject<HTMLSpanElement | null>
+  /**
+   * `false`: clicar no corvo só o faz voar, sem seguir o link (o nome ao lado continua levando ao
+   * destino). Serve para páginas em que o link recarregaria a página e cortaria o voo.
+   */
+  readonly iconNavigates?: boolean
 }
 
 /** Logo completo: corvo, nome e assinatura. Sempre leva ao topo da página. */
-export function Brand({ href, onClick, slotRef }: BrandProps) {
+export function Brand({ href, onClick, slotRef, iconNavigates = true }: BrandProps) {
   return (
     <a
       href={href}
@@ -25,7 +30,12 @@ export function Brand({ href, onClick, slotRef }: BrandProps) {
       onClick={onClick}
     >
       {slotRef === undefined ? (
-        <span className={styles.icon}>
+        <span
+          className={styles.icon}
+          onClick={(event) => {
+            if (!iconNavigates) event.preventDefault()
+          }}
+        >
           <CorvoIcon />
         </span>
       ) : (
