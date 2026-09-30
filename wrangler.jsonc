@@ -6,6 +6,8 @@
   // O site é estático (arquivos gerados em ./dist). O único código de servidor é worker/index.ts,
   // que atende /api/dominio (verificação de nomes de endereço livres) e escolhe o idioma em "/".
   "main": "worker/index.ts",
+  // Gera ./dist antes de publicar: a pasta não é versionada, então o build da Cloudflare não a tem.
+  "build": { "command": "npm run build" },
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",

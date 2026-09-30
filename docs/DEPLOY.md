@@ -14,12 +14,15 @@ O Worker já existe na sua conta com o nome **`portfolio`** (hoje mostrando "Hel
 
 Cloudflare → Workers & Pages → `portfolio` → **Settings → Builds**:
 
-| Campo          | Valor                                                                           |
-| -------------- | ------------------------------------------------------------------------------- |
-| Build command  | `npm run build` ← **obrigatório**: sem isso não existe `dist/` e o deploy falha |
-| Deploy command | `npx wrangler deploy` (padrão)                                                  |
-| Root directory | `/`                                                                             |
-| Node.js        | Automático: o arquivo `.nvmrc` fixa a versão 22                                 |
+| Campo          | Valor                                                               |
+| -------------- | ------------------------------------------------------------------- |
+| Build command  | vazio (o `wrangler.jsonc` já roda `npm run build` dentro do deploy) |
+| Deploy command | `npx wrangler deploy` (padrão)                                      |
+| Root directory | `/`                                                                 |
+| Node.js        | Automático: o arquivo `.nvmrc` fixa a versão 22                     |
+
+O `dist/` não é versionado; por isso o `wrangler.jsonc` tem `build.command`, que o gera antes de
+publicar. Se preencher também o _Build command_ do painel, o site é construído duas vezes (sem erro).
 
 Depois é só dar `git push` na branch `main`: cada push publica sozinho.
 
