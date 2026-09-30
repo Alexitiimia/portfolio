@@ -1,6 +1,7 @@
 /* Portado de brand/layout.css (.foot). */
 .foot {
   position: relative;
+  isolation: isolate; /* o corvo (z-index negativo) fica atrás do texto, mas na frente do fundo */
   overflow: hidden;
   border-top: 1px solid var(--color-fg);
   background: var(--color-bg);

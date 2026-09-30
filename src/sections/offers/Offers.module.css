@@ -33,14 +33,8 @@
   font-size: var(--text-sm);
 }
 
-@media (min-width: 36rem) {
+@media (min-width: 48rem) {
   .grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 64rem) {
-  .grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }

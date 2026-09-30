@@ -3,9 +3,15 @@ import { vi } from 'vitest'
 interface FakeEntry {
   readonly target: Element
   readonly isIntersecting: boolean
+  /** Fração visível (0 a 1). Se omitida: 1 quando intersecta, 0 quando não. */
+  readonly intersectionRatio?: number
 }
 
-type FakeCallback = (entries: FakeEntry[]) => void
+interface FakeReportedEntry extends FakeEntry {
+  readonly intersectionRatio: number
+}
+
+type FakeCallback = (entries: FakeReportedEntry[]) => void
 
 /** IntersectionObserver controlável: o teste decide quando cada elemento "entra" ou "sai". */
 export class FakeIntersectionObserver {
@@ -39,7 +45,12 @@ export class FakeIntersectionObserver {
 
   /** Dispara o callback como o navegador faria. */
   emit(entries: readonly FakeEntry[]): void {
-    this.callback([...entries])
+    this.callback(
+      entries.map((entry) => ({
+        ...entry,
+        intersectionRatio: entry.intersectionRatio ?? (entry.isIntersecting ? 1 : 0),
+      })),
+    )
   }
 }
 

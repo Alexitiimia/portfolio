@@ -1,4 +1,4 @@
-import { CalendarCheck, Globe, LifeBuoy, Server, type LucideIcon } from 'lucide-react'
+import { Globe, LifeBuoy, Server, type LucideIcon } from 'lucide-react'
 
 export interface Offer {
   /** Identificador único (minúsculas e hifens). */
@@ -32,14 +32,7 @@ export const offers: readonly Offer[] = [
     label: 'Suporte técnico',
     highlight: '24 horas por dia',
     description:
-      'Correção de bugs e atendimento de pedidos de ajuda técnica com o seu site ou sistema, a qualquer hora.',
+      'Correção de bugs e atendimento de pedidos de ajuda técnica com o seu site ou sistema, a qualquer hora. Nos primeiros 30 dias depois da compra, o suporte técnico é grátis.',
     icon: LifeBuoy,
-  },
-  {
-    id: 'primeiros-30-dias',
-    label: 'Primeiros 30 dias',
-    highlight: 'Suporte técnico grátis',
-    description: 'Depois da compra, os primeiros 30 dias de suporte técnico não têm custo.',
-    icon: CalendarCheck,
   },
 ]

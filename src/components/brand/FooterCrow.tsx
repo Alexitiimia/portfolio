@@ -27,6 +27,12 @@ const POSES: readonly CrowPose[] = ['right', 'left', 'front']
 /** Um passo maior que isso (aba em segundo plano) vira só 50 ms, para o corvo não "teleportar". */
 const MAX_STEP_S = 0.05
 
+/** O corvo só começa a se mexer quando pelo menos essa fração dele está na tela. */
+const VISIBLE_RATIO = 0.6
+
+/** Tempo entre o corvo aparecer na tela e decolar (1,5 segundo). */
+const FIRST_TAKEOFF_S = 1.5
+
 interface FooterCrowProps {
   /** O espaço do logo: é o "poleiro" onde o corvo pousa e de onde decola. */
   readonly homeRef: RefObject<HTMLElement | null>
@@ -35,9 +41,11 @@ interface FooterCrowProps {
 /**
  * O corvo do rodapé é o próprio logo: fica pousado no lugar dele, olhando ao redor, e de tempos em
  * tempos decola, passeia sem rumo (sai por uma borda e volta pela outra), retorna ao poleiro e
- * pousa. Camada decorativa atrás do conteúdo: sem cliques e fora dos leitores de tela. Com
- * "reduzir movimento", fica pousado, parado, no lugar do logo. Só se mexe enquanto o rodapé está
- * à vista.
+ * pousa. Camada decorativa atrás do conteúdo: sem cliques e fora dos leitores de tela.
+ *
+ * Posição padrão: pousado no lugar do logo. Só começa a se mexer depois que a pessoa rola até
+ * vê-lo (pelo menos 60 % dele na tela) e decola 1,5 s depois. Se ela rolar para longe, ele volta
+ * ao poleiro e espera de novo. Com "reduzir movimento", fica pousado, parado, no lugar do logo.
  */
 export function FooterCrow({ homeRef }: FooterCrowProps) {
   const reduceMotion = useReducedMotion()
@@ -56,7 +64,7 @@ export function FooterCrow({ homeRef }: FooterCrowProps) {
     setPose('right')
     let current: Phase = 'perched'
     let facing: 1 | -1 = 1
-    let waitS = between(3, 6, Math.random) // até a primeira decolagem
+    let waitS = FIRST_TAKEOFF_S // até a primeira decolagem
     let lookS = between(2, 4, Math.random) // até olhar para outro lado
     let wanderS = 0
     let returning = false
@@ -182,6 +190,18 @@ export function FooterCrow({ homeRef }: FooterCrowProps) {
       window.cancelAnimationFrame(raf)
       raf = 0
     }
+    /** Sai de cena: volta ao poleiro, parado, e recomeça a contagem quando for visto de novo. */
+    const park = () => {
+      stop()
+      if (current !== 'perched') enter('perched')
+      setPose('right')
+      facing = 1
+      returning = false
+      waitS = FIRST_TAKEOFF_S
+      lookS = between(2, 4, Math.random)
+      perchAt(measure().home)
+      place(1)
+    }
 
     // Posição inicial já no primeiro desenho: o corvo nunca aparece fora do poleiro.
     const first = measure()
@@ -192,12 +212,17 @@ export function FooterCrow({ homeRef }: FooterCrowProps) {
       start()
       return stop
     }
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.some((entry) => entry.isIntersecting)
-      if (visible) start()
-      else stop()
-    })
-    observer.observe(skyEl)
+    // Observa o próprio corvo (o poleiro), não o rodapé: ele só conta como "visto" de verdade.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries.at(-1)
+        if (entry === undefined) return
+        if (entry.intersectionRatio >= VISIBLE_RATIO) start()
+        else if (!entry.isIntersecting) park()
+      },
+      { threshold: [0, VISIBLE_RATIO] },
+    )
+    observer.observe(homeEl)
     return () => {
       observer.disconnect()
       stop()

@@ -21,8 +21,6 @@ export function Footer() {
 
   return (
     <footer className={styles.foot}>
-      <FooterCrow homeRef={perch} />
-
       <Container className={styles.wrap}>
         <div className={styles.grid}>
           <div>
@@ -94,6 +92,10 @@ export function Footer() {
           </span>
         </div>
       </Container>
+
+      {/* Vem DEPOIS do logo de propósito: o corvo mede o poleiro (o logo) ao montar, e a referência
+          só existe quando o logo já foi montado. O CSS o desenha atrás do texto. */}
+      <FooterCrow homeRef={perch} />
     </footer>
   )
 }

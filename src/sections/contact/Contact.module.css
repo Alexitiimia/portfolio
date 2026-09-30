@@ -1,7 +1,7 @@
 .statement {
-  max-width: 20ch;
+  max-width: 28ch;
   font-family: var(--font-mono);
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
   font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.05;

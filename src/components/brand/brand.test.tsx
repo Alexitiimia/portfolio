@@ -2,6 +2,7 @@ import { createRef } from 'react'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { site } from '@/content/site'
+import { mockIntersectionObserver } from '@/test/intersectionObserver'
 import { mockMatchMedia } from '@/test/matchMedia'
 import { Brand } from './Brand'
 import { CorvoIcon } from './CorvoIcon'
@@ -256,5 +257,110 @@ describe('CorvoMascot', () => {
     render(<CorvoMascot variant="falha" label="Algo quebrou" />)
 
     expect(screen.getByRole('img', { name: 'Algo quebrou' })).toBeInTheDocument()
+  })
+})
+
+describe('FooterCrow: só começa depois de ser visto', () => {
+  function setup() {
+    vi.useFakeTimers()
+    vi.spyOn(Math, 'random').mockReturnValue(0.5)
+    const Observer = mockIntersectionObserver()
+    const homeRef = createRef<HTMLSpanElement>()
+    const { container } = render(
+      <>
+        <span ref={homeRef} />
+        <FooterCrow homeRef={homeRef} />
+      </>,
+    )
+    const sky = container.querySelector<HTMLElement>('[aria-hidden="true"]')
+    const perch = homeRef.current
+    if (sky === null || perch === null) throw new Error('corvo não renderizou')
+    // O jsdom não tem layout: dá ao poleiro e ao céu um tamanho para o voo ser possível.
+    sky.getBoundingClientRect = () => new DOMRect(0, 0, 1200, 600)
+    perch.getBoundingClientRect = () => new DOMRect(40, 300, 72, 62)
+
+    return {
+      Observer,
+      perch,
+      motion: () => sky.querySelector('[data-motion]')?.getAttribute('data-motion'),
+      /** Simula quanto do poleiro (0 a 1) está na tela. */
+      see: (ratio: number) => {
+        act(() => {
+          Observer.instances[0]?.emit([
+            { target: perch, isIntersecting: ratio > 0, intersectionRatio: ratio },
+          ])
+        })
+      },
+      wait: (ms: number) => {
+        act(() => {
+          vi.advanceTimersByTime(ms)
+        })
+      },
+    }
+  }
+
+  it('observa o próprio corvo (o poleiro no logo), não o rodapé inteiro', () => {
+    const { Observer, perch } = setup()
+
+    expect([...(Observer.instances[0]?.observed ?? [])]).toEqual([perch])
+  })
+
+  it('fica pousado, sem se mexer, enquanto ninguém o vê', () => {
+    const { motion, wait } = setup()
+
+    wait(60_000)
+
+    expect(motion()).toBe('still')
+  })
+
+  it('não começa se só uma parte pequena dele apareceu', () => {
+    const { motion, see, wait } = setup()
+
+    see(0.3)
+    wait(20_000)
+
+    expect(motion()).toBe('still')
+  })
+
+  it('decola 1,5 segundo depois de aparecer', () => {
+    const { motion, see, wait } = setup()
+
+    see(1)
+    wait(1400)
+    expect(motion()).toBe('still')
+
+    wait(300)
+    expect(motion()).toBe('crouch')
+
+    wait(600)
+    expect(motion()).toBe('flap')
+  })
+
+  it('se a pessoa rolar para longe antes disso, cancela e recomeça a contagem ao voltar', () => {
+    const { motion, see, wait } = setup()
+
+    see(1)
+    wait(1000)
+    see(0)
+    wait(5000)
+    expect(motion()).toBe('still')
+
+    see(1)
+    wait(1400)
+    expect(motion()).toBe('still')
+    wait(300)
+    expect(motion()).toBe('crouch')
+  })
+
+  it('se sair de cena no meio do voo, volta ao poleiro na hora', () => {
+    const { motion, see, wait } = setup()
+
+    see(1)
+    wait(2500)
+    expect(motion()).toBe('flap')
+
+    see(0)
+
+    expect(motion()).toBe('still')
   })
 })

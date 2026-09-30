@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
+import { priceFromHours } from '@/lib/pricing'
 import { isHttpsUrl, isMailtoUrl } from '@/lib/url'
 import { contactChannels } from './contact'
 import { offers } from './offers'
 import { projects } from './projects'
+import { HOURLY_RATE, quoteCatalog } from './quote'
 import { CTA_SECTION_ID, SECTION_IDS, navItems, sectionNumber, sections } from './sections'
 import { capabilities, methodologies } from './security'
 import { services } from './services'
@@ -163,6 +165,13 @@ describe('condições', () => {
     expectUniqueSlugs(offers.map((offer) => offer.id))
     for (const offer of offers) expectCleanText(offer.label, offer.highlight, offer.description)
   })
+
+  it('os 30 dias de suporte grátis ficam dentro do suporte técnico, não num cartão à parte', () => {
+    const support = offers.find((offer) => offer.id === 'suporte')
+
+    expect(support?.description).toMatch(/30 dias/)
+    expect(offers.some((offer) => offer.label.includes('30 dias'))).toBe(false)
+  })
 })
 
 describe('contato', () => {
@@ -178,5 +187,41 @@ describe('contato', () => {
       expect(valid, `${channel.id}: ${channel.href}`).toBe(true)
       expect(channel.icon.path).toMatch(SVG_PATH)
     }
+  })
+})
+
+describe('orçamento', () => {
+  const items = [...quoteCatalog.projects, ...quoteCatalog.extras]
+
+  it('tem ids únicos e textos limpos', () => {
+    expectUniqueSlugs(items.map((item) => item.id))
+    for (const item of items) expectCleanText(item.label, item.description)
+  })
+
+  it('estima as horas de cada item em números inteiros e positivos', () => {
+    for (const item of items) {
+      if (item.hours === undefined) continue
+      expect(Number.isInteger(item.hours), `${item.id}: horas`).toBe(true)
+      expect(item.hours, `${item.id}: horas`).toBeGreaterThan(0)
+    }
+  })
+
+  it('deixa "Outro projeto" sem horas nem preço: cada caso pede conversa', () => {
+    const other = quoteCatalog.projects.find((project) => project.id === 'outro')
+
+    expect(other?.hours).toBeUndefined()
+    expect(other?.price).toBeNull()
+  })
+
+  it('o preço de cada item vem sempre de horas × valor da hora, sem valor solto', () => {
+    for (const item of items) {
+      expect(item.price, item.id).toBe(priceFromHours(item.hours ?? 0, HOURLY_RATE))
+    }
+  })
+
+  it('valor da hora, quando definido, é um número positivo em reais', () => {
+    if (HOURLY_RATE === null) return
+    expect(Number.isFinite(HOURLY_RATE)).toBe(true)
+    expect(HOURLY_RATE).toBeGreaterThan(0)
   })
 })

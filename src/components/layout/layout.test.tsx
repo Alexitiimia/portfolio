@@ -208,3 +208,16 @@ describe('Header: indicador de disponibilidade', () => {
     expect(cta).toHaveAccessibleName(sections[CTA_SECTION_ID].navLabel)
   })
 })
+
+describe('Footer: corvo no poleiro', () => {
+  it('o corvo encontra o logo ao montar (a ordem dos elementos importa para a referência)', () => {
+    const { container } = render(<Footer />)
+
+    const bird = container.querySelector('footer [data-motion]')
+    const mover = bird?.parentElement
+
+    // Sem achar o logo, o corvo desistia e ficava no canto do rodapé, sem posição nenhuma.
+    expect(mover?.style.transform).toContain('translate3d')
+    expect(bird).toHaveAttribute('data-motion', 'still')
+  })
+})

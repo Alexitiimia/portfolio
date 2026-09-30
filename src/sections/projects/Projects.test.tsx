@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { projects } from '@/content/projects'
 import { Projects } from './Projects'
+import css from './Projects.module.css?raw'
 
 function cardOf(name: string): HTMLElement {
   const card = screen.getByRole('heading', { name }).closest('article')
@@ -28,6 +29,14 @@ describe('Projetos', () => {
       expect(image).toHaveAttribute('src', project.icon)
       expect(image).toHaveAttribute('alt', '')
     }
+  })
+
+  it('padroniza o ícone: mesmo tamanho, cantos arredondados e sem borda', () => {
+    const rule = /\.icon\s*\{([^}]*)\}/.exec(css)?.[1] ?? ''
+
+    expect(rule).toMatch(/border-radius:\s*0\.75rem/)
+    expect(rule).toMatch(/background:/)
+    expect(rule).not.toMatch(/border:/)
   })
 
   it('mostra o link de cada projeto como botão que abre em nova aba, com segurança', () => {

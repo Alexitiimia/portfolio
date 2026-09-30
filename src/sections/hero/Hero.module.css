@@ -94,6 +94,11 @@
   border-left: 1px solid var(--color-line);
 }
 
+/* Número ímpar de itens: o último ocupa a linha toda em vez de ficar sozinho num canto. */
+.fact:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+
 .factLabel {
   margin-bottom: var(--space-1);
   color: var(--color-fg-subtle);
@@ -117,12 +122,16 @@
   }
 
   .facts {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     margin-top: var(--space-5);
   }
 
   .fact {
     border-bottom: 0;
+  }
+
+  .fact:last-child:nth-child(odd) {
+    grid-column: auto;
   }
 
   .fact + .fact {
