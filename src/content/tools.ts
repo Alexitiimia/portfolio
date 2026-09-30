@@ -74,6 +74,24 @@ export const toolGroups: readonly ToolGroup[] = [
       { id: 'github', name: 'GitHub', icon: brands.github, href: 'https://github.com/' },
       { id: 'lovable', name: 'Lovable', icon: brands.lovable, href: 'https://lovable.dev/' },
       { id: 'base44', name: 'Base44', icon: brands.base44, href: 'https://base44.com/' },
+      {
+        id: 'mongodb-atlas',
+        name: 'MongoDB Atlas',
+        icon: brands.mongodb,
+        href: 'https://www.mongodb.com/atlas',
+      },
+      {
+        id: 'amazon-dynamodb',
+        name: 'Amazon DynamoDB',
+        icon: brands.dynamodb,
+        href: 'https://aws.amazon.com/dynamodb/',
+      },
+      {
+        id: 'firebase-firestore',
+        name: 'Firebase Firestore',
+        icon: brands.firestore,
+        href: 'https://firebase.google.com/products/firestore',
+      },
     ],
   },
   {
