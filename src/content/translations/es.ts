@@ -162,6 +162,15 @@ export const es: Translations = {
       description:
         'Automatización de sistemas virtuales, del proceso interno a la integración entre herramientas.',
     },
+    'integracao-de-apis': {
+      title: 'Integración de APIs',
+      description: 'Integración de APIs de cualquier tipo en cualquier sistema.',
+    },
+    'correcao-e-debug': {
+      title: 'Corrección y depuración de sistemas',
+      description:
+        'Corrección de fallas y depuración optimizada, avanzada y eficaz, para que el sistema vuelva a funcionar y rinda mejor.',
+    },
     seo: {
       title: 'SEO para sitios',
       description:

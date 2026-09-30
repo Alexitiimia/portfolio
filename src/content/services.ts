@@ -1,5 +1,6 @@
 import {
   ChartNoAxesCombined,
+  Bug,
   Cpu,
   CreditCard,
   GraduationCap,
@@ -12,6 +13,7 @@ import {
   Smartphone,
   Truck,
   Users,
+  Webhook,
   Workflow,
   type LucideIcon,
 } from 'lucide-react'
@@ -105,6 +107,19 @@ export const services: readonly Service[] = [
     description:
       'Automação de sistemas virtuais, do processo interno à integração entre ferramentas.',
     icon: Cpu,
+  },
+  {
+    id: 'integracao-de-apis',
+    title: 'Integração de APIs',
+    description: 'Integração de APIs de qualquer tipo em qualquer sistema.',
+    icon: Webhook,
+  },
+  {
+    id: 'correcao-e-debug',
+    title: 'Correção e debug de sistemas',
+    description:
+      'Correção de falhas e debug otimizado, de forma avançada e eficaz, para o sistema voltar a funcionar e rodar melhor.',
+    icon: Bug,
   },
   {
     id: 'seo',

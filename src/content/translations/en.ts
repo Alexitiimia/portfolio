@@ -161,6 +161,15 @@ export const en: Translations = {
       description:
         'Automation of virtual systems, from internal processes to integration between tools.',
     },
+    'integracao-de-apis': {
+      title: 'API integration',
+      description: 'Integration of any kind of API into any system.',
+    },
+    'correcao-e-debug': {
+      title: 'System fixes and debugging',
+      description:
+        'Fixing faults and optimized debugging, advanced and effective, so the system works again and runs better.',
+    },
     seo: {
       title: 'SEO for websites',
       description:
