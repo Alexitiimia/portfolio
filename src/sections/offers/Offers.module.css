@@ -13,6 +13,11 @@
   background: var(--color-surface);
 }
 
+.action {
+  display: flex;
+  align-self: end;
+}
+
 .label {
   margin-bottom: var(--space-2);
   color: var(--color-fg-subtle);
@@ -31,6 +36,17 @@
 .description {
   color: var(--color-fg-muted);
   font-size: var(--text-sm);
+}
+
+/* Destaque: cores invertidas, como a palavra em destaque do título. Impossível de passar batido. */
+.callout {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-fg);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.45;
 }
 
 @media (min-width: 48rem) {

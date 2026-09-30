@@ -70,8 +70,10 @@ describe('App: links', () => {
   it('todo link para fora abre com segurança e usa só HTTPS ou mailto', () => {
     const { container } = render(<App />)
 
+    const isOwnPage = (href: string) =>
+      href.startsWith('#') || (href.startsWith('/') && !href.startsWith('//'))
     const anchors = [...container.querySelectorAll<HTMLAnchorElement>('a[href]')].filter(
-      (anchor) => !anchor.getAttribute('href')?.startsWith('#'),
+      (anchor) => !isOwnPage(anchor.getAttribute('href') ?? ''),
     )
     expect(anchors.length).toBeGreaterThan(0)
 

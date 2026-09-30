@@ -1,8 +1,6 @@
-import { BrandIcon } from '@/components/icons/BrandIcon'
 import { Section } from '@/components/layout/Section'
-import { ContactLink } from '@/components/ui/ContactLink'
-import { contactChannels } from '@/content/contact'
-import { QuotePanel } from './QuotePanel'
+import { ButtonLink } from '@/components/ui/ButtonLink'
+import { ContactChannels } from './ContactChannels'
 import styles from './Contact.module.css'
 
 export function Contact() {
@@ -10,21 +8,20 @@ export function Contact() {
     <Section id="contato">
       <p className={styles.statement}>Vamos tirar o seu projeto do papel.</p>
 
-      <QuotePanel />
+      <div className={styles.quote}>
+        <h3 className={styles.quoteTitle}>Monte o orçamento do seu projeto</h3>
+        <p className={styles.quoteText}>
+          Escolha o que precisa, veja a estimativa e envie o resumo pronto para o meu WhatsApp. Sem
+          cadastro e sem pagar nada agora.
+        </p>
+        <div className={styles.quoteAction}>
+          <ButtonLink href="/orcamento/" arrow="→">
+            montar orçamento
+          </ButtonLink>
+        </div>
+      </div>
 
-      <p className={styles.orChannel}>Prefere conversar direto? Escolha um canal:</p>
-
-      <ul role="list" className={styles.channels}>
-        {contactChannels.map((channel) => (
-          <li key={channel.id}>
-            <ContactLink href={channel.href} className={styles.channel}>
-              <BrandIcon icon={channel.icon} size={22} />
-              <span className={styles.channelLabel}>{channel.label}</span>
-              <span className={styles.channelValue}>{channel.value}</span>
-            </ContactLink>
-          </li>
-        ))}
-      </ul>
+      <ContactChannels />
     </Section>
   )
 }

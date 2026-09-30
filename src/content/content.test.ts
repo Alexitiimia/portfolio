@@ -163,13 +163,18 @@ describe('condições', () => {
   it('têm ids únicos e textos preenchidos', () => {
     expect(offers.length).toBeGreaterThan(0)
     expectUniqueSlugs(offers.map((offer) => offer.id))
-    for (const offer of offers) expectCleanText(offer.label, offer.highlight, offer.description)
+    for (const offer of offers) {
+      expectCleanText(offer.label, offer.highlight, offer.description)
+      if (offer.callout !== undefined) expectCleanText(offer.callout)
+    }
   })
 
   it('os 30 dias de suporte grátis ficam dentro do suporte técnico, não num cartão à parte', () => {
     const support = offers.find((offer) => offer.id === 'suporte')
 
-    expect(support?.description).toMatch(/30 dias/)
+    // A frase é o destaque (callout) do cartão de suporte: deixa claro o que é grátis e por quanto tempo.
+    expect(support?.callout).toMatch(/30 dias/)
+    expect(support?.callout).toMatch(/suporte técnico é grátis/)
     expect(offers.some((offer) => offer.label.includes('30 dias'))).toBe(false)
   })
 })

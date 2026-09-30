@@ -3,29 +3,6 @@
   /* minmax(0, 1fr): sem isso a coluna cresce até o conteúdo e estoura a tela no celular. */
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-3);
-  margin-top: var(--space-3);
-  padding: var(--space-5);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-}
-
-.title {
-  font-size: var(--text-xl);
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-}
-
-.lead {
-  max-width: 60ch;
-  color: var(--color-fg-muted);
-  font-size: var(--text-sm);
-}
-
-.lead b {
-  color: var(--color-fg);
-  font-family: var(--font-mono);
-  font-weight: 600;
 }
 
 .label {
@@ -98,7 +75,7 @@
   font-size: var(--text-xs);
 }
 
-/* Reserva o espaço do resultado para a página não "pular" quando ele aparece. */
+/* Reserva o espaço do resultado para o popup não "pular" quando ele aparece. */
 .result {
   min-height: 3.5rem;
   margin-top: var(--space-2);
@@ -107,7 +84,7 @@
 .message {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-3);
+  gap: var(--space-4);
   padding: var(--space-4);
   border: 1px solid var(--color-line-strong);
   border-radius: var(--radius);
@@ -136,6 +113,8 @@
 
 .offer {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 @media (prefers-reduced-motion: no-preference) {

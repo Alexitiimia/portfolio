@@ -12,6 +12,13 @@ export default defineConfig({
     },
   },
   build: {
+    rollupOptions: {
+      // Duas páginas: o portfólio e a página própria do orçamento (/orcamento/).
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        orcamento: fileURLToPath(new URL('./orcamento/index.html', import.meta.url)),
+      },
+    },
     // Nada é embutido em base64 no build. Assim a CSP (public/_headers) continua estrita
     // e previsível: fontes e imagens sempre vêm de arquivos do próprio site.
     assetsInlineLimit: 0,

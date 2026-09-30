@@ -27,12 +27,12 @@ async function submitName(name: string) {
 const status = () => screen.getByRole('status')
 
 describe('DomainChecker: aparência inicial', () => {
-  it('tem campo com rótulo, botão e a explicação do formato do endereço', () => {
-    render(<DomainChecker />)
+  it('tem campo com rótulo, botão e o sufixo fixo do endereço', () => {
+    const { container } = render(<DomainChecker />)
 
     expect(screen.getByLabelText('Nome desejado')).toHaveAttribute('name', 'nome')
     expect(screen.getByRole('button', { name: 'verificar' })).toBeEnabled()
-    expect(screen.getByText(`seunome.${DOMAIN_SUFFIX}`)).toBeInTheDocument()
+    expect(container).toHaveTextContent(`.${DOMAIN_SUFFIX}`)
     expect(status()).toBeEmptyDOMElement()
   })
 
@@ -71,6 +71,32 @@ describe('DomainChecker: nome livre', () => {
     expect(link.getAttribute('rel')?.split(' ')).toEqual(
       expect.arrayContaining(['noopener', 'noreferrer']),
     )
+  })
+
+  it('comemora com o selo animado e oferece orçamento ou WhatsApp', async () => {
+    stubFetch(() => answer({ status: 'available', name: 'minha-loja' }))
+
+    await submitName('minha-loja')
+
+    await waitFor(() => {
+      expect(screen.getByTestId('available-badge')).toHaveAttribute('aria-hidden', 'true')
+    })
+    expect(screen.getByRole('link', { name: /montar orçamento/ })).toHaveAttribute(
+      'href',
+      '/orcamento/',
+    )
+    expect(screen.getByRole('link', { name: /falar no WhatsApp/ })).toBeInTheDocument()
+  })
+
+  it('nome em uso não mostra o selo de livre', async () => {
+    stubFetch(() => answer({ status: 'taken', name: 'f-cordeiro' }))
+
+    await submitName('f-cordeiro')
+
+    await waitFor(() => {
+      expect(status()).toHaveTextContent(/já está em uso/)
+    })
+    expect(screen.queryByTestId('available-badge')).toBeNull()
   })
 
   it('deixa claro que livre não é o mesmo que reservado', async () => {

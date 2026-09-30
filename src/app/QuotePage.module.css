@@ -1,0 +1,103 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--color-line);
+  background: var(--color-bg);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .header {
+    background: var(--color-header-bg);
+    backdrop-filter: blur(12px);
+  }
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  height: var(--header-h);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.back {
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.back:hover {
+  color: var(--color-fg);
+}
+
+.main {
+  padding-block: clamp(2.5rem, 7vw, 5rem) var(--section-y);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-3);
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+}
+
+.title {
+  max-width: 22ch;
+  font-size: var(--text-3xl);
+  letter-spacing: -0.04em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 56ch;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-6);
+  color: var(--color-fg-muted);
+  font-size: var(--text-lg);
+  line-height: 1.6;
+}
+
+.foot {
+  border-top: 1px solid var(--color-line);
+}
+
+.term {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  color: var(--color-fg-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.term b {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+
+.term a {
+  color: var(--color-fg);
+}
+
+@media (max-width: 35.99rem) {
+  /* No celular o botão de voltar já é o logo: sobra espaço só para o tema. */
+  .back {
+    display: none;
+  }
+}

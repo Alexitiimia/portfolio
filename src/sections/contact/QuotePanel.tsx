@@ -47,7 +47,7 @@ function Choice({ type, name, item, checked, onChange }: ChoiceProps) {
 const instagramProfile = contactChannels.find((channel) => channel.id === 'instagram')?.href
 
 /**
- * Painel de orçamento. O cliente escolhe o projeto, os extras e o prazo, vê a estimativa e envia o
+ * Painel de orçamento (página /orcamento/). O cliente escolhe o projeto, os extras e o prazo, vê a estimativa e envia o
  * resumo já escrito para o seu WhatsApp (ou Instagram). Nada passa por servidor nem é guardado
  * aqui: o "enviar" é só um link que abre a conversa com a mensagem pronta.
  */
@@ -99,12 +99,6 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
         }}
         noValidate
       >
-        <h3 className={styles.title}>Monte o orçamento do seu projeto</h3>
-        <p className={styles.lead}>
-          Escolha o que precisa e veja a estimativa. No fim, o resumo segue pronto para o meu
-          WhatsApp, sem cadastro e sem pagar nada agora.
-        </p>
-
         <fieldset className={styles.group}>
           <legend className={styles.legend}>1. O que você precisa?</legend>
           <div className={styles.choices}>
@@ -202,7 +196,7 @@ export function QuotePanel({ catalog = quoteCatalog }: { readonly catalog?: Quot
       </form>
 
       <div className={styles.summary}>
-        <h4 className={styles.summaryTitle}>Resumo</h4>
+        <h2 className={styles.summaryTitle}>Resumo</h2>
 
         {chosen.length === 0 ? (
           <p className={styles.empty}>Escolha o tipo de projeto para começar.</p>

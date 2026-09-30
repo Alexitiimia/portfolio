@@ -13,6 +13,7 @@ import {
   validateName,
   type DomainCheck,
 } from '@/lib/domainName'
+import { AvailableBadge } from './AvailableBadge'
 import styles from './DomainChecker.module.css'
 import { useDomainCheck, type CheckState } from './useDomainCheck'
 
@@ -76,7 +77,7 @@ function describeState(state: CheckState, formatProblem: string | null): Message
 }
 
 /**
- * Campo para conferir, de verdade, se um nome de endereço grátis (`nome.axeldev.workers.dev`)
+ * Formulário (dentro do popup DomainDialog) para conferir, de verdade, se um nome de endereço grátis (`nome.axeldev.workers.dev`)
  * ainda está livre. Quem responde é o Worker (worker/domain.ts), que consulta a conta na Cloudflare.
  */
 export function DomainChecker() {
@@ -110,12 +111,6 @@ export function DomainChecker() {
 
   return (
     <form className={styles.panel} onSubmit={handleSubmit} noValidate>
-      <h3 className={styles.title}>Confira se o nome do seu site está livre</h3>
-      <p className={styles.lead}>
-        O endereço grátis do primeiro ano tem o formato <b>seunome.{DOMAIN_SUFFIX}</b>. A consulta é
-        feita na hora, direto na conta da Cloudflare.
-      </p>
-
       <label htmlFor={inputId} className={styles.label}>
         Nome desejado
       </label>
@@ -152,20 +147,28 @@ export function DomainChecker() {
       <div role="status" aria-live="polite" className={styles.result}>
         {message === null ? null : (
           <div className={styles.message} data-tone={message.tone}>
-            <LineIcon
-              icon={message.icon}
-              size={20}
-              className={cx(styles.icon, message.tone === 'busy' && styles.spinner)}
-            />
+            {message.tone === 'good' ? (
+              <AvailableBadge />
+            ) : (
+              <LineIcon
+                icon={message.icon}
+                size={20}
+                className={cx(styles.icon, message.tone === 'busy' && styles.spinner)}
+              />
+            )}
             <div className={styles.text}>
               <p>{message.text}</p>
               {message.offer === undefined ? null : (
                 <div className={styles.offer}>
+                  <ButtonLink href="/orcamento/" arrow="→">
+                    montar orçamento
+                  </ButtonLink>
                   <ButtonLink
                     href={whatsappHref(
                       `Olá! Vi seu portfólio e quero o endereço ${message.offer} para o meu site.`,
                     )}
                     external
+                    variant="secondary"
                     arrow="↗"
                   >
                     falar no WhatsApp

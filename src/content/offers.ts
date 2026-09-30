@@ -8,7 +8,11 @@ export interface Offer {
   /** Destaque (ex.: "Grátis por 1 ano"). Aparece também no topo da página. */
   readonly highlight: string
   readonly description: string
+  /** Frase de destaque, exibida numa faixa de cores invertidas dentro do cartão. */
+  readonly callout?: string
   readonly icon: LucideIcon
+  /** Botão extra no cartão. `domain-check` abre o popup que confere se um nome está livre. */
+  readonly action?: { readonly kind: 'domain-check'; readonly label: string }
 }
 
 export const offers: readonly Offer[] = [
@@ -17,8 +21,9 @@ export const offers: readonly Offer[] = [
     label: 'Domínio',
     highlight: 'Grátis por 1 ano',
     description:
-      'Endereço grátis durante o primeiro ano, no formato seunome.axeldev.workers.dev. Confira abaixo se o nome que você quer está livre.',
+      'Endereço grátis durante o primeiro ano, no formato seunome.axeldev.workers.dev. Confira se o nome que você quer está livre.',
     icon: Globe,
+    action: { kind: 'domain-check', label: 'verificar nome' },
   },
   {
     id: 'hospedagem',
@@ -32,7 +37,8 @@ export const offers: readonly Offer[] = [
     label: 'Suporte técnico',
     highlight: '24 horas por dia',
     description:
-      'Correção de bugs e atendimento de pedidos de ajuda técnica com o seu site ou sistema, a qualquer hora. Nos primeiros 30 dias depois da compra, o suporte técnico é grátis.',
+      'Correção de bugs e atendimento de pedidos de ajuda técnica com o seu site ou sistema, a qualquer hora.',
+    callout: 'Nos primeiros 30 dias depois da compra, o suporte técnico é grátis.',
     icon: LifeBuoy,
   },
 ]

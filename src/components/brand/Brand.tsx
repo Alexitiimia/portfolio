@@ -5,7 +5,8 @@ import { CorvoIcon } from './CorvoIcon'
 import styles from './Brand.module.css'
 
 interface BrandProps {
-  readonly href: `#${string}`
+  /** Âncora da própria página (`#inicio`) ou caminho do site (`/`). */
+  readonly href: `#${string}` | `/${string}`
   readonly onClick?: MouseEventHandler<HTMLAnchorElement>
   /**
    * Sem isto, o logo tem o corvo interativo (olha para o mouse e voa ao clicar). Com isto, deixa só

@@ -10,6 +10,8 @@ import { SELF_WORKER_NAME } from '../../worker/domain.ts'
 const files = import.meta.glob<string>(
   [
     '/index.html',
+    '/orcamento/index.html',
+    '/vite.config.ts',
     '/wrangler.jsonc',
     '/public/_headers',
     '/public/404.html',
@@ -163,6 +165,7 @@ function resourceUrls(html: string): string[] {
 describe.each([
   ['index.html', '/index.html'],
   ['404.html', '/public/404.html'],
+  ['orcamento/index.html', '/orcamento/index.html'],
 ] as const)('%s', (_name, path) => {
   const html = read(path)
 
@@ -306,5 +309,32 @@ describe('Worker da verificação de domínio', () => {
 
   it('a página só chama o próprio site: a CSP não libera nenhum outro destino de rede', () => {
     expect(headerValue('Content-Security-Policy')).toMatch(/connect-src 'self'(;|$)/)
+  })
+})
+
+describe('página /orcamento/', () => {
+  const html = read('/orcamento/index.html')
+
+  it('tem título com a marca, descrição e as mesmas prévias de link do portfólio', () => {
+    const title = matchOrThrow(html, /<title>([^<]+)<\/title>/, 'o <title>')
+    const ogTitle = matchOrThrow(html, /property="og:title"\s+content="([^"]+)"/, 'og:title')
+
+    expect(title).toContain(site.name)
+    expect(title).not.toBe(matchOrThrow(read('/index.html'), /<title>([^<]+)<\/title>/, 'título'))
+    expect(ogTitle).toBe(title)
+    expect(html).toMatch(/name="description"\s+content="[^"]{60,200}"/)
+  })
+
+  it('carrega o script da própria página, que existe', () => {
+    const entry = matchOrThrow(html, /<script type="module" src="([^"]+)"/, 'o script da página')
+
+    expect(Object.keys(import.meta.glob('/src/orcamento.tsx'))).toEqual([entry])
+  })
+
+  it('está na lista de páginas do build (senão some do site publicado)', () => {
+    const config = read('/vite.config.ts')
+
+    expect(config).toContain("'./index.html'")
+    expect(config).toContain("'./orcamento/index.html'")
   })
 })

@@ -13,8 +13,8 @@ interface BaseProps {
 }
 
 interface InternalProps extends BaseProps {
-  /** Âncora dentro da própria página, como "#contato". */
-  readonly href: `#${string}`
+  /** Âncora da própria página ("#contato") ou caminho de outra página do site ("/orcamento/"). */
+  readonly href: `#${string}` | `/${string}`
   readonly external?: false
 }
 

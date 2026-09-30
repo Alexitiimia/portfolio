@@ -5,10 +5,11 @@
 ```
 brand/            Kit original da identidade (a marca hoje é "The Crow"). Fonte da verdade; não entra no build.
 docs/             Documentação.
+orcamento/        HTML da segunda página do site (/orcamento/). Entrada: src/orcamento.tsx. Listada em vite.config.ts.
 worker/           Único código de servidor: /api/dominio (verificação de nomes livres). Ver docs/DEPLOY.md.
 public/           Copiado como está para a raiz do site (sem hash): _headers, 404, favicons, robots.
 src/
-  app/            Composição da página (App) e ErrorBoundary.
+  app/            Composição das páginas (App = portfólio, QuotePage = /orcamento/) e ErrorBoundary.
   assets/brand/   Sprites do mascote importados pelo CSS (ganham hash no build).
   components/
     brand/        Logo (Brand), corvo (CorvoSprite, CorvoIcon, FooterCrow) e mascote de erro (CorvoMascot).

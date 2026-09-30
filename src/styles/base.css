@@ -11,6 +11,11 @@
     }
   }
 
+  /* Popup (<dialog>) aberto: a página atrás não rola. */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
   body {
     background: var(--color-bg);
     color: var(--color-fg);
