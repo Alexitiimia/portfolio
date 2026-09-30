@@ -388,12 +388,24 @@ describe('ícones e manifesto do site', () => {
     expect(publicFiles.has('favicon-32.png'), 'ícone antigo sobrando').toBe(false)
   })
 
-  it('o favicon.svg é preto em qualquer tema: sem regra que o troque por branco', () => {
+  it('o favicon.svg é um corvo preto sobre um quadrado de cantos arredondados, igual em qualquer tema', () => {
     const svg = read('/public/favicon.svg')
 
     expect(svg).not.toMatch(/prefers-color-scheme|@media/i)
-    expect(svg).toMatch(/\.k\s*\{\s*fill:\s*#0a0a0a/i)
-    expect(svg).not.toMatch(/#f5f5f5|#fff\b|#ffffff|white/i)
+    // Fundo: o primeiro retângulo cobre o desenho todo e tem cantos arredondados (rx > 0).
+    expect(svg).toMatch(/viewBox="0 0 (\d+) \1"/)
+    const side = matchOrThrow(svg, /viewBox="0 0 (\d+) \d+"/, 'o lado do desenho')
+    expect(svg).toMatch(
+      new RegExp(
+        `<rect width="${side}" height="${side}" rx="[1-9][\\d.]*" fill="#[0-9a-f]{6}"`,
+        'i',
+      ),
+    )
+    // Corvo: só preto (#0a0a0a) e o olho vermelho; nada branco por cima do fundo.
+    const ink = [...svg.matchAll(/fill="#0a0a0a"/gi)].length
+    expect(ink, 'o corvo precisa ser preto').toBeGreaterThan(15)
+    expect(svg).toMatch(/fill="#e3262b"/i)
+    expect(svg).not.toMatch(/fill="#(?:f5f5f5|fff|ffffff)"/i)
   })
 
   it('o favicon.svg é só desenho: sem script, imagem embutida nem endereço externo', () => {

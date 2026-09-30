@@ -73,8 +73,12 @@ O kit em `brand/` é a origem; o que o site usa foi copiado/portado assim:
 Para trocar o favicon por outra variante, copie os arquivos da pasta escolhida para `public/` (o
 SVG, o `.ico`, o `apple-touch-icon.png` e, para Android, `icon-192/512.png` + `site.webmanifest`).
 O manifesto usa o nome da marca (`site.name`) e o preto do tema escuro; `deploy.test.ts` confere.
-O `favicon.svg` é o `corvo-preto.svg` do kit (preto em qualquer tema; o `favicon.svg` do kit muda
-para branco no tema escuro, mas foi descartado de propósito).
+Os ícones **não são cópia do kit**: `favicons/5-silhueta-olho/build-tile.py` lê o `corvo-preto.svg`
+e gera `favicon.svg`, `favicon.ico`, `apple-touch-icon.png` e `icon-192/512.png` com o corvo preto
+sobre um quadrado cinza claro de cantos arredondados (aparece em aba clara e escura; o
+`favicon.svg` do kit, que virava branco no tema escuro, foi descartado de propósito). Para mudar
+cor ou arredondamento, edite as constantes do script e rode `python3
+brand/favicons/5-silhueta-olho/build-tile.py` (precisa do Pillow).
 Se o kit for atualizado, refaça a cópia acima; não edite `brand/` à mão.
 
 O Lovable ainda não existe no pacote de logos usado (`simple-icons`), por isso seu desenho está

@@ -17,7 +17,8 @@ export interface Project {
   readonly summary: string
   /** Tecnologias em texto livre. */
   readonly stack: readonly string[]
-  readonly year: number
+  /** Ano em que o projeto começou. */
+  readonly startYear: number
   /** Viram botões. Vazio quando o projeto não tem link público. */
   readonly links: readonly ProjectLink[]
 }
@@ -43,7 +44,7 @@ export const projects: readonly Project[] = [
       'Railway',
       'Cloudflare',
     ],
-    year: 2025,
+    startYear: 2026,
     links: [{ label: 'Ver a loja', href: 'https://f-cordeiro.axeldev.workers.dev/' }],
   },
   {
@@ -53,7 +54,7 @@ export const projects: readonly Project[] = [
     summary:
       'Comunidade de Minecraft com jogo entre Java e Bedrock. O site tem login com Discord, mapa 3D ao vivo, ranking, loja e assinatura de apoiador com Mercado Pago. Por trás: servidor em Docker com backups, plugins próprios em Java (economia, social e verificação), bot de boas-vindas e painel de admin.',
     stack: ['JavaScript', 'Java', 'Python', 'Docker', 'Mercado Pago', 'Cloudflare'],
-    year: 2025,
+    startYear: 2025,
     links: [{ label: 'Ver o site', href: 'https://vilacartola.com/' }],
   },
   {
@@ -63,7 +64,7 @@ export const projects: readonly Project[] = [
     summary:
       'Triagem auditiva online e gratuita, em inglês: toca tons puros em cinco frequências, um ouvido por vez, e entrega um gráfico com o resultado, que pode ser baixado em PDF. Um Worker guarda o histórico por e-mail e barra spam com armadilha invisível e lista de e-mails descartáveis.',
     stack: ['JavaScript', 'Web Audio', 'Supabase', 'MailerLite', 'Cloudflare'],
-    year: 2025,
+    startYear: 2026,
     links: [{ label: 'Fazer o teste', href: 'https://puretonecheck.com/' }],
   },
 ]

@@ -93,8 +93,9 @@ describe('projetos', () => {
         project.stack.length,
       )
       expect(project.icon.length, `${project.id}: sem favicon`).toBeGreaterThan(0)
-      expect(Number.isInteger(project.year)).toBe(true)
-      expect(project.year).toBeGreaterThanOrEqual(2000)
+      expect(Number.isInteger(project.startYear)).toBe(true)
+      expect(project.startYear).toBeGreaterThanOrEqual(2000)
+      expect(project.startYear).toBeLessThanOrEqual(new Date().getFullYear())
     }
   })
 

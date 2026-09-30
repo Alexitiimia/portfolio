@@ -66,4 +66,26 @@ describe('Projetos', () => {
       expect(screen.queryByRole('heading', { name })).toBeNull()
     }
   })
+
+  it('mostra em destaque o ano em que cada projeto começou', () => {
+    render(<Projects />)
+
+    for (const project of projects) {
+      const card = cardOf(project.name)
+      expect(card).toHaveTextContent(`Início${String(project.startYear)}`)
+      const time = card.querySelector('time')
+      expect(time).toHaveTextContent(String(project.startYear))
+      expect(time).toHaveAttribute('datetime', String(project.startYear))
+    }
+  })
+
+  it('usa os anos informados por quem fez os projetos', () => {
+    const years = Object.fromEntries(projects.map((project) => [project.id, project.startYear]))
+
+    expect(years).toMatchObject({
+      'f-cordeiro': 2026,
+      'vila-cartola': 2025,
+      'pure-tone-check': 2026,
+    })
+  })
 })

@@ -6,7 +6,12 @@ import styles from './Projects.module.css'
 function ProjectItem({ project }: { readonly project: Project }) {
   return (
     <article className={styles.project}>
-      <p className={styles.year}>{project.year}</p>
+      <div className={styles.since}>
+        <span className={styles.sinceLabel}>Início</span>
+        <time dateTime={String(project.startYear)} className={styles.sinceYear}>
+          {project.startYear}
+        </time>
+      </div>
 
       <div className={styles.main}>
         <div className={styles.heading}>
