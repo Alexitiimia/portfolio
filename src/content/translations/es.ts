@@ -103,7 +103,6 @@ export const es: Translations = {
       ubuntu: 'Linux',
       debian: 'Linux',
       'kali-linux': 'Linux',
-      'burp-suite': 'Nociones de SQL Injection',
     },
   },
   services: {
@@ -241,6 +240,11 @@ export const es: Translations = {
         label: 'Automatización de datos',
         description: 'Scripts para el mantenimiento, almacenamiento y actualización de datos.',
       },
+      'correcao-de-sistema': {
+        label: 'Corrección y depuración de sistemas',
+        description:
+          'Un sistema tuyo con errores, lento o inestable: encuentro la causa y lo corrijo.',
+      },
       outro: {
         label: 'Otro proyecto',
         description: 'Algo diferente: descríbelo en el campo de abajo.',
@@ -281,6 +285,10 @@ export const es: Translations = {
       'automacao-de-sistemas': {
         label: 'Automatización de sistemas',
         description: 'Automatización de procesos e integración entre herramientas.',
+      },
+      'integracao-de-apis': {
+        label: 'Integración de APIs',
+        description: 'Conecto APIs de cualquier tipo a tu sistema.',
       },
       'auditoria-de-seguranca': {
         label: 'Auditoría de seguridad',

@@ -75,6 +75,8 @@ export interface Ui {
     title: string
     lead: string
     backToPortfolio: string
+    howItWorks: string
+    steps: readonly { readonly title: string; readonly text: string }[]
   }
   quotePanel: {
     stepProject: string
@@ -90,6 +92,10 @@ export interface Ui {
     note: string
     sendWhatsApp: string
     sendInstagram: string
+    required: string
+    progress: (done: number, total: number) => string
+    progressDone: string
+    jumpToSummary: string
     copied: string
     ready: string
     missing: (fields: string) => string
@@ -175,6 +181,12 @@ const pt: Ui = {
     title: 'Monte o orçamento do seu projeto',
     lead: 'Escolha o que precisa e veja a estimativa. No fim, o resumo segue pronto para o meu WhatsApp, sem cadastro e sem pagar nada agora.',
     backToPortfolio: 'voltar ao portfólio',
+    howItWorks: 'Como funciona',
+    steps: [
+      { title: 'Monte o orçamento', text: 'Escolha o que precisa em poucos cliques.' },
+      { title: 'Envie pelo WhatsApp', text: 'O resumo já vai escrito, é só tocar em enviar.' },
+      { title: 'Converso com você', text: 'Leio os detalhes e confirmo o valor final juntos.' },
+    ],
   },
   quotePanel: {
     stepProject: '1. O que você precisa?',
@@ -184,12 +196,16 @@ const pt: Ui = {
     stepDetails: '5. Conte sobre o projeto (opcional)',
     namePlaceholder: 'Como devo te chamar?',
     detailsPlaceholder: 'O que ele faz, para quem é, exemplos que você gosta…',
-    summary: 'Resumo',
+    summary: 'Seu orçamento',
     empty: 'Escolha o tipo de projeto para começar.',
     estimate: 'Estimativa',
     note: 'O valor final é confirmado na conversa, depois de eu ler os detalhes.',
-    sendWhatsApp: 'enviar pelo WhatsApp',
+    sendWhatsApp: 'enviar meu orçamento no WhatsApp',
     sendInstagram: 'enviar pelo Instagram',
+    required: 'obrigatório',
+    progress: (done, total) => `${String(done)} de ${String(total)} passos obrigatórios`,
+    progressDone: 'Pronto para enviar',
+    jumpToSummary: 'ver resumo e enviar',
     copied: 'Mensagem copiada: cole na conversa do Instagram.',
     ready: 'Tudo certo. Ao enviar, o resumo abre pronto na conversa.',
     missing: (fields) => `Falta informar: ${fields}.`,
@@ -294,6 +310,12 @@ const en: Ui = {
     title: 'Build a quote for your project',
     lead: 'Pick what you need and see the estimate. In the end, the summary goes ready to my WhatsApp, with no sign-up and nothing to pay now.',
     backToPortfolio: 'back to the portfolio',
+    howItWorks: 'How it works',
+    steps: [
+      { title: 'Build your quote', text: 'Pick what you need in a few clicks.' },
+      { title: 'Send it on WhatsApp', text: 'The summary is already written, just tap send.' },
+      { title: 'We talk', text: 'I read the details and we confirm the final price together.' },
+    ],
   },
   quotePanel: {
     stepProject: '1. What do you need?',
@@ -303,12 +325,16 @@ const en: Ui = {
     stepDetails: '5. Tell me about the project (optional)',
     namePlaceholder: 'What should I call you?',
     detailsPlaceholder: 'What it does, who it is for, examples you like…',
-    summary: 'Summary',
+    summary: 'Your quote',
     empty: 'Pick the project type to get started.',
     estimate: 'Estimate',
     note: 'The final price is confirmed in our chat, after I read the details.',
-    sendWhatsApp: 'send on WhatsApp',
+    sendWhatsApp: 'send my quote on WhatsApp',
     sendInstagram: 'send on Instagram',
+    required: 'required',
+    progress: (done, total) => `${String(done)} of ${String(total)} required steps`,
+    progressDone: 'Ready to send',
+    jumpToSummary: 'see summary and send',
     copied: 'Message copied: paste it into the Instagram chat.',
     ready: 'All set. When you send it, the summary opens ready in the chat.',
     missing: (fields) => `Still missing: ${fields}.`,
@@ -415,6 +441,12 @@ const es: Ui = {
     title: 'Arma el presupuesto de tu proyecto',
     lead: 'Elige lo que necesitas y mira la estimación. Al final, el resumen va listo a mi WhatsApp, sin registro y sin pagar nada ahora.',
     backToPortfolio: 'volver al portafolio',
+    howItWorks: 'Cómo funciona',
+    steps: [
+      { title: 'Arma el presupuesto', text: 'Elige lo que necesitas en pocos clics.' },
+      { title: 'Envíalo por WhatsApp', text: 'El resumen ya va escrito, solo toca enviar.' },
+      { title: 'Conversamos', text: 'Leo los detalles y confirmamos juntos el precio final.' },
+    ],
   },
   quotePanel: {
     stepProject: '1. ¿Qué necesitas?',
@@ -424,12 +456,16 @@ const es: Ui = {
     stepDetails: '5. Cuéntame sobre el proyecto (opcional)',
     namePlaceholder: '¿Cómo debo llamarte?',
     detailsPlaceholder: 'Qué hace, para quién es, ejemplos que te gustan…',
-    summary: 'Resumen',
+    summary: 'Tu presupuesto',
     empty: 'Elige el tipo de proyecto para empezar.',
     estimate: 'Estimación',
     note: 'El precio final se confirma en la conversación, después de leer los detalles.',
-    sendWhatsApp: 'enviar por WhatsApp',
+    sendWhatsApp: 'enviar mi presupuesto por WhatsApp',
     sendInstagram: 'enviar por Instagram',
+    required: 'obligatorio',
+    progress: (done, total) => `${String(done)} de ${String(total)} pasos obligatorios`,
+    progressDone: 'Listo para enviar',
+    jumpToSummary: 'ver resumen y enviar',
     copied: 'Mensaje copiado: pégalo en la conversación de Instagram.',
     ready: 'Todo listo. Al enviar, el resumen se abre listo en la conversación.',
     missing: (fields) => `Falta indicar: ${fields}.`,

@@ -103,7 +103,6 @@ export const en: Translations = {
       ubuntu: 'Linux',
       debian: 'Linux',
       'kali-linux': 'Linux',
-      'burp-suite': 'SQL Injection basics',
     },
   },
   services: {
@@ -239,6 +238,11 @@ export const en: Translations = {
         label: 'Data automation',
         description: 'Scripts to maintain, store and update data.',
       },
+      'correcao-de-sistema': {
+        label: 'System fixes and debugging',
+        description:
+          'A system of yours with errors, slow or unstable: I find the cause and fix it.',
+      },
       outro: {
         label: 'Another project',
         description: 'Something different: describe it in the field below.',
@@ -279,6 +283,10 @@ export const en: Translations = {
       'automacao-de-sistemas': {
         label: 'Systems automation',
         description: 'Process automation and integration between tools.',
+      },
+      'integracao-de-apis': {
+        label: 'API integration',
+        description: 'I connect any kind of API to your system.',
       },
       'auditoria-de-seguranca': {
         label: 'Security audit',

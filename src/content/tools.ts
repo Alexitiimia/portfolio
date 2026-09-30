@@ -132,7 +132,6 @@ export const toolGroups: readonly ToolGroup[] = [
         name: 'Burp Suite',
         icon: brands.burpSuite,
         href: 'https://portswigger.net/burp',
-        note: 'Noções de SQL Injection',
       },
       { id: 'postman', name: 'Postman', icon: brands.postman, href: 'https://www.postman.com/' },
       { id: 'nmap', name: 'Nmap', icon: brands.nmap, href: 'https://nmap.org/' },

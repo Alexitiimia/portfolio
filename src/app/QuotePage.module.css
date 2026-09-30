@@ -101,3 +101,60 @@
     display: none;
   }
 }
+
+/* "Como funciona": três passos curtos, para o visitante saber o que acontece depois de enviar. */
+.how {
+  margin-bottom: var(--space-6);
+}
+
+.howTitle {
+  margin-bottom: var(--space-3);
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.stepNumber {
+  grid-row: span 2;
+  color: var(--color-fg-subtle);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.stepTitle {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.stepText {
+  color: var(--color-fg-muted);
+  font-size: var(--text-xs);
+}
+
+@media (min-width: 48rem) {
+  .steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

@@ -63,6 +63,13 @@ export const quoteCatalog: QuoteCatalog = {
       'Scripts para manutenção, armazenamento e atualização de dados.',
       16,
     ),
+    // Sem horas de propósito: o problema de um sistema que já existe só se sabe depois de olhar.
+    item(
+      'correcao-de-sistema',
+      'Correção e debug de sistema',
+      'Um sistema seu com erro, lento ou instável: encontro a causa e corrijo.',
+      null,
+    ),
     // Sem horas de propósito: cada "outro projeto" é único e precisa de conversa antes do preço.
     item('outro', 'Outro projeto', 'Algo diferente: descreva no campo abaixo.', null),
   ],
@@ -99,6 +106,12 @@ export const quoteCatalog: QuoteCatalog = {
       'automacao-de-sistemas',
       'Automação de sistemas',
       'Automação de processos e integração entre ferramentas.',
+      16,
+    ),
+    item(
+      'integracao-de-apis',
+      'Integração de APIs',
+      'Conecto APIs de qualquer tipo ao seu sistema.',
       16,
     ),
     item(

@@ -43,6 +43,23 @@ export function QuotePage() {
           <h1 className={styles.title}>{ui.title}</h1>
           <p className={styles.lead}>{ui.lead}</p>
 
+          <section aria-labelledby="como-funciona" className={styles.how}>
+            <h2 id="como-funciona" className={styles.howTitle}>
+              {ui.howItWorks}
+            </h2>
+            <ol role="list" className={styles.steps}>
+              {ui.steps.map((step, index) => (
+                <li key={step.title} className={styles.step}>
+                  <span className={styles.stepNumber} aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span className={styles.stepTitle}>{step.title}</span>
+                  <span className={styles.stepText}>{step.text}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
           <QuotePanel />
           <ContactChannels />
         </Container>

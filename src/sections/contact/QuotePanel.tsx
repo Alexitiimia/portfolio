@@ -1,4 +1,4 @@
-import { useId, useState, type ChangeEvent } from 'react'
+import { useId, useRef, useState, type ChangeEvent } from 'react'
 import { Button } from '@/components/ui/Button'
 import { ButtonLink } from '@/components/ui/ButtonLink'
 import { contactChannels, whatsappHref } from '@/content/contact'
@@ -16,6 +16,7 @@ import {
   priceSummary,
   type QuoteText,
 } from '@/lib/quote'
+import { cx } from '@/lib/cx'
 import styles from './QuotePanel.module.css'
 
 interface ChoiceProps {
@@ -66,6 +67,9 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
   const [name, setName] = useState('')
   const [details, setDetails] = useState('')
   const [copied, setCopied] = useState(false)
+  const [attempted, setAttempted] = useState(false)
+  const projectRef = useRef<HTMLFieldSetElement>(null)
+  const nameRef = useRef<HTMLInputElement>(null)
 
   const project = catalog.projects.find((item) => item.id === projectId) ?? null
   const extras = catalog.extras.filter((item) => extraIds.includes(item.id))
@@ -77,12 +81,21 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
   const ready = isReady(input)
   const missing = missingFields(input, text)
   const message = buildMessage(input, text)
+  const stepsTotal = 2
+  const stepsDone = stepsTotal - missing.length
   const instagramUrl = instagramProfile === undefined ? null : instagramDmUrl(instagramProfile)
 
   const toggleExtra = (id: string) => {
     setExtraIds((current) =>
       current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
     )
+  }
+
+  // Botão sempre ativo: sem os dados obrigatórios, ele leva o cliente ao primeiro campo que falta.
+  const guideToMissing = () => {
+    setAttempted(true)
+    if (project === null) projectRef.current?.querySelector('input')?.focus()
+    else nameRef.current?.focus()
   }
 
   const copyMessage = () => {
@@ -106,8 +119,10 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
         }}
         noValidate
       >
-        <fieldset className={styles.group}>
-          <legend className={styles.legend}>{ui.stepProject}</legend>
+        <fieldset ref={projectRef} className={styles.group}>
+          <legend className={styles.legend}>
+            {ui.stepProject} <span className={styles.required}>{ui.required}</span>
+          </legend>
           <div className={styles.choices}>
             {catalog.projects.map((item) => (
               <Choice
@@ -167,10 +182,12 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
 
         <div className={styles.group}>
           <label htmlFor={`${uid}-nome`} className={styles.legend}>
-            {ui.stepName}
+            {ui.stepName} <span className={styles.required}>{ui.required}</span>
           </label>
           <input
+            ref={nameRef}
             id={`${uid}-nome`}
+            aria-required="true"
             type="text"
             value={name}
             maxLength={NAME_MAX_LENGTH}
@@ -202,10 +219,29 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
             {details.length}/{DETAILS_MAX_LENGTH}
           </p>
         </div>
+
+        {project !== null ? (
+          <a href={`#${uid}-resumo`} className={styles.jump}>
+            <span className={styles.jumpTotal}>{total}</span>
+            <span>{ui.jumpToSummary} ↓</span>
+          </a>
+        ) : null}
       </form>
 
-      <div className={styles.summary}>
+      <div id={`${uid}-resumo`} className={styles.summary}>
         <h2 className={styles.summaryTitle}>{ui.summary}</h2>
+
+        <div className={styles.progressBox}>
+          <p className={styles.progressLabel}>
+            {ready ? ui.progressDone : ui.progress(stepsDone, stepsTotal)}
+          </p>
+          <progress
+            className={styles.progress}
+            max={stepsTotal}
+            value={stepsDone}
+            aria-label={ui.progress(stepsDone, stepsTotal)}
+          />
+        </div>
 
         {chosen.length === 0 ? (
           <p className={styles.empty}>{ui.empty}</p>
@@ -232,7 +268,9 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
               {ui.sendWhatsApp}
             </ButtonLink>
           ) : (
-            <Button disabled>{ui.sendWhatsApp}</Button>
+            <Button type="button" onClick={guideToMissing}>
+              {ui.sendWhatsApp}
+            </Button>
           )}
           {ready && instagramUrl !== null ? (
             <ButtonLink
@@ -247,7 +285,7 @@ export function QuotePanel({ catalog: custom }: { readonly catalog?: QuoteCatalo
           ) : null}
         </div>
 
-        <p className={styles.status} role="status">
+        <p className={cx(styles.status, attempted && !ready && styles.statusWarn)} role="status">
           {ready ? (copied ? ui.copied : ui.ready) : ui.missing(missing.join(text.and))}
         </p>
 

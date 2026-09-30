@@ -19,7 +19,8 @@ const catalog: QuoteCatalog = {
   ],
 }
 
-const whatsappButton = () => screen.getByText('enviar pelo WhatsApp').closest('a, button')
+const whatsappButton = () =>
+  screen.getByText('enviar meu orçamento no WhatsApp').closest('a, button')
 const plain = (text: string | null) => (text ?? '').replaceAll(' ', ' ')
 
 describe('QuotePanel', () => {
@@ -27,8 +28,44 @@ describe('QuotePanel', () => {
     render(<QuotePanel catalog={catalog} />)
 
     expect(whatsappButton()?.tagName).toBe('BUTTON')
-    expect(whatsappButton()).toBeDisabled()
     expect(screen.getByRole('status')).toHaveTextContent('o tipo de projeto e seu nome')
+    expect(screen.getByText('0 de 2 passos obrigatórios')).toBeInTheDocument()
+  })
+
+  it('sem os dados obrigatórios, o botão leva ao primeiro campo que falta em vez de ficar morto', async () => {
+    const user = userEvent.setup()
+    render(<QuotePanel catalog={catalog} />)
+
+    await user.click(whatsappButton() as HTMLElement)
+    expect(screen.getByRole('radio', { name: /Loja virtual/ })).toHaveFocus()
+
+    await user.click(screen.getByRole('radio', { name: /Loja virtual/ }))
+    await user.click(whatsappButton() as HTMLElement)
+    expect(screen.getByLabelText(/Seu nome/)).toHaveFocus()
+  })
+
+  it('mostra o progresso e avisa quando está pronto para enviar', async () => {
+    const user = userEvent.setup()
+    render(<QuotePanel catalog={catalog} />)
+
+    await user.click(screen.getByRole('radio', { name: /Loja virtual/ }))
+    expect(screen.getByText('1 de 2 passos obrigatórios')).toBeInTheDocument()
+
+    await user.type(screen.getByLabelText(/Seu nome/), 'Joana')
+    expect(screen.getByText('Pronto para enviar')).toBeInTheDocument()
+  })
+
+  it('oferece um atalho para o resumo só depois de escolher o projeto', async () => {
+    const user = userEvent.setup()
+    render(<QuotePanel catalog={catalog} />)
+    expect(screen.queryByRole('link', { name: /ver resumo e enviar/ })).toBeNull()
+
+    await user.click(screen.getByRole('radio', { name: /Site simples/ }))
+
+    expect(screen.getByRole('link', { name: /ver resumo e enviar/ })).toHaveAttribute(
+      'href',
+      expect.stringMatching(/^#.+-resumo$/),
+    )
   })
 
   it('libera o WhatsApp com a mensagem pronta quando há projeto e nome', async () => {
