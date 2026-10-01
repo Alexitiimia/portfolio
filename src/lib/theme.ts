@@ -45,3 +45,8 @@ export function applyTheme(theme: Theme): void {
 export function resolveInitialTheme(): Theme {
   return getAppliedTheme() ?? readStoredTheme() ?? getSystemTheme()
 }
+
+/** Cobre o caso de o script do <head> não ter rodado: o <html> fica sem tema até alguém aplicar um. */
+export function ensureThemeApplied(): void {
+  if (getAppliedTheme() === null) applyTheme(resolveInitialTheme())
+}

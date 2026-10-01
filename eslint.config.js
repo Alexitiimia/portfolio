@@ -37,7 +37,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['vite.config.ts', 'vite.i18n.ts'],
+    files: ['vite.config.ts', 'vite.i18n.ts', 'vite.prerender.ts'],
     languageOptions: { globals: globals.node },
   },
   {

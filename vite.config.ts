@@ -2,10 +2,11 @@ import { fileURLToPath } from 'node:url'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 import { i18nPages } from './vite.i18n.ts'
+import { prerenderPages } from './vite.prerender.ts'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), i18nPages()],
+  plugins: [react(), i18nPages(), prerenderPages()],
   resolve: {
     alias: {
       // Mantenha igual ao "paths" de tsconfig.app.json.

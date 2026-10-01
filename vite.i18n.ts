@@ -33,6 +33,8 @@ export function i18nPages(): Plugin {
   return {
     name: 'i18n-pages',
     enforce: 'post',
+    // O build do servidor (pré-renderização) não gera páginas HTML: só o build normal usa este plugin.
+    apply: (_config, env) => env.isSsrBuild !== true,
 
     configureServer(server) {
       server.middlewares.use((request, _response, next) => {

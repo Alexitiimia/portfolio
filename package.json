@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr",
     "preview": "vite preview",
     "preview:cf": "npm run build && wrangler dev",
     "typecheck": "tsc -b",

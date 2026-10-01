@@ -1,5 +1,4 @@
 import { useId } from 'react'
-import type { CSSProperties } from 'react'
 import type { BrandIconData } from './brands'
 import styles from './BrandIcon.module.css'
 
@@ -29,11 +28,8 @@ function luminance(hex: string): number {
 export function BrandIcon({ icon, size = 24, className, colored = false }: BrandIconProps) {
   const gradientId = useId()
   const gradient = colored ? icon.gradient : undefined
-  const classes = [
-    colored && gradient === undefined && icon.parts === undefined ? styles.colored : undefined,
-    colored && luminance(icon.hex) < 0.05 ? styles.dark : undefined,
-    className,
-  ]
+  const solid = colored && gradient === undefined && icon.parts === undefined
+  const classes = [colored && luminance(icon.hex) < 0.05 ? styles.dark : undefined, className]
     .filter(Boolean)
     .join(' ')
 
@@ -46,7 +42,9 @@ export function BrandIcon({ icon, size = 24, className, colored = false }: Brand
       aria-hidden="true"
       focusable="false"
       className={classes || undefined}
-      style={colored ? ({ '--brand': `#${icon.hex}` } as CSSProperties) : undefined}
+      // Atributo de apresentação do SVG, não `style`: a CSP bloqueia estilo inline, e o HTML
+      // pré-renderizado (src/entry-server.tsx) precisa sair com a cor da marca já aplicada.
+      color={solid ? `#${icon.hex}` : undefined}
     >
       {gradient !== undefined ? (
         <>

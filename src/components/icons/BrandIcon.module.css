@@ -1,7 +1,3 @@
-.colored {
-  color: var(--brand);
-}
-
 /* Cores quase pretas somem no fundo escuro (o tema escuro é o padrão): voltam à cor do texto. */
 :root:not([data-theme='light']) .dark {
   color: var(--color-fg);

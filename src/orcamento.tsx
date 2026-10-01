@@ -13,6 +13,8 @@ if (container === null) {
   throw new Error('Elemento #root não encontrado em orcamento/index.html.')
 }
 
+// Aqui o React redesenha a página em vez de assumir o HTML pré-renderizado: o painel lê ?item= da URL
+// (vindo dos cartões de Serviços), coisa que o HTML do build não tem, e a hidratação reclamaria.
 createRoot(container).render(
   <StrictMode>
     <LangProvider lang={langFromPath(window.location.pathname)}>

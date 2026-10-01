@@ -33,7 +33,8 @@ const META: Readonly<Record<PageId, Readonly<Record<Lang, PageMeta>>>> = {
         'Endriky Axel, dev full stack e de segurança. Sites de vendas, gestão financeira, automações e análise de segurança. Domínio grátis por 1 ano e suporte 24h.',
       imageAlt:
         'The Crow: sistemas web seguros, do banco de dados à interface. Por Endriky Axel, full stack e segurança da informação. Ao lado, a cabeça de um corvo em pixel art com o olho vermelho.',
-      noscript: 'Este site precisa de JavaScript para funcionar.',
+      noscript:
+        'Sem JavaScript o conteúdo continua aqui, mas o menu do celular, o tema e o verificador de domínio ficam desativados.',
       noscriptLink: 'github.com/Alexitiimia',
     },
     en: {
@@ -42,7 +43,8 @@ const META: Readonly<Record<PageId, Readonly<Record<Lang, PageMeta>>>> = {
         'Endriky Axel, full stack and security developer. Sales websites, financial management, automations and security analysis. Free domain for 1 year and 24/7 support.',
       imageAlt:
         'The Crow: secure web systems, from the database to the interface. By Endriky Axel, full stack and information security. Beside it, the head of a pixel-art crow with a red eye.',
-      noscript: 'This site needs JavaScript to work.',
+      noscript:
+        'Without JavaScript the content is still here, but the mobile menu, the theme and the domain checker are turned off.',
       noscriptLink: 'github.com/Alexitiimia',
     },
     es: {
@@ -51,7 +53,8 @@ const META: Readonly<Record<PageId, Readonly<Record<Lang, PageMeta>>>> = {
         'Endriky Axel, dev full stack y de seguridad. Sitios de ventas, gestión financiera, automatizaciones y análisis de seguridad. Dominio gratis por 1 año y soporte 24 h.',
       imageAlt:
         'The Crow: sistemas web seguros, de la base de datos a la interfaz. Por Endriky Axel, full stack y seguridad de la información. Al lado, la cabeza de un cuervo en pixel art con el ojo rojo.',
-      noscript: 'Este sitio necesita JavaScript para funcionar.',
+      noscript:
+        'Sin JavaScript el contenido sigue aquí, pero el menú del móvil, el tema y el verificador de dominio quedan desactivados.',
       noscriptLink: 'github.com/Alexitiimia',
     },
   },

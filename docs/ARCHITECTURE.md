@@ -7,6 +7,7 @@ brand/            Kit original da identidade (a marca hoje é "The Crow"). Fonte
 docs/             Documentação.
 orcamento/        Modelo HTML da segunda página (orçamento). Entrada: src/orcamento.tsx. Listada em vite.config.ts.
 vite.i18n.ts      Plugin do Vite: gera um HTML por idioma a partir dos dois modelos (index.html e orcamento/index.html).
+vite.prerender.ts Plugin do Vite: depois do build, escreve o conteúdo de cada página dentro do <div id="root"> (pré-renderização).
 worker/           Único código de servidor: /api/dominio (verificação de nomes livres) e o redirecionamento de "/" para /pt/, /en/ ou /es/. Ver docs/DEPLOY.md.
 public/           Copiado como está para a raiz do site (sem hash): _headers, 404, favicons, robots.
 src/
@@ -45,6 +46,21 @@ navegador (`Accept-Language`). O seletor fica no cabeçalho, ao lado do botão d
 - **Título da aba e prévia do link:** `src/i18n/meta.ts`.
 - Não traduzidos de propósito: nomes de marcas e projetos, `public/404.html` e a imagem da prévia
   (`og-image.png`, igual nos três idiomas).
+
+## Pré-renderização (conteúdo no HTML, sem depender de JavaScript)
+
+Buscadores simples, prévias de link e robôs de IA não executam script. Por isso `npm run build` faz
+duas passadas: `vite build` (site normal) e `vite build --ssr src/entry-server.tsx --outDir dist-ssr`,
+cujo plugin (`vite.prerender.ts`) renderiza cada página em cada idioma com `renderToString` e grava o
+resultado dentro de `<div id="root">` dos arquivos de `dist/`. No navegador, `main.tsx` hidrata esse
+HTML; a página do orçamento (`orcamento.tsx`) redesenha do zero porque lê `?item=` da URL.
+
+- O HTML pré-renderizado **não pode ter `style=`, `<style>`, `<script>` nem `on...=`** (a CSP bloquearia;
+  `entry-server.test.tsx` confere). Cor de marca em SVG vai pelo atributo `color`, não por `style`.
+- Código que roda na renderização não pode tocar em `window`/`document`; leitura do navegador fica
+  em `useEffect` ou em `useSyncExternalStore` com valor de servidor (ver `useTheme`).
+- Idade e ano do rodapé são calculados no build: ficam desatualizados no HTML até o próximo deploy
+  (o React corrige ao abrir a página).
 
 ## Convenções
 
